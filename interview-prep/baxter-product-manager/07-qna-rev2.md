@@ -6,18 +6,22 @@ Built on **revision 2** of your slides. These numbers replace any older ones in 
 | | |
 |---|---|
 | 2025 | $0.9M, 25% share, market $3.6M (-35%) |
-| 2026 target | **$1.3M, ~35% share (+44%)** |
-| Floor (only if asked) | $1.2M |
-| Exit run-rate | **$1.6M+**, above the 2024 peak of $1.5M |
-| 2027 path | **~$2M** if the Q4 go/no-go says scale |
-| Bridge | 0.90 + 0.20 Accelerator + 0.07 ASCEND + 0.13 KSO = **1.30** |
+| 2026 target | **$1.7M at 35% share (+89%)** |
+| Market it assumes | **~$4.9M** (1.7 ÷ 0.35): a 35% recovery, still **13% below 2024** ($5.56M) |
+| Flat market ($3.6M) | 35% share = **~$1.3M** (+44%). This is your floor. |
+| Bridge (full speed) | 0.90 + 0.44 ACCELERATE + 0.24 UNLOCK + 0.12 PROTECT = **1.70** |
+| ACCELERATE 0.44 | Accelerator 0.264 + ASCEND 0.18 |
+| Market-based check | 25% of $4.9M = $1.2M base + ~$0.5M from programs = **~$1.7M** |
+| 2027 path | **$2M+**: 8 more vaporizers in Surabaya and Bandung (+0.24) + ASCEND wave 2 (+0.15) |
 | Budget | **$50k**: Accelerator 2k, ASCEND 10k, PROVE 5k, KSO 30k, Mapping 0, Stewardship 3k |
 | Accounts | **63**: 45 base/reactivated + 10 ASCEND new + 8 KSO |
-| KSO | 8 vaporizers × 10 bottles a month × ~$250 = $240k run-rate, $130k in 2026 |
-| ROI 2026 | $0.40M incremental on $50k = 8x revenue, **~3.8x gross margin** (60% assumed) |
-| ROI run-rate | $0.68M incremental = ~7x gross margin |
+| KSO | 8 vaporizers × 10 bottles a month × ~$250 = $240k a year |
+| ROI, full plan | $0.8M new on $50k = 16x revenue, **~8.6x gross margin** (60% assumed) |
+| ROI, flat market | ~$0.4M new = 8x revenue, ~3.8x gross margin |
 
-If you keep **$1.7M** on slide 5, say it's the full-year run-rate, and use answer 7 below.
+**The logic in one sentence:** 35% share is what my programs deliver. Revenue rides the market: $1.7M if the market recovers to $4.9M, $1.3M if it stays flat.
+
+**Slide 5 footnote (adds 1 line, keeps your target):** *"Assumes the market recovers to ~$4.9M, still 13% below 2024. Flat market: ~$1.3M at 35%."*
 
 ---
 
@@ -44,14 +48,14 @@ If you keep **$1.7M** on slide 5, say it's the full-year run-rate, and use answe
 
 ## Slide 5. Objective
 
-**6. "Walk me through $1.3M and 35%."**
-> "0.9 base, plus 0.20 from the accelerator, 0.07 from ASCEND and 0.13 from eight vaporizers. That's 1.3, which is 36% of a flat 3.6 million market. Each lever has a date: account plans by March, ASCEND Jakarta by May, all vaporizers by June. Those are the dates I'd manage against."
+**6. "$1.7M at 35% share means the market has to grow 35%. Why would it?"**
+> "Yes, it assumes the market recovers to about 4.9 million. That's still 13% below 2024. I think part of the 2025 drop was temporary: supply, tender timing, stock. Q1 data validation will confirm it. And 35% share is my real anchor. If the market stays flat, 35% is about 1.3 million, which is still +44%."
 
-**7. "Isn't +44% too aggressive? Or, why not $1.7M?"**
-> "It's ambitious on purpose: ten share points in a market that's shrinking globally. But every dollar has a source. My programs reach a $1.6 million-plus run-rate by December. Promising $1.7 million in calendar 2026 would mean booking revenue before the programs that create it have started."
+**7. "Your programs start in Q2 and Q3. How do they deliver full-year numbers?"**
+> "The bridge shows each program at full speed. In-year, they add about 0.4 million. The rest comes from the market: 25% of a 4.9 million market is 1.2 million on its own. Both roads land near 1.7. If installs slip or the market doesn't recover, we land around 1.3. So the dates I'd manage hardest are account plans by March, ASCEND Jakarta by May, all vaporizers by June."
 
-**8. "What would you actually sign up to in a budget?"**
-> "$1.2 million is my floor, the plan with normal slippage. $1.3 million is my target. I'd rather show you the ambition and the risk than hide either."
+**8. "+89%? Your best year ever was $1.5M. Isn't that unrealistic?"**
+> "It's ambitious by design. 2024 showed this brand can grow 50% in a year. A PM should set a target that stretches the team, and know exactly what has to be true for it. Here that's the market recovery and three dates. And I know my floor: about 1.3 million at the same 35% share."
 
 ## Slide 6. Segmentation
 
@@ -97,12 +101,12 @@ If you keep **$1.7M** on slide 5, say it's the full-year run-rate, and use answe
 ## Slide 11. Revenue bridge
 
 **20. "Isn't PROTECT double counted? That revenue is already in your base."**
-> "Fair point, and I've shown it as protecting $0.12 million inside the base, not as new growth. Without PROTECT, the base falls to about $0.78 million."
+> "It's volume those high-risk accounts cut in 2025 over environmental concerns. That's the perception branch of my issue tree. Stewardship wins it back, so it's recovery, not money we already have. Without PROTECT, those accounts keep shrinking."
 
-(If your slide still shows PROTECT as a growth bar, say: "I should have drawn it inside the base. It's revenue at risk, not new revenue.")
+(Use this only if it matches how you built the 0.12. If the 0.12 is just revenue you're keeping from those accounts, say instead: "Fair point. It's revenue at risk inside the base, so the cleaner number is 1.58.")
 
 **21. "What's the ROI?"**
-> "$50,000 drives about $0.4 million of new revenue in 2026. At an assumed 60% margin that's roughly 3.8 times gross-margin return in year one, and about 7 times on a full-year run-rate. The real constraint isn't money. It's field time and vaporizers."
+> "With the full plan, 50 thousand drives about 0.8 million of new revenue: 16 times revenue, about 8.6 times gross margin at an assumed 60%. Even in a flat market it's about 0.4 million new, so roughly 3.8 times gross margin. The real constraint isn't money. It's field time and vaporizers."
 
 ## Slide 12. Roadmap and governance
 
@@ -124,7 +128,7 @@ If you keep **$1.7M** on slide 5, say it's the full-year run-rate, and use answe
 > "Then demand programs wait for supply. I'd align ASCEND and the installs with supply planning before launch. Product C shows why: the case lists its last supply issue as a challenge. A stock-out after an event burns trust that took a year to build."
 
 **27. "What's your three-year view?"**
-> "2026: $1.3 million and a proven access model in Jakarta. 2027: about $2 million if the Q4 gate says scale, with 8 more vaporizers in Surabaya and Bandung. 2028: Suprane as a premium agent for defined patients, low-flow as standard. If policy moves faster, we manage it for profit and shift investment to nutrition."
+> "2026: $1.7 million at 35% share, and a proven access model in Jakarta. 2027: $2 million-plus if the Q4 gate says scale, with 8 more vaporizers in Surabaya and Bandung and a second ASCEND wave. 2028: Suprane as a premium agent for defined patients, low-flow as standard. If policy moves faster, we manage it for profit and shift investment to nutrition."
 
 **28. "The sales team carries many products. Why would they make time for Suprane?"**
 > "Because I'll make it small, clear and worth it. A list of target accounts with a plan each, not 'push it everywhere'. A Suprane line in incentives agreed with the sales head. Wins shown in the monthly review."
