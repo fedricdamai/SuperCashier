@@ -17,6 +17,7 @@
 | 6 | [`05-leadership-and-behavioral.md`](05-leadership-and-behavioral.md) | 30 min | STAR templates to fill with your own stories |
 | 7 | [`06-panel-and-closing.md`](06-panel-and-closing.md) | 10 min | Panel map, questions to ask them, day-of checklist |
 | 8 | [`07-qna-rev2.md`](07-qna-rev2.md) | 20 min | **Q&A prep for revision 2 of the deck: 30 questions with answers. Use these numbers.** |
+| 9 | [`08-prove-protocol.md`](08-prove-protocol.md) | 10 min | PROVE study design: endpoints, compliance, budget, timeline, likely questions |
 
 `questions.json` is the source for both the question bank and the drill page.
 
