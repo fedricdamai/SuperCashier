@@ -2,12 +2,16 @@
 
 **Verdict:** the strategy is sharper than mine and the maths is clean. Every value in the review brief's section 6 reproduces, and the workbook recalculates with 0 errors across 626 formulas. Ten things needed fixing before sending: mostly labels and evidence framing, not numbers. One real gap: Indonesian compliance risk barely appears, and a panel in Jakarta will ask about it.
 
+**Update after this review:** Hyperliquid Indonesia (a rival venue) and Bael calls (a Bitget Wallet ambassador) were replaced by GuarEmperor and his FnF circle and Superteam Indonesia. Figures in sections 1 and 2 refer to the original partner set; the deck and workbooks carry the new ones (308 FTDs, $1.81M of swaps, $723 at 0.04% in each partner's first 30 days).
+
 Files in this folder:
 
 | File | What it is |
 |---|---|
 | `deck_slides_v2.md` | Your 6 slides with every fix below applied |
-| `OKX_prospect_spreadsheet_v2.xlsx` | Your workbook: same model, same numbers, 20 text cells fixed, a `Longlist (100 screened)` tab, and live formulas for every new deck figure (Task 2 rows 16-20, Partner plan row 49, 30-day plan rows 33 and 44) |
+| `OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx` | Submission workbook: Task 1, Task 2, Task 3, Task 4, Miscellaneous (live formulas) |
+| `OKX_research_and_checks.xlsx` | Same five tabs plus Checks and history (open checks, partner changes, review findings) |
+| `deck_v2.html` / `deck_v2.pdf` | The designed deck (your PowerPoint design, fixes applied) |
 | `REVIEW.md` | This file |
 
 ## 1. What I checked
