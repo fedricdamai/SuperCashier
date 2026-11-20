@@ -7,7 +7,7 @@ Files in this folder:
 | File | What it is |
 |---|---|
 | `deck_slides_v2.md` | Your 6 slides with every fix below applied |
-| `OKX_prospect_spreadsheet_v2.xlsx` | Your workbook: same model, same numbers, 20 text cells fixed, plus a `Longlist (100 screened)` tab |
+| `OKX_prospect_spreadsheet_v2.xlsx` | Your workbook: same model, same numbers, 20 text cells fixed, a `Longlist (100 screened)` tab, and live formulas for every new deck figure (Task 2 rows 16-20, Partner plan row 49, 30-day plan rows 33 and 44) |
 | `REVIEW.md` | This file |
 
 ## 1. What I checked
