@@ -1,6 +1,6 @@
 # OKX DEX affiliates: Indonesia prospect list
 
-> **Superseded first pass.** The current submission is in `submission-v2/`: the deck, the submission workbook and a research workbook. There, Hyperliquid Indonesia is excluded as a rival venue and Bevan Pramudito / Narrative Labs is #1.
+> **Superseded first pass.** The current submission is in `submission-v2/`: the deck, the submission workbook and a research workbook. There, Hyperliquid Indonesia is excluded as a rival venue and Kevin Susanto is #1.
 
 100 Indonesian partners, scored on one question: who can bring real, repeat onchain volume?
 

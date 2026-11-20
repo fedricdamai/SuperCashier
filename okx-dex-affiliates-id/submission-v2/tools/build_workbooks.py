@@ -86,12 +86,37 @@ def col(n):
 SL = L["Shortlist (Task 1)"]
 TREN, LP = "Memecoin trenchers", "DeFi / LP users"
 partners = [
+    dict(short="Kevin Susanto", name="Kevin Susanto (@KevinSusanto)",
+         link="https://x.com/KevinSusanto ; https://t.me/KevinSusantoAlpha",
+         type="Large KOL and active onchain trader; hub of Jakarta's degen circle",
+         audience="Regional SEA and Indonesian crypto audience, English posts; Jakarta",
+         evidence=("fomo Top Traders 24h PnL, 19-20 Nov 2026: #3, +$53,566 (screenshot); a tracker logged ~$402K across 99 of "
+                   "his fomo trades; X 168,874, median 41,248 views a post; Telegram KevinSusantoAlpha 2,860; Degen Night speaker "
+                   "(31 Oct) with Bevan and Brandon Salim; attends OKX events (annual event 7 Oct, OKX x McLaren)"),
+         assumptions=("Engagement is low (0.84%), so the base FTD count may be high; whether his OKX link (okx.ac/join/VVIP7777) "
+                      "is a CEX affiliate deal OKX already pays, and which DEX volume would be new; his Lighter advisory terms"),
+         route="Through OKX's regional marketing team, which already works with him; then DM; in person in Jakarta",
+         proposal=("OKX DEX referral fee share on a separate DEX link, no fixed fee; 3 traders from his circle onboarded 1:1 in "
+                   "days 1-3; a co-hosted onchain session for his Telegram; intros to Brandon Salim and the Degen Night circle"),
+         risk="Already holds an OKX referral link, so DEX and CEX tracking must not overlap; advises Lighter, a rival perp DEX; runs volume giveaways",
+         reason="Most FTDs of the 8, a verified top fomo trader, and the fastest yes: OKX's regional team already works with him",
+         vampire="fomo (fee code KevinSusanto); Binance, Bitget and Tokocrypto links",
+         fnf="His Jakarta trading circle and KevinSusantoAlpha Telegram: 3 traders onboarded first",
+         in_person="Yes", airdrop="No (volume giveaways)", segment=TREN, pool=41820, ptraders=3, share=0.3, members=2860, per_member="trade",
+         basis="Measured (research): median 41,248 views a post + 20% of 2,860 Telegram subscribers",
+         deliverables="Days 1-3: 3 traders from his circle onboarded 1:1; day 5: co-hosted onchain session for KevinSusantoAlpha; 2 market threads with the link",
+         need="Clear, non-exclusive terms next to his existing exchange deals, with DEX tracking kept apart from his OKX link",
+         support="Tracking agreed with OKX's regional team; one co-hosted onchain session; Bahasa and English Meme Mode guide; wallet-level referral dashboard",
+         check="fomo referral stats (active referrals, volume); with OKX's regional team, what his okx.ac link already earns and which DEX volume would be new; Lighter advisory terms",
+         line="Proof: #3 on fomo's 24h PnL board (+$53.6K, 19-20 Nov); ~$402K across 99 fomo trades (tracker) · FnF: his Jakarta circle and Telegram · Flow: fomo (code KevinSusanto) → OKX · Meet: Jakarta, through OKX's regional team",
+         scores=(4, 5, 4, 4, 5, 5, 3), go_live=10, event="No"),
     dict(short="Bevan / Narrative Labs", name="Bevan Pramudito / Narrative Labs (@bevanpramudt)",
          link="https://x.com/bevanpramudt ; https://narrativelabs.id",
          type="Trader-educator with a paid trading community and own tools",
          audience="Intermediate and advanced Indonesian memecoin and onchain traders (its site: 'advanced, not for beginners'); Jakarta",
          evidence=("Published wallet 8DC3hp...qGxg (Solscan): 91 swaps from 14 May to 30 Jul 2026, 352.6 SOL bought and 726.8 SOL "
-                   "sold (~1,080 SOL), +374 SOL net; Discord 9,238 members, 984 online (20 Nov 2026); paid Masterclass (29 of 40 "
+                   "sold (~1,080 SOL), +374 SOL net; 'The Kingslayer' at Clash of Trenchers (W3W, 12 Nov): one of 3 traders to turn "
+                   "1 SOL into 10 SOL in 20 minutes; Discord 9,238 members, 984 online (20 Nov 2026); paid Masterclass (29 of 40 "
                    "promo seats sold); member meetup in Jakarta on 29 Oct; X 26,983, median 7,545 views a post"),
          assumptions=("No swaps on the published wallet since 30 Jul: which wallet he trades from now; self-reported +Rp13.7B PnL "
                       "(Feb-Aug 2026); share of Discord members who trade weekly; GMGN and Mobee referral terms"),
@@ -100,7 +125,7 @@ partners = [
                    "co-branded Discord workshop where he trades his own workflow on Meme Mode and Track; scope an OKX DEX API "
                    "trade button for his Narrative Alpha tool"),
          risk="Already pays out GMGN (BEVANP) and Mobee referral codes; published wallet idle since 30 Jul",
-         reason="Passes all four filters and can be met in Jakarta: verified onchain trading, a paid community he founded, GMGN flow to move, memecoin fees",
+         reason="Verified onchain trading (wallet and a live 1-to-10 SOL run), a paid community he founded, GMGN flow to move, meetable in Jakarta",
          vampire="GMGN (code BEVANP); Mobee (code BEVAN)",
          fnf="His paid Masterclass traders: 5 onboarded first (29 seats sold in the promo batch)",
          in_person="Yes", airdrop="No", segment=TREN, pool=9240, ptraders=5, share=0.3, members=9238, per_member="trade",
@@ -112,38 +137,80 @@ partners = [
                   "Bahasa Meme Mode and Track guide; wallet-level referral dashboard"),
          check=("Which wallet he trades from now (the published one is idle since 30 Jul) and its history; Discord active-member "
                 "stats; Masterclass enrolment and how many members trade weekly; GMGN (BEVANP) referral stats"),
-         line="Proof: published wallet, ~1,080 SOL swapped May-Jul, +374 SOL · FnF: his paid Masterclass traders · Flow: GMGN (code BEVANP) → OKX · Meet: Jakarta",
-         scores=(5, 3, 5, 4, 5, 5, 4), go_live=10, event="No"),
-    dict(short="0xRusdi", name=SL.cell(8, 1).value, link=SL.cell(8, 2).value, type=SL.cell(8, 3).value,
-         audience=SL.cell(8, 5).value, evidence=SL.cell(8, 6).value, assumptions=SL.cell(8, 11).value,
-         route=SL.cell(8, 7).value, proposal=SL.cell(8, 8).value, risk=SL.cell(8, 9).value,
-         reason=SL.cell(8, 10).value.replace("power-trader pool", "FnF pool"), vampire=SL.cell(8, 12).value,
-         fnf="His BasedBot referral book: his 5 most active referred traders", in_person="No", airdrop="No",
-         segment=TREN, pool=5160, ptraders=5, share=0.3, members=None, per_member="trade",
-         basis="Estimated: 20% of 25.8K X followers (median views not yet measured)",
-         deliverables="Days 1-3: his 5 most active referred traders onboarded 1:1; then 6 posts and 1 X Spaces with the referral link and follower discount",
-         need="Terms and tools at least as good as BasedBot's 25% tier",
-         support="Multi-chain Meme Mode guide (Solana, BSC, Base); wallet-level referral dashboard; early briefings on OKX Boost campaigns (if OKX agrees)",
-         check="BasedBot dashboard export: referred traders, volume per trader, days active, chains; share of his referred traders in Indonesia",
-         line="Proof: $8,463 of BasedBot referral earnings at the 25% tier, the only public proof of a referred trading book · FnF: his referral book · Flow: BasedBot users → OKX",
-         scores=(5, 2, 4, 5, 3, 5, 4), go_live=10, event="No"),
-    dict(short="Ponyin", name=SL.cell(10, 1).value, link=SL.cell(10, 2).value, type=SL.cell(10, 3).value,
-         audience=SL.cell(10, 5).value,
-         evidence=("Trojan PnL card, March 2026: bought 1.13K SOL and sold 1.24K SOL (~$170K of volume at ~$72 SOL), +112 SOL; "
-                   "ex-Trojan partner who ran KOL volume campaigns; X 22,718, median 4,628 views a post"),
-         assumptions="Size of his circle (he lists ApexFNF and The STavern; not verified); share of followers who trade daily; whether he would move his own trading",
-         route=SL.cell(10, 7).value, proposal=SL.cell(10, 8).value,
-         risk="Loyal to Trojan; Head of Marketing at Dawn since Oct 2026 (check conflicts); one bonus-farming tutorial (code ELPONTIN)",
-         reason=SL.cell(10, 10).value, vampire=SL.cell(10, 12).value,
-         fnf="His trading circle: 5 onboarded first", in_person="No", airdrop="No (one bonus-farming tutorial)",
-         segment=TREN, pool=4628, ptraders=5, share=0.3, members=None, per_member="trade",
-         basis="Measured (research): median 4,628 views a post; no owned group found",
-         deliverables="Days 1-3: 5 traders from his circle; then 4 posts comparing Meme Mode with Trojan (speed, fees) and his monthly results",
-         need="Execution at least as fast and cheap as Trojan, for him and his circle",
-         support="Meme Mode presets and MEV-protection walkthrough; wallet-level referral dashboard; Bahasa support chat for his circle",
-         check="Trojan dashboard or wallet history for him and his circle; how many in the circle trade daily; terms of his Dawn role",
-         line="Proof: Trojan PnL card, ~$170K of volume in March 2026 · FnF: his trading circle · Flow: Trojan users → OKX",
-         scores=(4, 2, 4, 5, 3, 5, 3), go_live=10, event="No"),
+         line="Proof: published wallet, ~1,080 SOL swapped May-Jul, +374 SOL; 1 SOL to 10 SOL live at W3W · FnF: his paid Masterclass traders · Flow: GMGN (code BEVANP) → OKX · Meet: Jakarta",
+         scores=(5, 3, 5, 4, 5, 5, 3), go_live=10, event="No"),
+    dict(short="GuarEmperor + FnF", name="GuarEmperor / Emperor Journal (@GuarEmperor) and his FnF circle",
+         link="https://x.com/GuarEmperor ; https://x.com/emperorjournal_",
+         type="Alpha caller with an FnF circle and a tools Discord",
+         audience="Indonesian and global CT degens: memecoin traders on new chains, NFT minters, whitelist hunters",
+         evidence=("X 94,421, median 15,885 views a post, 1.9% engagement (~47 replies a post); members post results from his "
+                   "tools (GMGN +$802, +$387); public smart-money wallet lists formatted for BasedBot and GMGN; 'Enjoy being poor' "
+                   "Telegram ~16.5K (third-party snapshot)"),
+         assumptions="Size and activity of his FnF circle; Emperor Journal Discord size (invite-gated); share of followers who trade rather than farm",
+         route="X DM; warm intro through All Good (@mudacumasekali), an Emperor Journal member; sister account @emperorjournal_",
+         proposal=("OKX DEX referral fee share with a follower discount; his FnF circle (5 traders) onboarded 1:1 in days 1-3; OKX "
+                   "DEX API for his Discord tools; alpha calls executed through Meme Mode and Track"),
+         risk="WL, mint and airdrop posts in his feed; alpha calls need front-running and disclosure checks",
+         reason="Best engagement among the big accounts and an FnF circle that trades from his tools",
+         vampire="GMGN and BasedBot (his wallet lists are built for their import)",
+         fnf="His FnF circle and Emperor Journal members: 5 onboarded first", in_person="No", airdrop="Partly (WL and mint posts)",
+         segment=TREN, pool=19185, ptraders=5, share=0.3, members=16500, per_member="nft",
+         basis="Measured (research): median 15,885 views a post + 20% of ~16.5K Telegram (third-party snapshot); Discord size not public",
+         deliverables="Days 1-3: his FnF circle (5 traders) onboarded 1:1; then 6 alpha threads executed on OKX Wallet and 1 X Spaces with the referral link",
+         need="Better execution for the calls his members already copy",
+         support="OKX DEX API docs for his Discord tools; Meme Mode and Track guide; wallet-level referral dashboard",
+         check="Emperor Journal Discord size and activity; wallets or PnL for his FnF circle; share of members trading memecoins rather than farming",
+         line="Proof: members post results from his tools (GMGN +$802, +$387); 1.9% engagement, best of the big accounts · FnF: his circle and Emperor Journal · Flow: GMGN and BasedBot wallet lists → OKX",
+         scores=(3, 4, 5, 4, 4, 4, 3), go_live=10, event="No"),
+    dict(short="CVC Ventures network",
+         name="CVC Ventures network: 0xRusdi (+ Tomket Lovers), Ponyin (+ ApexFNF), Setya",
+         link="https://x.com/CVC_Ventures ; https://x.com/0xRusdi ; https://x.com/Ponyin ; https://x.com/ApexFNF_io ; https://x.com/setyamickala ; https://x.com/TomketLovers",
+         type="Trader network: three trencher KOLs and two FnF clans",
+         audience="Indonesian Solana and multi-chain memecoin traders on BasedBot, Trojan and fomo",
+         evidence=("0xRusdi: $8,463 of BasedBot referral earnings at the 25% tier (dashboard, 26 Apr 2026); Ponyin: Trojan PnL card, "
+                   "March 2026, ~$170K of volume (1.13K SOL bought, 1.24K sold); Tomket Lovers: fomo clan of 13-15 active traders; "
+                   "Setya: X 52,661, CMIF 2025; CVC_Ventures team: Setya, Ponyin, 0xRusdi (X, Nov 2026)"),
+         assumptions=("Who signs for the network; ApexFNF and Tomket clan sizes; how far the four audiences overlap (reach adds them "
+                      "up, so it is an upper bound); Setya's role beyond Airdrop Finder"),
+         route="X DM to 0xRusdi first (strongest proof), then a group call with the CVC_Ventures team",
+         proposal=("One network deal: a code per member on one shared dashboard; 15 FnF traders onboarded 1:1 in days 1-3 (5 from "
+                   "0xRusdi's referral book, 5 from ApexFNF, 5 from the Tomket clan); a network trading competition; fee share split "
+                   "inside the network"),
+         risk=("Four parties to align; Tomket Lovers is on Bitget Wallet Indonesia's Superfans list; Ponyin's Trojan ties and Dawn "
+               "role; Setya co-runs Airdrop Finder (airdrop audience)"),
+         reason="The strongest proof and the most FnF traders on the list, but four parties make it the slowest to sign",
+         vampire="BasedBot (0xRusdi), Trojan (Ponyin), fomo (Tomket clan); Bitget Wallet (Tomket)",
+         fnf="15: 0xRusdi's 5 most active referred traders, 5 from ApexFNF (Ponyin's FnF), 5 from the Tomket Lovers clan",
+         in_person="No", airdrop="Partly (Setya's Airdrop Finder; Tomket campaigns)", segment=TREN, pool=25120, ptraders=15, share=0.3,
+         members=None, per_member="trade",
+         basis=("Mixed: Ponyin measured (4,628 median views); 0xRusdi and Setya at 20% of followers (25.8K, 52.7K); Tomket Lovers "
+                "4,800 (its promo views). Audiences overlap, so this is an upper bound"),
+         deliverables="Days 1-3: 15 FnF traders onboarded 1:1 (5 each from 0xRusdi's book, ApexFNF and the Tomket clan); then each member posts with his code and the network runs a 7-day trading competition",
+         need="One deal that pays every member and clan fairly, with terms at least as good as BasedBot's 25% tier",
+         support="One shared dashboard with per-member codes; multi-chain Meme Mode guide; network leaderboard and competition (needs OKX approval)",
+         check="", line="", scores=(5, 4, 5, 5, 2, 5, 1), go_live=17, event="No"),
+    dict(short="Brandon Salim + a79", name="Brandon Salim (@brandonsalim) and a79, his trader group",
+         link="https://x.com/brandonsalim ; https://x.com/a79",
+         type="Celebrity trader with his own application-only trader group",
+         audience="Mass Indonesian audience (actor fanbase) plus stock and crypto retail traders; Jakarta",
+         evidence=("X 186,757, median 14,342 views over his 25 latest original posts; fomo 24h PnL +$32,185 (pinned, 4 Sep 2026), "
+                   "fomo leaderboard #440; posts his fomo referral code on almost every trade since September; founder of a79 "
+                   "(a79.world, application-only; X 3,543); Degen Night speaker (31 Oct) with Kevin Susanto and Bevan"),
+         assumptions="a79 member count (not public); his fomo referral results; how many fans trade onchain; he says he trades 'peanuts money'",
+         route="Warm intro through Kevin Susanto; he already follows my X account; or his management via brandonsalim.com",
+         proposal=("OKX DEX referral fee share with a follower discount, in the same 'trade with me, X% off fees' format he runs on "
+                   "fomo; 5 a79 traders onboarded 1:1 in days 1-3; an a79 group code with clan rewards; a co-hosted 'actor vs "
+                   "trenchers' trading competition"),
+         risk="Celebrity reach may not trade onchain; his fomo tie; needs POJK 6/2026 finfluencer certification before paid posts",
+         reason="Second-largest measured reach, a habit of posting a trading referral code, and his own trader group",
+         vampire="fomo (code on almost every trade post)",
+         fnf="a79, his application-only trader group: 5 traders onboarded first",
+         in_person="Yes", airdrop="No", segment=TREN, pool=14342, ptraders=5, share=0.3, members=None, per_member="trade",
+         basis="Measured (research): median 14,342 views over his 25 latest original posts; a79 size not public",
+         deliverables="Days 1-3: 5 a79 traders onboarded 1:1; then trade posts with the OKX link in his fomo format and an a79 trading competition",
+         need="The same trade-with-me format he runs on fomo, multichain and non-exclusive",
+         support="Multichain Meme Mode guide (Solana, BSC, Base); a79 group code and leaderboard; wallet-level referral dashboard; compliance check of posts",
+         check="", line="", scores=(3, 4, 3, 5, 4, 5, 2), go_live=17, event="No"),
     dict(short="Crypto Ndo", name=SL.cell(9, 1).value, link=SL.cell(9, 2).value, type=SL.cell(9, 3).value,
          audience=SL.cell(9, 5).value, evidence=SL.cell(9, 6).value, assumptions=SL.cell(9, 11).value,
          route=SL.cell(9, 7).value, proposal=SL.cell(9, 8).value, risk=SL.cell(9, 9).value,
@@ -155,47 +222,26 @@ partners = [
          need="A reason to move his followers' referral flow from fomo to OKX (he already trades on OKX Wallet)",
          support="Co-branded Meme Mode preset guide in Bahasa; weekly wallet-level dashboard; Bahasa support chat; compliance check of posts",
          check="", line="", scores=(3, 3, 4, 4, 3, 5, 4), go_live=17, event="No"),
-    dict(short="Kevin Susanto", name="Kevin Susanto (@KevinSusanto)",
-         link="https://x.com/KevinSusanto ; https://t.me/KevinSusantoAlpha",
-         type="Large KOL and active onchain trader",
-         audience="Regional SEA and Indonesian crypto audience, English posts; Jakarta",
-         evidence=("fomo Top Traders 24h PnL, 19-20 Nov 2026: #3, +$53,566 (screenshot); a tracker logged ~$402K across 99 of "
-                   "his fomo trades; X 168,874, median 41,248 views a post; Telegram KevinSusantoAlpha 2,860"),
-         assumptions=("Engagement is low (0.84%), so the base FTD count may be high; whether his OKX link is a CEX affiliate deal OKX "
-                      "already pays; his Lighter advisory terms"),
-         route="Through OKX's regional marketing team, which already works with him; then DM. In person in Jakarta",
-         proposal="KOL ambassador on performance: OKX DEX referral fee share, no fixed fee; 2 traders from his Telegram onboarded first; one co-hosted onchain trading session for his Telegram",
-         risk="Already holds an OKX referral link (okx.ac/join/VVIP7777), so part of his flow may already count for OKX; advises Lighter, a rival perp DEX; runs volume giveaways",
-         reason="Most FTDs of the 8 (biggest measured reach), but no FnF circle on record and an existing OKX link",
-         vampire="fomo (fee code KevinSusanto); Binance, Bitget and Tokocrypto links",
-         fnf="No circle on record: 2 traders from his Telegram, onboarded first", in_person="Yes", airdrop="No (volume giveaways)",
-         segment=TREN, pool=41820, ptraders=2, share=0.3, members=2860, per_member="trade",
-         basis="Measured (research): median 41,248 views a post + 20% of 2,860 Telegram subscribers",
-         deliverables="Days 1-3: 2 traders from his Telegram onboarded 1:1; then 2 market threads with the link and 1 co-hosted onchain session for KevinSusantoAlpha",
-         need="Clear, non-exclusive terms that sit alongside his existing exchange deals",
-         support="One co-hosted onchain session; Bahasa and English Meme Mode guide; wallet-level referral dashboard",
-         check="", line="", scores=(3, 5, 2, 3, 5, 4, 2), go_live=17, event="No"),
-    dict(short="GuarEmperor + FnF", name="GuarEmperor / Emperor Journal (@GuarEmperor) and his FnF circle",
-         link="https://x.com/GuarEmperor ; https://x.com/emperorjournal_",
-         type="Alpha caller with an FnF circle and a tools Discord",
-         audience="Indonesian and global CT degens: memecoin traders on new chains, NFT minters, whitelist hunters",
-         evidence=("X 94,421, median 15,885 views a post, 1.9% engagement (~47 replies a post); members post results from his "
-                   "tools (GMGN +$802, +$387); public smart-money wallet lists formatted for BasedBot and GMGN; 'Enjoy being poor' "
-                   "Telegram ~16.5K (third-party snapshot)"),
-         assumptions="Size and activity of his FnF circle; Emperor Journal Discord size (invite-gated); share of followers who trade rather than farm",
-         route="X DM; sister account @emperorjournal_",
-         proposal=("OKX DEX referral fee share with a follower discount; his FnF circle (5 traders) onboarded 1:1 in days 1-3; OKX "
-                   "DEX API for his Discord tools; alpha calls executed through Meme Mode and Track"),
-         risk="WL, mint and airdrop posts in his feed; alpha calls need front-running and disclosure checks",
-         reason="Best engagement among the big accounts and an FnF circle that trades from his tools; airdrop-adjacent feed",
-         vampire="GMGN and BasedBot (his wallet lists are built for their import)",
-         fnf="His FnF circle and Emperor Journal members: 5 onboarded first", in_person="No", airdrop="Partly (WL and mint posts)",
-         segment=TREN, pool=19185, ptraders=5, share=0.3, members=16500, per_member="nft",
-         basis="Measured (research): median 15,885 views a post + 20% of ~16.5K Telegram (third-party snapshot); Discord size not public",
-         deliverables="Days 1-3: his FnF circle (5 traders) onboarded 1:1; then 6 alpha threads executed on OKX Wallet and 1 X Spaces with the referral link",
-         need="Better execution for the calls his members already copy",
-         support="OKX DEX API docs for his Discord tools; Meme Mode and Track guide; wallet-level referral dashboard",
-         check="", line="", scores=(2, 4, 4, 4, 3, 4, 3), go_live=17, event="No"),
+    dict(short="DegenRex", name="DegenRex (@degen2ex)", link="https://x.com/degen2ex ; https://t.me/degenrex",
+         type="Champion trader with a Telegram call channel",
+         audience="Indonesian memecoin trenchers on BSC, Base and Solana; Jakarta event crowd",
+         evidence=("Won Clash of Trenchers by Ave.ai at Web3 Week Asia, Jakarta (11-12 Nov 2026): group winner on day 1, then the "
+                   "final, 1 SOL to 10 SOL in 20 minutes, live on stage (Ave.ai, Ave Indonesia and W3W posts); Telegram degenrex "
+                   "1,845; median 1,328 views a post"),
+         assumptions="His prize share and trading volume in the final (not disclosed); how many Telegram members trade his calls",
+         route="X DM; Jakarta events; through Ave Indonesia's organisers",
+         proposal=("Trader ambassador: OKX DEX fee share; 3 traders from his call channel onboarded 1:1; live 'OKX DEX champion' "
+                   "sessions in his Telegram; defend his title in an OKX DEX trading competition"),
+         risk="Small reach; Ave.ai and four.meme already back him",
+         reason="The strongest live, verified trading proof on the list, and multichain (BSC, Base, Solana) like OKX DEX",
+         vampire="Ave.ai and four.meme (BSC)",
+         fnf="3 traders from his Telegram call channel, onboarded first", in_person="Yes", airdrop="No",
+         segment=TREN, pool=1697, ptraders=3, share=0.3, members=1845, per_member="trade",
+         basis="Measured (research): median 1,328 views a post + 20% of 1,845 Telegram subscribers (the research's 1.5x boost for the win is left out)",
+         deliverables="Days 1-3: 3 traders from his call channel onboarded 1:1; then 2 live trading sessions in his Telegram and a title-defence trading competition",
+         need="A recurring stage as a champion, and routing for his BSC and Base plays",
+         support="Competition prize pool (needs OKX approval); multichain Meme Mode guide; wallet-level referral dashboard",
+         check="", line="", scores=(5, 2, 3, 3, 4, 5, 4), go_live=24, event="No"),
     dict(short="Meteora LP Army", name="Meteora Indonesia 'LP Army' (hosts: Evil Panda, Friday7th)",
          link=SL.cell(13, 2).value, type=SL.cell(13, 3).value, audience=SL.cell(13, 5).value,
          evidence=SL.cell(13, 6).value + "; co-host Friday7th posts a DLMM bot journal (+1.946 SOL over 155 trades, 1-17 Nov)",
@@ -208,27 +254,20 @@ partners = [
          need="Event costs and good speakers",
          support="Co-hosted community nights (venue and food budget, needs OKX approval); OKX speaker on swaps and Bridge; on-site wallet set-up desk",
          check="", line="", scores=(3, 1, 4, 3, 5, 3, 4), go_live=24, event="Yes"),
-    dict(short="Stress Capital", name="Stress Capital (admin: Orpheuzkaze, @orpheuskaze)",
-         link="https://x.com/StressCapitals ; https://discord.gg/stresscapitals",
-         type="Degen trading clan (Discord) run by a community operator",
-         audience="Indonesian crypto, NFT and gaming audience; Monad NFT community",
-         evidence=("Stress Capital Discord 30,663 members, 2,453 online (20 Nov 2026); X 25.3K; Orpheuzkaze admin since 2021, "
-                   "X 22,468, median 2,731 views a post"),
-         assumptions="Share of members who trade rather than farm NFTs; who approves placements; his 1.03M reach and 850 collaborations are self-reported",
-         route="X DM to Orpheuzkaze; pitch as a clan partner",
-         proposal="Clan referral: one community code with tiered clan rewards; 3 clan leads onboarded 1:1; a 7-day trading competition in the Discord",
-         risk="NFT and airdrop lean, so volume per member is low; freelance KOL for MEXC and OSL",
-         reason="Largest owned trading-clan Discord we could measure; FnF through clan leads, but no trading proof yet",
-         vampire="MEXC and OSL campaigns; members' trading tools not public (ask on the first call)",
-         fnf="3 clan leads from Stress Capital, onboarded first", in_person="No", airdrop="Partly (NFT and airdrop audience)",
-         segment=TREN, pool=5184, ptraders=3, share=0.25, members=30663, per_member="nft",
-         basis="Measured (research): median 2,731 views a post + 2,453 Discord members online",
-         deliverables="Days 1-3: 3 clan leads onboarded 1:1; then a clan code with tiered rewards and a 7-day trading competition in the Discord",
-         need="Activity for a big Discord in a dry market",
-         support="Clan leaderboard and rewards (needs OKX approval); Bahasa set-up guide; anti-sybil checklist",
-         check="", line="", scores=(1, 2, 3, 2, 3, 2, 3), go_live=24, event="No"),
 ]
 assert len(partners) == 8
+WEIGHTS = [0.15, 0.25, 0.2, 0.1, 0.15, 0.05, 0.1]
+
+
+def ramp(p, L, s=0.02, a=0.15, v=2000, vf=16400, start=4, days=30, tr=25, tf=120):
+    """Task 4 ramp for a posted partner (base case), L days after go-live: FTDs, trades a day, swaps."""
+    ftd_total = p["pool"] * s * a
+    ftd = ftd_total * min(L, days) / days
+    fnf_tpd = p["ptraders"] * vf / days / tf if L >= start else 0
+    tpd = ftd * v / days / tr + fnf_tpd
+    swaps = ftd_total * v / days * L * L / (2 * days) + p["ptraders"] * vf / days * max(0, L - start + 1)
+    return ftd, tpd, swaps, fnf_tpd
+
 N0, N1, TOT = 37, 44, 45  # section C rows
 
 
@@ -342,8 +381,8 @@ def build(research=False):
     steps = [
         ("1. Audience only: FTDs x $2,000 (no FnF power traders)", f"={T1}J{TOT}", "The research sheet's base case for the same 8"),
         ("2. Plus FnF power traders onboarded by day 4: our plan", f"={T1}M{TOT}", "FnF power traders trade from day 4, before any post"),
-        ("3. 10 FnF power traders (not 5) at the top 3", f"=B56+3*5*{fnf_month}",
-         "Bevan's Masterclass (29 paid seats), 0xRusdi's referral book, Ponyin's circle"),
+        ("3. Double the FnF power traders at the top 3", f"=B56+({T1}H37+{T1}H38+{T1}H39)*{fnf_month}",
+         "Kevin's Jakarta circle, Bevan's Masterclass (29 paid seats), GuarEmperor's Emperor Journal"),
         ("4. Plus the Partner B pilot ($2M a month, brief)", f"=B57+{T2}C5", "The one pilot the brief allows; positive on its own terms"),
         ("5. $10K a month", f"=10000/{RATE_L}", "A and C on revenue share only if their 90-day data holds, plus more partners at this profile: a month 4-6 goal"),
     ]
@@ -361,7 +400,7 @@ def build(research=False):
         ("Public information only; no contact, spend or private contacts", "All tabs; slide 6"),
         ("Task 1: 8 potential partners", "Task 1, section A; slide 2"),
         ("Task 1: at least 6 whose main proposition is not airdrops", "Task 1, brief checks (row 21)"),
-        ("Task 1: at least 3 partner types", "Task 1, column D (5 types)"),
+        ("Task 1: at least 3 partner types", "Task 1, column D (6 types)"),
         ("Task 1: at least 2 you could meet in person", "Task 1, column O; Task 4, in-person day"),
         ("Task 1: link, audience and market, evidence, route, proposed partnership, main risk, priority with reason", "Task 1, section A"),
         ("Task 1: top 3 and why you'd approach them first", "Task 1, rows 4-8; slide 2"),
@@ -373,7 +412,7 @@ def build(research=False):
         ("Task 2: chosen partner's economics at 50% of forecast", "Task 2, columns K-L and rows 16-20"),
         ("Task 2: exclude other costs, then say which you'd investigate", "Task 2, row 13"),
         ("Task 2: pilot only one partner at first", "Task 2, row 14"),
-        ("Task 3: use your highest-priority real prospect", "Task 3 (Bevan / Narrative Labs); slide 4"),
+        ("Task 3: use your highest-priority real prospect", "Task 3 (Kevin Susanto); slide 4"),
         ("Task 3: first outreach message of 120 words or fewer", "Task 3, row 4 (word count in the label)"),
         ("Task 3: follow-up after no response", "Task 3, row 6"),
         ("Task 3: reply to 'another platform offers a higher commission'", "Task 3, row 7"),
@@ -420,8 +459,15 @@ def build(research=False):
         ("Ponyin Trojan PnL card (X)", "https://x.com/Ponyin/status/2037746268039209077"),
         ("GuarEmperor member results (X)", "https://x.com/GuarEmperor/status/2115414023114256560"),
         ("GuarEmperor wallet lists (BasedBot, GMGN)", "https://github.com/ariefzzz5421/wallet-tracker-transfer"),
-        ("Stress Capital Discord", "https://discord.gg/stresscapitals"),
-        ("Orpheuzkaze portfolio", "https://orpheuzkaze-portfolio.vercel.app"),
+        ("Bevan 'The Kingslayer', 1 SOL to 10 SOL (Ave.ai)", "https://x.com/Jodski888/status/2121255854792188378"),
+        ("Brandon Salim pinned fomo PnL (X)", "https://x.com/brandonsalim/status/2096005957692301790"),
+        ("a79, Brandon Salim's trader group", "https://x.com/a79"),
+        ("Degen Night speakers, 31 Oct 2026", "https://x.com/0xRememberUs/status/2116500473356411230"),
+        ("DegenRex wins Clash of Trenchers (Ave.ai)", "https://x.com/AveaiGlobal/status/2120891736373518591"),
+        ("Web3 Week Asia recap (W3W)", "https://x.com/W3WOfficial/status/2121498996955132404"),
+        ("CVC Ventures team (X)", "https://x.com/CVC_Ventures"),
+        ("ApexFNF, Ponyin's FnF (X)", "https://x.com/ApexFNF_io"),
+        ("Tomket Lovers (X)", "https://x.com/TomketLovers"),
         ("Meteora LP Army Jakarta (462 went)", "https://luma.com/76fvdt2j"),
         ("MET Bali (671 went)", "https://luma.com/pkr27xr4"),
         ("W3AI Wednesday at JURA (weekly)", "https://luma.com/zkq937gq"),
@@ -432,7 +478,7 @@ def build(research=False):
         ("Akademi Crypto inquiry halted (Oct 2026)", "https://justisio.com/berita/2026-10-26-polda-metro-hentikan-penyelidikan-laporan-dugaan-penipuan-kripto-timot"),
         ("OKX Alpha Traders Summit, Bali", "https://bitpinas.com/feature/okx-alpha-traders-summit/"),
         ("Rival referral rates", "pump.fun: PrimeXBT, Crypto Briefing; Axiom: affiliate guides (unconfirmed); fomo: Datawallet"),
-        ("Indonesian X evidence", "@0xRusdi BasedBot dashboard; @0xSarimin Trojan referrals; @AiSlimx OKX Wallet Boost; @Ponyin Trojan results; @cryptondo OKX Wallet use; @KevinSusanto fomo PnL; @GuarEmperor member results"),
+        ("Indonesian X evidence", "@KevinSusanto fomo PnL; @bevanpramudt wallet; @GuarEmperor member results; @0xRusdi BasedBot dashboard; @Ponyin Trojan results; @brandonsalim fomo PnL; @degen2ex win; @cryptondo OKX Wallet use; @0xSarimin Trojan referrals; @AiSlimx OKX Wallet Boost"),
         ("Reach, FTD and volume rates", "Indonesia Crypto KOL & Partner Research, Volume proof and Shortlist deep-dive tabs (X API and Discord invite counts, 20 Nov 2026)"),
     ]
     header(mi, g0 + 1, ["Topic", "Source"])
@@ -460,29 +506,33 @@ def build(research=False):
         if name in drop:
             continue
         if name == "vemi.pramudya":
-            rec = [None, partners[5]["name"], "Trading creator", "https://x.com/GuarEmperor", TREN, "Y", "In the 8",
-                   "#6: FnF circle; members post results from his tools; 1.9% engagement", "Wave 2 (day 17)",
+            rec = [None, partners[2]["name"], "Trading creator", "https://x.com/GuarEmperor", TREN, "Y", "In the 8",
+                   "#3: FnF circle; members post results from his tools; 1.9% engagement", "Wave 1 (day 10)",
                    "https://x.com/GuarEmperor/status/2115414023114256560"]
+        elif name == "Airdrop Finder (Telegram)":
+            rec[7] = "Airdrop-led: fails the brief's main filter. Its co-founder Setya joins through the CVC Ventures network (#4), not this channel"
         elif name == "Hyperliquid Indonesia (community)":
             rec[6], rec[7], rec[8] = "Excluded by rule", "Rival perp venue: OKX can't send traffic there", ""
         elif name == "Superteam Indonesia":
             rec[6], rec[7], rec[8] = "Bench (month 2)", "Meetable weekly in Jakarta, but builder-led: no trading proof yet", "Month 2: co-hosted trader night once a partner proves demand"
         rows.append(rec)
     new = [
-        ("Bevan Pramudito / Narrative Labs", "Trading educator", "https://x.com/bevanpramudt", TREN, "Y", "In the 8",
-         "#1: verified wallet, a paid community he founded, GMGN flow to move, meetable in Jakarta", "Wave 1 (day 10)", "https://narrativelabs.id"),
-        ("0xRusdi", "Trading creator", "https://x.com/0xRusdi", TREN, "Y", "In the 8",
-         "#2: the only public proof of a referred trading book (BasedBot)", "Wave 1 (day 10)", "https://x.com/0xRusdi"),
-        ("Ponyin", "Trading creator", "https://x.com/Ponyin", TREN, "Y", "In the 8",
-         "#3: Trojan PnL card, ~$170K of volume in March", "Wave 1 (day 10)", "https://x.com/Ponyin/status/2037746268039209077"),
-        ("Crypto Ndo", "Trading creator", "https://x.com/cryptondo", TREN, "Y", "In the 8",
-         "#4: largest trencher reach; trades on OKX Wallet himself", "Wave 2 (day 17); swaps into wave 1 if a top-3 partner says no", "https://x.com/cryptondo"),
         ("Kevin Susanto", "Trading creator", "https://x.com/KevinSusanto", TREN, "Y", "In the 8",
-         "#5: most FTDs, but an existing OKX link and no FnF circle on record", "Wave 2 (day 17), through OKX's regional team", "https://x.com/KevinSusanto/status/2123472525070102987"),
+         "#1: most FTDs, a verified top fomo trader, and the fastest yes through OKX's regional team", "Wave 1 (day 10)", "https://x.com/KevinSusanto/status/2123472525070102987"),
+        ("Bevan Pramudito / Narrative Labs", "Trading educator", "https://x.com/bevanpramudt", TREN, "Y", "In the 8",
+         "#2: verified wallet and a live 1-to-10 SOL run, a paid community he founded, GMGN flow, meetable in Jakarta", "Wave 1 (day 10)", "https://narrativelabs.id"),
+        ("CVC Ventures network (0xRusdi + Tomket Lovers, Ponyin + ApexFNF, Setya)", "Trading community", "https://x.com/CVC_Ventures", TREN, "Y", "In the 8",
+         "#4: BasedBot referral book and Trojan PnL; 15 FnF traders across two clans; four parties to align", "Wave 2 (day 17)", "https://x.com/0xRusdi"),
+        ("Brandon Salim + a79", "Trading creator", "https://x.com/brandonsalim", TREN, "Y", "In the 8",
+         "#5: 14K median views, fomo code on almost every trade, founder of the a79 trader group", "Wave 2 (day 17), intro through Kevin", "https://x.com/brandonsalim/status/2096005957692301790"),
+        ("Crypto Ndo", "Trading creator", "https://x.com/cryptondo", TREN, "Y", "In the 8",
+         "#6: largest trencher reach on X; trades on OKX Wallet himself", "Wave 2 (day 17)", "https://x.com/cryptondo"),
+        ("DegenRex", "Trading creator", "https://x.com/degen2ex", TREN, "Y", "In the 8",
+         "#7: won Clash of Trenchers live (1 SOL to 10 SOL); multichain", "Wave 3 (day 24)", "https://x.com/AveaiGlobal/status/2120891736373518591"),
         ("Meteora LP Army", "Onchain trading community", "https://x.com/EvilPanda", LP, "Y", "In the 8",
-         "#7: largest in-person onchain crowds (462 and 671)", "Wave 3 (day 24): co-hosted night", "https://luma.com/76fvdt2j"),
-        ("Stress Capital (Orpheuzkaze)", "Trading community", "https://x.com/StressCapitals", TREN, "Y", "In the 8",
-         "#8: 30.7K-member clan Discord; FnF through clan leads", "Wave 3 (day 24)", "https://discord.gg/stresscapitals"),
+         "#8: largest in-person onchain crowds (462 and 671)", "Wave 3 (day 24): co-hosted night", "https://luma.com/76fvdt2j"),
+        ("Stress Capital (Orpheuzkaze)", "Trading community", "https://x.com/StressCapitals", TREN, "Y", "Bench (month 2)",
+         "30.7K-member clan Discord, 2,453 online, but no trading proof yet", "Month 2: clan competition if clan leads show they trade", "https://discord.gg/stresscapitals"),
         ("TwipsX", "Trading creator", "https://x.com/TwipsX", TREN, "Y", "Bench (month 2)",
          "60K-view BasedBot promo, but no proof its readers trade", "Month 2 if its promo quality checks out", "https://x.com/TwipsX"),
         ("Nicholas Jason Santoso", "Finance creator", "https://instagram.com/nicholasjasons", "Beginners", "N", "Bench (month 2)",
@@ -493,22 +543,20 @@ def build(research=False):
          "Strong execution content (Telegram 2,271); moved his main wallet from OKX to Bitget Wallet on 11 Nov", "Month 2 win-back: ask what made him leave", "https://x.com/magersih/status/2120438997705224345"),
         ("VIBI (@vibixuee)", "Finance creator", "https://x.com/vibixuee", "Beginners", "N", "Bench (month 2)",
          "Beginner onboarding content, 2.6% engagement; no trading proof", "Month 2: onboarding Reel", "https://linktr.ee/VIBI"),
-        ("DegenRex", "Trading creator", "https://x.com/degen2ex", TREN, "Y", "Bench (month 2)",
-         "Won Clash of Trenchers, Jakarta, 12 Nov (1 SOL to 10 SOL); Telegram 1,845", "Guest trader at Bevan's workshop", "https://x.com/aveai_id/status/2120950749580677430"),
         ("Friday7th / Hedgin", "Onchain tool", "https://x.com/Friday_SOL", LP, "Y", "Bench (month 2)",
          "Co-hosts Meteora LP Army; DLMM bot journal (+1.946 SOL over 155 trades)", "Through the Meteora night: vault rebalances on the DEX API", "https://x.com/Friday_SOL/status/2122600631651164614"),
+        ("All Good (@mudacumasekali)", "Event", "https://x.com/mudacumasekali", TREN, "Y", "Access channel",
+         "Caster and connector in Kevin, Bevan and Brandon's circle; Emperor Journal member; no group of his own (~715 median views)", "Intros to GuarEmperor and Brandon; MC for an OKX DEX competition", "https://x.com/Jodski888/status/2121255854792188378"),
         ("Luna (@iamretardio)", "Trading creator", "https://x.com/iamretardio", TREN, "Y", "Screened out",
          "Grows the Cove trading bot (rival tool tie); 6.1K followers", "", "https://x.com/iamretardio/status/2123200836331585876"),
         ("Limitmaxi", "Trading creator", "https://x.com/limitmaxi", TREN, "Y", "Screened out",
-         "Clash of Trenchers runner-up; ~440 followers", "Guest trader only", "https://x.com/aveai_id/status/2120950749580677430"),
+         "Clash of Trenchers podium (2nd or 3rd: organiser posts differ); ~440 followers", "Guest trader only", "https://x.com/aveai_id/status/2120950749580677430"),
         ("melon (@melonbuskk)", "Builder", "https://x.com/melonbuskk", TREN, "N", "Screened out",
          "Low activity; access to the EnclaviumFNF group not verified", "", "https://x.com/melonbuskk"),
         ("celinejoo", "Trading creator", "https://x.com/celinejoo__", "Beginners", "N", "Screened out",
          "~900 X followers; newer trader", "", "https://x.com/celinejoo__"),
         ("zeraa (@0xzeraa)", "Ecosystem community", "https://x.com/0xzeraa", "NFT holders", "N", "Screened out",
          "Team role at Lil Stars; reach not measured", "", "https://x.com/0xzeraa"),
-        ("Tomket Lovers", "Trading community", "https://x.com/TomketLovers", TREN, "Y", "Screened out",
-         "Competitor-aligned: runs Bitget Wallet promos (its fomo clan of 13-15 traders was the draw)", "", "https://x.com/TomketLovers"),
     ]
     for rec in new:
         rows.append([None, *rec])
@@ -536,13 +584,13 @@ def build(research=False):
     put(t1, "A1", "Task 1: 8 partners beyond airdrop communities", F_TITLE, wrap=False)
     put(t1, "A2", "Each partner's first month, base case: FTDs = reach P x 2% sign up x 15% trade; swaps = FTDs x $2,000 + FnF power traders x $16,400 from day 4. Revenue at the brief's 0.04%. Yellow cells are inputs.", wrap=False)
     put(t1, "A4", "Why these 3 first", F_BOLD, wrap=False)
-    put(t1, "B4", f'="Filter, in order: 1 Proof they already trade → 2 FnF power traders they bring ("&TEXT(B48,"0%")&" of swaps) → 3 Rival flow we move to OKX → 4 Trencher fees: 0.5%"', F_BOLD, wrap=False)
+    put(t1, "B4", f'="Filter, in order: 1 Proof they already trade → 2 FnF power traders they bring ("&TEXT(B48,"0%")&" of swaps) → 3 Rival flow we move to OKX → 4 FTDs, then trades a day"', F_BOLD, wrap=False)
     for i, p in enumerate(partners[:3]):
         r = N0 + i
         put(t1, f"A{5 + i}", f"{i + 1}. {p['short']}", F_BOLD, wrap=False)
         put(t1, f"B{5 + i}", f'="{p["line"]} · Trencher: "&TEXT(F{r},"0")&" FTDs, "&TEXT(I{r},"0")&" trades a day, $"&TEXT(M{r}/1000,"0")&"K swaps"', wrap=False)
-    put(t1, "A8", "Reach alone isn't enough", F_BOLD, wrap=False)
-    put(t1, "B8", f'="Kevin Susanto (#5) brings more FTDs than the top 3 together ("&TEXT(F41,"0")&" vs "&TEXT(SUM(F37:F39),"0")&") but already holds an OKX referral link and has no FnF circle on record. Indonesia\'s biggest crypto names (100 screened, Miscellaneous section H) show no onchain proof."', wrap=False)
+    put(t1, "A8", "Proof alone isn't enough", F_BOLD, wrap=False)
+    put(t1, "B8", f'="The CVC Ventures network (#4) has the strongest proof and the most FnF traders ("&TEXT(H40,"0")&"), but four people must agree, so it goes live in wave 2. Indonesia\'s biggest crypto names (100 screened, Miscellaneous section H) show no onchain proof."', wrap=False)
 
     put(t1, "A10", "A. The 8 partners (all fields the brief asks for)", F_SECTION, wrap=False)
     header(t1, 11, ["#", "Partner", "Public link", "Partner type", "Priority", "Priority reason", "Audience and market",
@@ -565,13 +613,13 @@ def build(research=False):
     cell(t1, 21, 5, '=COUNTIF(P12:P19,"No*")')
     cell(t1, 21, 6, "Meetable in person (2+ needed)")
     cell(t1, 21, 7, '=COUNTIF(O12:O19,"Yes")')
-    cell(t1, 21, 8, "Partner types (3+ needed): 5 = a trader-educator with a paid community, X trading creators, a large KOL, an LP community, a trading clan")
+    cell(t1, 21, 8, "Partner types (3+ needed): 6 = a large KOL, a trader-educator with a paid community, alpha callers with tools communities, a trader network with clans, a celebrity trader with his own group, an LP community")
 
     put(t1, "A23", "B. Ranking (1-5 per criterion; yellow = inputs)", F_SECTION, wrap=False)
     header(t1, 24, ["Partner", "Proof of real trading", "FTD potential", "FnF / power-trader access", "Rival flow to move",
                     "Reachability", "Segment value", "Risk (5 = low)", "Weighted score", "Rank"])
     cell(t1, 25, 1, "Weight", bold=True)
-    for c, w in enumerate([0.2, 0.2, 0.15, 0.15, 0.1, 0.1, 0.1], 2):
+    for c, w in enumerate(WEIGHTS, 2):
         cell(t1, 25, c, w, fmt=PCT, inp=True)
     cell(t1, 25, 9, "=SUM(B25:H25)", fmt=PCT)
     for i, p in enumerate(partners):
@@ -697,10 +745,10 @@ def build(research=False):
     for cc in "BCDFGHIK":
         cell(t2, 27, "ABCDEFGHIJKL".index(cc) + 1, f"=SUM({cc}24:{cc}26)", fmt=t2[f"{cc}24"].number_format, bold=True)
     answers = [
-        ("2. Preferred pilot", "All three go live together in wave 1 (day 10); the one-pilot limit applies to the brief's A, B and C. If only one could go first: Bevan / Narrative Labs, the only partner who passes all four filters and can be met in Jakarta."),
+        ("2. Preferred pilot", "All three go live together in wave 1 (day 10); the one-pilot limit applies to the brief's A, B and C. If only one could go first: Kevin Susanto, who brings the most FTDs and is the fastest yes, through OKX's regional team that already works with him."),
         ("3. Pilot structure", "Revenue share only: 30% base, 40% once at least $1M of referred swaps and 50 wallets trading on 3+ days; follower discount up to 10% from the partner's share; 30-day clawback for wash trading, self-referral and sybil wallets; no fixed fee."),
         ("Why no fixed fee", '="At 0.04%, even a $"&TEXT(B33,"#,##0")&" fixed fee needs about $"&TEXT(J24/1000000,"0.0")&"M of swaps to break even, while each of these partners is forecast at about $"&TEXT(B27/3/1000,"0")&"K. A fixed fee only comes back with 90 days of data, and at published fees (column K)."'),
-        ("5. If volume reaches only 50%", '="Contribution halves from $"&TEXT(F27,"0")&" to $"&TEXT(G27,"0")&" for the three but stays positive, because there is no fixed fee. Each partner\'s payout halves too ($"&TEXT(H24,"0")&" to $"&TEXT(I24,"0")&" for Bevan at 0.04%), so the offer leans on support and FnF onboarding, not the rate."'),
+        ("5. If volume reaches only 50%", '="Contribution halves from $"&TEXT(F27,"0")&" to $"&TEXT(G27,"0")&" for the three but stays positive, because there is no fixed fee. Each partner\'s payout halves too ($"&TEXT(H24,"0")&" to $"&TEXT(I24,"0")&" for Kevin at 0.04%), so the offer leans on support and FnF onboarding, not the rate."'),
     ]
     for i, (aa, b) in enumerate(answers):
         cell(t2, 29 + i, 1, aa, bold=True)
@@ -710,7 +758,7 @@ def build(research=False):
     widths(t2, {"A": 30, "B": 30, "C": 14, "D": 14, "E": 14, "F": 14, "G": 16, "H": 16, "I": 16, "J": 18, "K": 16, "L": 44})
 
     # ============================================================ Task 3
-    put(t3, "A1", "Task 3: win and activate Bevan / Narrative Labs, our #1 prospect", F_TITLE, wrap=False)
+    put(t3, "A1", "Task 3: win and activate Kevin Susanto, our #1 prospect", F_TITLE, wrap=False)
     header(t3, 3, ["Item", "Text"] + (["Word count"] if research else []))
     for i, (aa, b) in enumerate(TASK3):
         r = 4 + i
@@ -725,12 +773,12 @@ def build(research=False):
         cell(t3, 15 + i, 1, aa, bold=True)
         cell(t3, 15 + i, 2, b)
         cell(t3, 15 + i, 3, c)
-    put(t3, "A22", "Offer to Bevan (OKX DEX referral programme; any rate needs OKX approval)", F_SECTION, wrap=False)
+    put(t3, "A22", "Offer to Kevin Susanto (OKX DEX referral programme; any rate needs OKX approval)", F_SECTION, wrap=False)
     header(t3, 23, ["Term", "Value"])
     p0 = partners[0]
     offer = [("Base revenue share", f"={T1}P{N0}", PCT, False), ("Step-up share", 0.4, PCT, True),
              ("Step-up trigger", OF.cell(6, 6).value, None, False), ("Follower discount", "Up to 10%, from the partner's share", None, False),
-             ("Swap fee his members pay", "0.5% on memecoins (published OKX DEX fee)", None, False),
+             ("Swap fee his followers pay", "0.5% on memecoins (published OKX DEX fee)", None, False),
              ("What he needs most", p0["need"], None, False), ("Support from us", p0["support"], None, False),
              ("He earns in his first month (published fee)", f"={T1}M{N0}*{MEME_FEE}*{T1}P{N0}", MONEY2, False),
              ("Rules for all partners", OF.cell(10, 1).value.replace("Rules for all: ", ""), None, False)]
@@ -754,10 +802,10 @@ def build(research=False):
         ("Prospects scored", 25, 20, 15, 10, "=SUM(B6:E6)", "Score everyone before messaging"),
         ("Outreach messages (warm intro first)", 25, 20, 15, 10, "=SUM(B7:E7)", "100% of scored"),
         ("Replies", 8, 6, 5, 3, "=SUM(B8:E8)", "~30% of messages"),
-        ("Meetings (call or in person)", 3, 6, 5, 4, "=SUM(B9:E9)", "~80% of replies; the Jakarta day (Bevan, Kevin Susanto) is in week 2"),
+        ("Meetings (call or in person)", 3, 6, 5, 4, "=SUM(B9:E9)", "~80% of replies; the Jakarta day (Kevin Susanto, Bevan, Brandon Salim, DegenRex) is in week 2"),
         ("Pilots live (running total, our 8)", 0, f'=COUNTIF($C${R0}:$C${R1},"<=14")', f'=COUNTIF($C${R0}:$C${R1},"<=21")',
          f'=COUNTIF($C${R0}:$C${R1},"<=30")', "=E10",
-         "Waves: the top 3 (Bevan, 0xRusdi, Ponyin) on day 10; Crypto Ndo, Kevin Susanto and GuarEmperor on day 17; the Meteora night and Stress Capital on day 24. If one of the top 3 says no in week 1, Crypto Ndo moves into wave 1"),
+         "Waves: the top 3 (Kevin Susanto, Bevan, GuarEmperor) on day 10; the CVC Ventures network, Brandon Salim and Crypto Ndo on day 17; DegenRex and the Meteora night on day 24. If one of the top 3 says no in week 1, Brandon Salim moves into wave 1"),
         ("Partner B pilot (the brief's hypothetical)", "Signing", "Live from day 10", "Live", "Live", "Live", "The one A/B/C pilot; counted separately because its volume is the brief's estimate"),
         ("Activated partners (running total, our 8)", 0, 0, 0, f'=COUNTIF(R{R0}:R{R1},"Yes")', "=E12", "FTDs >= 10 and trades a day >= 50 by day 30 (section B)"),
         ("FTDs (running total)", 0, f"=SUM(H{R0}:H{R1})", f"=SUM(I{R0}:I{R1})", f"=SUM(J{R0}:J{R1})", "=E13", "Task 1 FTDs x share of each partner's month live; event FTDs on the night"),
@@ -841,7 +889,7 @@ def build(research=False):
         vals = [DP.cell(r, c).value for c in range(1, 8)]
         if vals[0] == "Power traders active":
             vals[0], vals[1] = "FnF power traders active", "Introduced FnF power traders trading this week"
-            vals[3] = "5 per partner by day 4 (2-3 for Kevin Susanto and Stress Capital)"
+            vals[3] = "5 per partner by day 4 (3 for Kevin Susanto and DegenRex; 15 across the CVC Ventures network)"
         elif vals[0] == "Swaps per power trader":
             vals[0], vals[1], vals[3], vals[4] = "Swaps per FnF power trader", "Swap volume a day per FnF power trader", ">= $547 a day (the OKX Wallet Boost benchmark)", "Under $250"
         elif vals[0] == "Compliance gate":
@@ -854,12 +902,13 @@ def build(research=False):
     cadence = [(DP.cell(r, 1).value, DP.cell(r, 2).value, DP.cell(r, 3).value) for r in range(47, 53)]
     cadence[0] = (cadence[0][0], "FTDs, trades a day and FnF power traders for every live partner", cadence[0][2])
     cadence[3] = ("Week 2, Wednesday",
-                  "In-person day in Jakarta, set on a Wednesday so a weekly event is always on. 10:00 Narrative Labs with Bevan: sign, "
-                  "then onboard his first Masterclass traders 1:1 on site (set up by DM a week ahead). 13:00 coffee with Kevin Susanto, "
-                  "arranged through OKX's regional marketing team, which already works with him. 15:00 a Jakarta-based trench creator from "
-                  "the pipeline. 19:00 the next LP Army night if one is listed on Luma (meet Evil Panda and Friday7th about the co-hosted "
-                  "night); otherwise W3AI Wednesday at JURA Kemanggisan (weekly). Fallback: same-day video call, the next Jakarta prospect "
-                  "on the list, and the evening event regardless", "Meetings held even if some cancel")
+                  "In-person day in Jakarta, set on a Wednesday so a weekly event is always on. 10:00 Kevin Susanto, set up by OKX's "
+                  "regional marketing team, which already works with him; ask him for the intro to Brandon Salim. 13:00 Narrative Labs "
+                  "with Bevan: sign, then onboard his first Masterclass traders 1:1 on site (set up by DM a week ahead). 15:30 Brandon "
+                  "Salim, through Kevin's intro. 17:00 DegenRex, through Ave Indonesia's organisers. 19:00 the next LP Army night if one "
+                  "is listed on Luma (meet Evil Panda and Friday7th about the co-hosted night); otherwise W3AI Wednesday at JURA "
+                  "Kemanggisan (weekly). Fallback: same-day video call, the next Jakarta prospect on the list, and the evening event "
+                  "regardless", "Meetings held even if some cancel")
     cadence[4] = ("Day 14", "Mid-point: partners under 10 FTDs or 50 trades a day get the FnF power-trader track again or pause", "Time reallocated")
     cadence[5] = ("Day 30", "Decision per partner: continue (activated, under 5% flagged), renegotiate (FnF trade but under 10 FTDs or 50 trades a day), stop (under 5 FTDs or over 10% flagged); month-2 plan to manager", "Decisions and month-2 plan")
     for i, (aa, b, c) in enumerate(cadence):
@@ -874,26 +923,29 @@ def build(research=False):
     # ============================================================ research-only tabs
     if research:
         rm = wb.create_sheet("Research merge")
-        put(rm, "A1", "Research merge: the research sheet's 20 accounts, what we took and why (research copy only)", F_TITLE, wrap=False)
-        put(rm, "A2", "Source: Indonesia Crypto KOL & Partner Research (Shortlist deep-dive and Volume proof tabs, 20 Nov 2026). Our model uses the deep-dive's reach pool P and rates.", wrap=False)
+        DD = R["Shortlist deep-dive"]
+        n_dd = sum(1 for rr in range(2, DD.max_row + 1) if DD.cell(rr, 2).value)
+        put(rm, "A1", f"Research merge: the research sheet's {n_dd} accounts, what we took and why (research copy only)", F_TITLE, wrap=False)
+        put(rm, "A2", "Source: Indonesia Crypto KOL & Partner Research (Shortlist deep-dive and Volume proof tabs, 20-21 Nov 2026). Our model uses the deep-dive's reach pool P and rates.", wrap=False)
         put(rm, "A4", "A. Shortlist deep-dive (as delivered) and our decision", F_SECTION, wrap=False)
         hd = ["Rank (base volume)", "Account", "Founder / lead of a group?", "Pool P", "FTD low", "FTD base", "FTD high",
               "Volume low", "Volume base", "Volume high", "Net revenue base (0.04%)", "Research priority", "Our decision", "Why"]
         header(rm, 5, hd)
-        DD = R["Shortlist deep-dive"]
         decide = {
-            "Kevin": ("In the 8 (#5)", "Most FTDs, but an existing OKX link, low engagement (0.84%) and no FnF circle on record"),
-            "GuarEmperor": ("In the 8 (#6)", "FnF circle and tools Discord; we add 20% of his ~16.5K Telegram to P (from the written research)"),
-            "Bevan": ("In the 8 (#1)", "The only account with verified onchain trading, a paid community he founded and an in-person route"),
+            "Kevin": ("In the 8 (#1)", "Most FTDs, a verified top fomo trader, and the fastest yes through OKX's regional team"),
+            "GuarEmperor": ("In the 8 (#3)", "FnF circle and tools Discord; we add 20% of his ~16.5K Telegram to P (from the written research)"),
+            "Brandon": ("In the 8 (#5)", "Second-largest measured reach; posts a trading referral code on almost every trade; founder of a79"),
+            "Bevan": ("In the 8 (#2)", "Verified wallet and a live 1-to-10 SOL run, a paid community he founded, meetable in Jakarta"),
             "Nicholas": ("Bench (month 2)", "FTD source with no trading proof; airdrop community"),
-            "Orpheu": ("In the 8 (#8, as Stress Capital)", "Largest owned clan Discord we could measure; FnF through clan leads"),
-            "Ponyin": ("In the 8 (#3)", "Verified Trojan PnL card; the circle size is still to confirm"),
+            "Orpheu": ("Bench (month 2), as Stress Capital", "Largest owned clan Discord we could measure, but no trading proof yet"),
+            "Ponyin": ("In the 8 (#4, CVC Ventures network)", "Verified Trojan PnL card; brings ApexFNF, his FnF"),
             "Tequila": ("Bench (month 2)", "128K Discord but 1.2% online; NFT audience"),
             "VIBI": ("Bench (month 2)", "Beginner onboarding; no trading proof"),
+            "DegenRex": ("In the 8 (#7)", "Verified live win; we leave out the 1.5x boost so every partner uses one formula (P 1,697)"),
             "Luna": ("Screened out", "Grows the Cove bot: rival tool tie"),
             "mage": ("Bench (month 2)", "Moved his main wallet from OKX to Bitget Wallet on 11 Nov: win-back later"),
-            "DegenRex": ("Bench (month 2)", "Guest trader for Bevan's workshop"),
-            "Friday7th": ("Via Meteora LP Army (#7)", "Co-hosts LP Army; his reach sits inside the Meteora estimate"),
+            "All Good": ("Access channel", "Caster and connector in Kevin, Bevan and Brandon's circle; Emperor Journal member; no group of his own"),
+            "Friday7th": ("Via Meteora LP Army (#8)", "Co-hosts LP Army; his reach sits inside the Meteora estimate"),
             "celinejoo": ("Screened out", "~900 followers"),
             "zeraa": ("Screened out", "Team role only; reach not measured"),
             "Bryan": ("Removed", "Leads Hyperliquid Indonesia, a rival perp venue: OKX can't send traffic there"),
@@ -903,45 +955,53 @@ def build(research=False):
             "marvellalexanderr": ("Not assessed", "Account not identified"),
             "reyk1cv_": ("Not assessed", "Account not identified"),
         }
-        for i, rr in enumerate(range(2, 22)):
+        row = 6
+        for rr in range(2, DD.max_row + 1):
             vals = [DD.cell(rr, c).value for c in (1, 2, 6, 9, 10, 11, 12, 13, 14, 15, 16, 22)]
+            if not vals[1]:
+                continue
             key = next(k for k in decide if k.lower() in str(vals[1]).lower())
-            row = 6 + i
             for c, vv in enumerate(vals, 1):
                 fmt = NUM0 if c in (4, 5, 6, 7) else (MONEY if c in (8, 9, 10) else (MONEY2 if c == 11 else None))
                 cell(rm, row, c, vv, fmt=fmt)
             cell(rm, row, 13, decide[key][0], bold=True)
             cell(rm, row, 14, decide[key][1])
-        put(rm, "A28", "B. Reconciliation notes", F_SECTION, wrap=False)
+            row += 1
+        row += 1
+        put(rm, f"A{row}", "B. Reconciliation notes", F_SECTION, wrap=False)
         notes = [
+            ("Ranking", "Kevin Susanto #1, Bevan #2, GuarEmperor #3, as you set it: FTDs first, then trades a day. The weights follow: proof 15%, FTD potential 25%, FnF 20%, rival flow 10%, reachability 15%, segment 5%, risk 10%."),
+            ("CVC Ventures network", "One partner row for 0xRusdi (+ Tomket Lovers), Ponyin (+ ApexFNF) and Setya, as you asked. Team roles come from your X check; CVC_Ventures and ApexFNF_io didn't show up in web search. Reach adds four overlapping audiences, so it is an upper bound."),
+            ("Tomket Lovers", "On Bitget Wallet Indonesia's Superfans list (CEX KOL map tab): clear non-exclusivity before signing."),
+            ("DegenRex's 1.5x boost", "The deep-dive multiplies his reach by 1.5 for the win (P 2,546, base $15K). We leave it out so all 8 use one formula (P 1,697, about $10K before FnF); the win counts in his proof score instead."),
+            ("Brandon Salim", "Reach measured (median 14,342 over 25 posts). a79's size is not public, so a79 adds FnF traders (5), not reach."),
             ("Bevan's pool P", "Volume proof counts all 9,238 Discord members (P 17,494, base $105K); the deep-dive counts only the 984 online (P 9,240, base $55K). We use the deep-dive: online members are the ones a post reaches."),
             ("Kevin Susanto's pool P", "Volume proof counts all 2,860 Telegram subscribers (P 44,108); the deep-dive counts 20% (P 41,820). We use the deep-dive."),
             ("GuarEmperor's pool P", "The deep-dive left Telegram out (P 15,885). The written research found ~16.5K on his 'Enjoy being poor' channel, so we add 20% (P 19,185). Snapshot from a third-party viewer: verify on t.me."),
-            ("Written research vs the sheet", "The written shortlist sized FTDs from visits x conversion (Bevan 40 FTDs, $112K; Ponyin 30, $144K; Kevin 28, $120K). The sheet uses one formula for every account. We use the sheet so every partner is sized the same way; the written figures sit inside our low-to-high range."),
+            ("Written research vs the sheet", "The written shortlist sized FTDs from visits x conversion (Bevan 40 FTDs, $112K; Ponyin 30, $144K; Kevin 28, $120K). The sheet uses one formula for every account. We use the sheet so every partner is sized the same way."),
             ("Timing", "The research's volume is a cohort's first month of trading. Task 4's calendar ramp counts calendar days, so FTDs who arrive late in the month trade into month 2 and day-30 swaps trail Task 1."),
             ("FnF power traders", "The research leaves out partners' own trading. We add only the traders each partner introduces, at the research's high per-trader rate ($16,400 a month, @AiSlimx on OKX Wallet Boost); the partner's own trading is evidence, not forecast volume."),
+            ("Kevin Susanto's OKX link", "He already holds okx.ac/join/VVIP7777. Route through OKX's regional marketing team and confirm which DEX volume would be new."),
+            ("Reach for partners the research didn't measure", "0xRusdi, Setya, Crypto Ndo and MeteoraIDN use 20% of followers, the median views-to-followers ratio across the 11 accounts the research measured. Measure their median views before sending."),
             ("Bryan.HL", "Removed: he leads Hyperliquid Indonesia, a rival perp venue."),
-            ("Kevin Susanto's OKX link", "He already holds okx.ac/join/VVIP7777. Route through OKX's regional marketing team and confirm which volume would be new."),
-            ("mage", "Said on 11 Nov 2026 he is moving his main wallet from OKX to Bitget Wallet: a month-2 win-back, not a month-1 partner."),
-            ("Reach for partners the research didn't measure", "0xRusdi, Crypto Ndo and MeteoraIDN use 20% of followers, the median views-to-followers ratio across the 11 accounts the research measured. Measure their median views before sending."),
         ]
-        header(rm, 29, ["Topic", "Note"])
+        header(rm, row + 1, ["Topic", "Note"])
         for i, (aa, b) in enumerate(notes):
-            cell(rm, 30 + i, 1, aa, bold=True)
-            cell(rm, 30 + i, 2, b)
-        put(rm, "A42", "C. Volume proof tab (as delivered)", F_SECTION, wrap=False)
+            cell(rm, row + 2 + i, 1, aa, bold=True)
+            cell(rm, row + 2 + i, 2, b)
+        row = row + 2 + len(notes) + 1
+        put(rm, f"A{row}", "C. Volume proof tab (as delivered)", F_SECTION, wrap=False)
         VP = R["Volume proof"]
-        header(rm, 43, [VP.cell(1, c).value for c in (2, 5, 6, 8, 9, 10, 11, 12, 14, 19)])
-        rr_out = 44
+        header(rm, row + 1, [VP.cell(1, c).value for c in (2, 5, 6, 8, 9, 10, 11, 12, 14, 19)])
+        rr_out = row + 2
         for rr in range(2, 13):
-            name = VP.cell(rr, 2).value
-            if not name:
+            if not VP.cell(rr, 2).value:
                 continue
             vals = [VP.cell(rr, c).value for c in (2, 5, 6, 8, 9, 10, 11, 12, 14, 19)]
             for c, vv in enumerate(vals, 1):
                 cell(rm, rr_out, c, vv, fmt=NUM0 if c in (2, 3, 8) else (MONEY if c == 9 else None))
             rr_out += 1
-        widths(rm, {"A": 26, "B": 44, "C": 30, "D": 12, "E": 10, "F": 10, "G": 10, "H": 14, "I": 14, "J": 14, "K": 14, "L": 14, "M": 26, "N": 60})
+        widths(rm, {"A": 26, "B": 44, "C": 30, "D": 12, "E": 10, "F": 10, "G": 10, "H": 14, "I": 14, "J": 14, "K": 14, "L": 14, "M": 30, "N": 60})
 
         rv = wb.create_sheet("Checks and history")
         put(rv, "A1", "Checks and history (research copy only)", F_TITLE, wrap=False)
@@ -949,36 +1009,43 @@ def build(research=False):
         header(rv, 4, ["#", "Check", "Where it shows"])
         todo = [
             ("Re-open the 8 partner links and re-check follower counts, median views and quoted posts on-platform", "Task 1, columns C and H; section C"),
-            ("Bevan: which wallet he trades from now (the published one is idle since 30 Jul); Discord online count on the day", "Task 1 row 12; Task 3"),
-            ("Measure median views for 0xRusdi, Crypto Ndo and MeteoraIDN (reach is estimated at 20% of followers)", "Task 1 section C, column D"),
-            ("Kevin Susanto: whether okx.ac/join/VVIP7777 is an active OKX affiliate deal, and who at OKX owns it", "Task 1 row 16"),
-            ("GuarEmperor: confirm his FnF circle and the ~16.5K Telegram count on t.me", "Task 1 row 17; section C"),
+            ("Kevin Susanto: with OKX's regional team, what okx.ac/join/VVIP7777 already earns, who owns it, and how DEX tracking stays separate", "Task 1 row 12; Task 3"),
+            ("CVC Ventures network: confirm the team (Setya, Ponyin, 0xRusdi), ApexFNF and Tomket clan sizes, who signs, and Tomket's Bitget Wallet Superfans status", "Task 1 row 15"),
+            ("Bevan: which wallet he trades from now (the published one is idle since 30 Jul)", "Task 1 row 13"),
+            ("Brandon Salim: a79 member count and fomo referral results; ask Kevin for the intro", "Task 1 row 16"),
+            ("Measure median views for 0xRusdi, Setya, Crypto Ndo and MeteoraIDN (reach is estimated at 20% of followers)", "Task 1 section C, column D"),
+            ("GuarEmperor: confirm his FnF circle and the ~16.5K Telegram count on t.me", "Task 1 row 14; section C"),
             ("OKX DEX referral tiers: confirm the live tier table (regional help pages differ)", "Task 3 offer; deck footers"),
-            ("Legal: promotion of OKX DEX in Indonesia under Law 4/2026; partner POJK 6/2026 certification status", "Task 4, compliance gate"),
+            ("Legal: promotion of OKX DEX in Indonesia under Law 4/2026; partner POJK 6/2026 certification status (Brandon Salim included)", "Task 4, compliance gate"),
             ("Fill slide 6: commitment and the AI-use line", "Deck slide 6"),
         ]
         for i, (aa, b) in enumerate(todo):
             cell(rv, 5 + i, 1, i + 1)
             cell(rv, 5 + i, 2, aa)
             cell(rv, 5 + i, 3, b)
-        put(rv, "A14", "B. Partner changes after review", F_SECTION, wrap=False)
-        header(rv, 15, ["Change", "Why"])
+        row = 5 + len(todo) + 1
+        put(rv, f"A{row}", "B. Partner changes after review", F_SECTION, wrap=False)
+        header(rv, row + 1, ["Change", "Why"])
         changes = [
             ("Hyperliquid Indonesia replaced by GuarEmperor and his FnF circle", "Hyperliquid is a rival venue: OKX can't send traffic there"),
             ("Bael calls replaced by Superteam Indonesia (since benched)", "Bael is a Bitget Wallet Indonesia ambassador"),
             ("Four cryptokolz.com-only prospects removed from the longlist", "Promotional directory; replaced by four licensed exchanges screened out as competitors"),
-            ("Research merge: Bevan / Narrative Labs in as #1; Kevin Susanto and Stress Capital in", "Measured reach and verified trading from the research sheet; Bevan is the only partner to pass all four filters and be meetable"),
-            ("TwipsX and Superteam Indonesia to the bench; Tomket Lovers screened out", "No proof TwipsX's readers trade; Superteam is builder-led; Tomket Lovers runs Bitget Wallet promos"),
+            ("Research merge: Bevan, Kevin Susanto and Stress Capital in; TwipsX and Superteam benched", "Measured reach and verified trading from the research sheet"),
+            ("Ranking set to Kevin Susanto #1, Bevan #2, GuarEmperor #3", "Your call: FTDs first, then trades a day; weights rebalanced to match"),
+            ("0xRusdi (+ Tomket Lovers), Ponyin (+ ApexFNF) and Setya merged into one CVC Ventures network", "One network deal with the most FnF traders (15)"),
+            ("Brandon Salim + a79 and DegenRex in; Stress Capital to the bench", "Measured reach and verified trading; Stress Capital has no trading proof yet"),
+            ("All Good (@mudacumasekali) added as an access channel", "Connector and event caster, no group of his own"),
             ("Volume model replaced by the research method plus an FnF line", "FTDs = P x s x a, swaps = FTDs x v (low/base/high); FnF at $16,400 a month each, down from $50,400"),
             ("Bryan.HL removed", "Hyperliquid Indonesia lead (rival venue)"),
-            ("20 generic screened-out longlist rows swapped for the research's 20 named accounts", "Media sites, campus clubs and size-unknown groups; the count stays at 100"),
+            ("20 generic screened-out longlist rows swapped for the research's named accounts", "Media sites, campus clubs and size-unknown groups; the count stays at 100"),
         ]
         for i, (aa, b) in enumerate(changes):
-            cell(rv, 16 + i, 1, aa)
-            cell(rv, 16 + i, 2, b)
-        put(rv, "A25", "C. Review findings (from REVIEW.md)", F_SECTION, wrap=False)
-        header(rv, 26, ["#", "Where", "What was wrong", "Fix"])
-        r = 27
+            cell(rv, row + 2 + i, 1, aa)
+            cell(rv, row + 2 + i, 2, b)
+        row = row + 2 + len(changes) + 1
+        put(rv, f"A{row}", "C. Review findings (from REVIEW.md)", F_SECTION, wrap=False)
+        header(rv, row + 1, ["#", "Where", "What was wrong", "Fix"])
+        r = row + 2
         for line in REVIEW.read_text().splitlines():
             m = re.match(r"\| (E\d+) \| (.*?) \| (.*?) \| (.*?) \|", line)
             if m:
@@ -989,50 +1056,56 @@ def build(research=False):
     return wb
 
 
-# ---------------------------------------------------------------- Task 3 texts (Bevan / Narrative Labs)
+# ---------------------------------------------------------------- Task 3 texts (Kevin Susanto, our #1)
 TASK3 = [
     ("First message (X DM)",
-     "Hi Bevan, I'm Fedric, working on DEX partnerships for OKX in Indonesia. I went through the wallet you publish on Narrative "
-     "Labs: 91 swaps from May to July, ~1,080 SOL traded, up 374 SOL. That, plus 984 members online in your Discord, is the "
-     "clearest trading community I've found here. I'd like to explore a partnership around OKX Wallet's Meme Mode. "
-     "Through OKX's DEX referral programme you'd earn a share of the swap fees your members generate, and could pass part back as a "
-     "discount. First I'd like to hear what your members need that GMGN doesn't. Could we meet in Jakarta or call "
-     "for 20 minutes next week? If it isn't a fit, I'll say so."),
+     "Hi Kevin, I'm Fedric, working on DEX partnerships for OKX in Indonesia. Your #3 spot on fomo's 24-hour PnL board last "
+     "week (+$53.6K) and 41K views on a typical post make you the biggest onchain trading voice I've found here. You already share "
+     "an OKX link; this is the onchain side: OKX Wallet's Meme Mode, for the memecoins you already trade. Through OKX's DEX referral "
+     "programme you'd earn a share of the swap fees your followers generate, and could pass part back as a discount. First I'd like "
+     "to hear what your Telegram traders need that fomo doesn't. Coffee in Jakarta next week, or a 20-minute call? If it isn't a "
+     "fit, I'll say so."),
     ("First message, Bahasa Indonesia version",
-     "Halo Bevan, saya Fedric, menangani kemitraan DEX OKX di Indonesia. Saya sudah lihat wallet yang kamu publikasikan di Narrative "
-     "Labs: 91 swap dari Mei sampai Juli, sekitar 1.080 SOL diperdagangkan dan untung 374 SOL. Itu, ditambah 984 member online di "
-     "Discord kamu, adalah komunitas trading paling jelas yang saya temukan di Indonesia. Saya ingin menjajaki kerja sama seputar Meme "
-     "Mode dan Track di OKX Wallet. Lewat program referral DEX OKX, kamu mendapat bagian dari biaya swap yang dihasilkan member kamu, "
-     "dan bisa mengembalikan sebagian sebagai diskon. Sebelumnya, saya ingin tahu apa yang dibutuhkan member kamu yang belum didapat "
-     "dari GMGN. Bisa ketemu di Jakarta atau call 20 menit minggu depan? Kalau tidak cocok, saya akan bilang langsung."),
+     "Halo Kevin, saya Fedric, menangani kemitraan DEX OKX di Indonesia. Posisi #3 kamu di papan PnL 24 jam fomo minggu lalu "
+     "(+$53,6K) dan 41 ribu views per post menjadikan kamu suara trading onchain terbesar yang saya temukan di sini. Kamu sudah "
+     "membagikan link OKX; ini sisi onchain-nya: Meme Mode di OKX Wallet, untuk memecoin yang sudah kamu trading. Lewat program "
+     "referral DEX OKX, kamu mendapat bagian dari biaya swap yang dihasilkan follower kamu, dan bisa mengembalikan sebagian sebagai "
+     "diskon. Sebelumnya, saya ingin tahu apa yang dibutuhkan trader di Telegram kamu yang belum didapat dari fomo. Ngopi di Jakarta "
+     "minggu depan, atau call 20 menit? Kalau tidak cocok, saya akan bilang langsung."),
     ("Follow-up (day 4, no reply)",
-     "Hi Bevan, a quick follow-up. Happy to send a one-page summary of how OKX's DEX referral works (fee share, member discount, "
-     "dashboard) so you can judge it before we meet. One question in the meantime: when your members act on a call, where do they "
-     "lose most: fees, speed or missed entries?"),
+     "Hi Kevin, a quick follow-up. Happy to send a one-page summary of how OKX's DEX referral works (fee share, follower discount, "
+     "dashboard) and how it sits next to your existing OKX link, so you can judge it before we meet. One question in the meantime: "
+     "when your followers copy a trade, where do they lose most: fees, speed or missed entries?"),
     ("Reply to 'another platform pays more'",
-     "That's fair, and you should compare. Put three things next to the headline rate: what it's paid on (your members' real swaps, "
-     "after discounts and caps), how long it lasts, and what comes with it. OKX's DEX referral programme shares up to 50% of the swap "
-     "fee, depending on tier, and your members can get part of it back as a discount. It doesn't have to replace GMGN. I'd suggest a "
-     "30-day pilot with 5 of your Masterclass traders; we track real activity and set terms from that data together. If the numbers "
-     "don't work for you, we stop."),
+     "That's fair, and you should compare. Put three things next to the headline rate: what it's paid on (your followers' real "
+     "swaps, after discounts and caps), how long it lasts, and what comes with it. OKX's DEX referral programme shares up to 50% of "
+     "the swap fee, depending on tier, and your followers can get part of it back as a discount. It doesn't have to replace fomo. "
+     "I'd suggest a 30-day pilot with 3 traders from your circle and one live session for your Telegram; we track real activity and "
+     "set terms from that data together. If the numbers don't work for you, we stop."),
     ("Meeting question 1",
-     "Which wallet do you trade from now, and could you share its history? Of your Discord members, how many trade every week, and on which chains?"),
+     "Of your Telegram and X followers, how many trade onchain every week, on which chains, and can you share your fomo referral stats?"),
     ("Meeting question 2",
-     "Could you introduce 5 of your Masterclass traders in week 1, and what would they need to switch: fees, speed, chains or tools?"),
+     "Could you introduce 3 traders from your circle in week 1, and who else in the Degen Night crowd should we meet?"),
     ("Meeting question 3",
-     "What do your GMGN and Mobee codes pay today, is any of it exclusive, and would an OKX DEX trade button in Narrative Alpha be worth more to you than commission?"),
+     "What do your okx.ac link and the Lighter advisory cover, is any of it exclusive, and what would make an onchain deal worth your time beyond commission?"),
     ("No unverified promises",
      "The messages promise no rates, rewards or features OKX hasn't confirmed. The fee share (up to 50% by tier; OKX's regional help "
      "pages list different tier tables, so confirm the live rate before quoting one) and the follower discount are published OKX DEX "
-     "referral features; any specific rate, and any DEX API integration, needs OKX approval."),
+     "referral features; any specific rate needs OKX approval, and OKX's regional team confirms how his existing OKX link is tracked "
+     "before any post."),
 ]
-PLAN14 = [  # targets follow the Task 4 ramp for Bevan (base case)
-    ("Days 1-2", "Referral link with the follower discount; Bahasa Meme Mode and Track guide for Narrative Labs; compliance check (disclosure, no profit promises, POJK 6/2026); shared dashboard", "Link live; guide pinned in the Discord"),
-    ("Days 2-4", "1:1 onboarding of 5 Masterclass traders in Jakarta: wallet set-up, presets, Track alerts, first trades", "5 FnF power traders trading by day 4 (~23 trades a day)"),
-    ("Day 5", "Co-branded Discord workshop: Bevan trades his own workflow on Meme Mode and Track; replay pinned", "Workshop held; first FTDs"),
-    ("Days 6-7", "2 X posts and a Narrative Labs announcement with the referral link", ">= 6 FTDs by day 7"),
-    ("Days 8-10", "Daily check of FTDs, trades a day and flagged wallets; fix the weakest metric; scope the Narrative Alpha trade button with OKX's DEX API team (no promise)", ">= 9 FTDs, ~47 trades a day by day 10"),
-    ("Days 11-14", "Second workshop or live session; review with Bevan: FTDs, trades a day, FnF traders active, flags; agree days 15-30", "~13 FTDs and ~57 trades a day by day 14"),
+_k = partners[0]
+_f4, _t4, _, _ft = ramp(_k, 4)
+_f7, _t7, _, _ = ramp(_k, 7)
+_f10, _t10, _, _ = ramp(_k, 10)
+_f14, _t14, _s14, _ = ramp(_k, 14)
+PLAN14 = [  # targets follow the Task 4 ramp for Kevin Susanto (base case)
+    ("Days 1-2", "Separate OKX DEX referral link with the follower discount, tracked apart from his okx.ac link (agreed with OKX's regional team); English and Bahasa Meme Mode guide; compliance check (disclosure, no profit promises, POJK 6/2026); shared dashboard", "Link live; tracking agreed"),
+    ("Days 2-4", "1:1 onboarding of 3 traders from his circle: wallet set-up, presets, Track alerts, first trades", f"3 FnF power traders trading by day 4 (~{_ft:.0f} trades a day)"),
+    ("Day 5", "Co-hosted onchain session for KevinSusantoAlpha: Kevin trades live on Meme Mode; replay pinned", "Session held; first FTDs"),
+    ("Days 6-7", "2 X threads with the referral link", f"~{_f7:.0f} FTDs by day 7"),
+    ("Days 8-10", "Daily check of FTDs, trades a day and flagged wallets; fix the weakest metric; ask for intros to Brandon Salim and the Degen Night circle", f"~{_f10:.0f} FTDs, ~{_t10:.0f} trades a day by day 10"),
+    ("Days 11-14", "Second session; review with Kevin: FTDs, trades a day, FnF traders active, flags; agree days 15-30", f"~{_f14:.0f} FTDs and ~{_t14:.0f} trades a day by day 14"),
 ]
 
 for research, name in ((False, "OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx"), (True, "OKX_research_and_checks.xlsx")):
