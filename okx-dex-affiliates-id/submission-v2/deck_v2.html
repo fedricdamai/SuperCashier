@@ -80,6 +80,7 @@ sup { font-size: .7em; line-height: 0; vertical-align: .5em; }
 
 /* tables in the deck's grid style */
 .tscroll { min-width: 0; overflow-x: auto; }
+@media (min-width: 861px) { .tscroll { overflow: visible; } }
 table.t { width: 100%; border-collapse: collapse; font-size: calc(15 * var(--px)); color: var(--text); }
 .t th, .t td { border: 1px solid var(--grid); padding: calc(5.5 * var(--px)) calc(6.5 * var(--px)); text-align: left; vertical-align: top; }
 .t th { background: var(--head); font-weight: 600; color: var(--text); }
@@ -126,6 +127,36 @@ table.t { width: 100%; border-collapse: collapse; font-size: calc(15 * var(--px)
 .para b { color: var(--title); }
 .formula { margin: 0; color: var(--muted); font-size: calc(15.5 * var(--px)); }
 
+/* slide 2: compact table, then the selection logic and the top-3 cards */
+#slide-2 .s-body { gap: calc(8 * var(--px)); }
+#slide-2 .t { font-size: calc(13 * var(--px)); }
+#slide-2 .t th, #slide-2 .t td { padding: calc(2.5 * var(--px)) calc(6 * var(--px)); }
+.why { display: grid; gap: calc(6 * var(--px)); }
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: calc(6 * var(--px)); font-size: calc(13.5 * var(--px)); }
+.chain .lbl { font-weight: 700; color: var(--title); margin-right: calc(4 * var(--px)); }
+.chain .c { background: var(--white-fill); border: 1px solid var(--blue-line); border-radius: 999px; padding: calc(3 * var(--px)) calc(10 * var(--px)) calc(3 * var(--px)) calc(4 * var(--px)); white-space: nowrap; }
+.chain .arr { color: var(--muted); }
+.why i {
+  display: inline-grid; place-items: center; font-style: normal; font-weight: 700; color: #FFFFFF; background: var(--kicker);
+  width: calc(17 * var(--px)); height: calc(17 * var(--px)); border-radius: 50%; font-size: calc(11 * var(--px));
+  margin-right: calc(6 * var(--px)); vertical-align: calc(1 * var(--px));
+}
+.top3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: calc(14 * var(--px)); }
+.pick {
+  min-width: 0; background: var(--blue-fill); border: 1px solid var(--blue-line); border-radius: calc(10 * var(--px));
+  padding: calc(7 * var(--px)) calc(14 * var(--px)) calc(6 * var(--px)); display: grid; gap: calc(3 * var(--px));
+  font-size: calc(13.5 * var(--px)); line-height: 1.35;
+}
+.pick .hd { display: flex; justify-content: space-between; align-items: baseline; gap: calc(8 * var(--px)); }
+.pick .hd b { font: 600 calc(16.5 * var(--px)) / 1.2 var(--f-body); color: var(--title); }
+.pick .score { font-weight: 700; color: var(--kicker); white-space: nowrap; }
+.pick dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: calc(2 * var(--px)) calc(10 * var(--px)); }
+.pick dt { color: var(--muted); font-weight: 600; white-space: nowrap; }
+.pick dd { margin: 0; color: var(--text); }
+.pick .kpi { color: var(--kicker); font-weight: 600; border-top: 1px solid var(--blue-line); padding-top: calc(5 * var(--px)); }
+.tail { margin: 0; font-size: calc(13.5 * var(--px)); color: var(--text); }
+.tail b { color: var(--title); }
+
 /* slide 6 grid */
 #slide-6 .card { padding: calc(16 * var(--px)) calc(18 * var(--px)) calc(14 * var(--px)); font-size: calc(14.5 * var(--px)); }
 #slide-6 .card h3 { font-size: calc(18 * var(--px)); white-space: nowrap; }
@@ -167,7 +198,8 @@ body.presenting .pres-ui {
   .slide { aspect-ratio: auto; container-type: normal; }
   .frame { --px: 1px; position: static; padding: 22px 18px 18px; font-size: 14.5px; }
   .frame h2 { font-size: 26px; }
-  .cards.three, .s6 { grid-template-columns: 1fr; }
+  .cards.three, .s6, .top3 { grid-template-columns: 1fr; }
+  .chain .c { white-space: normal; }
   .s6 > .card, .s6 > .card.wide { grid-column: auto; }
   .steprow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat { grid-template-columns: 1fr; }
@@ -276,19 +308,56 @@ body.presenting .pres-ui {
           <tr><td></td><td>Total</td><td></td><td></td><td></td><td></td><td class="num">263</td><td class="num">802</td><td class="num">$1.77M</td><td class="num">$707</td></tr>
         </tbody>
       </table></div>
-      <div class="lines">
-        <p><b>Top 3 first:</b> public proof their traders trade, and a referral book or trading circle we ask for 5 power-trader intros on the first call</p>
-        <p><b>Screened out (100 checked):</b> Indonesia's biggest crypto names teach CEX and futures trading with no onchain proof (Andy Senjaya, ~695K YouTube); the largest paid academy is on legal hold</p>
+      <div class="why">
+        <div class="chain" aria-label="How the top 3 were picked, in order">
+          <span class="lbl">Why these 3 first</span>
+          <span class="c"><i>1</i>Proof they already trade</span><span class="arr">→</span>
+          <span class="c"><i>2</i>Power traders they bring (~90% of swaps)</span><span class="arr">→</span>
+          <span class="c"><i>3</i>Rival flow we move to OKX</span><span class="arr">→</span>
+          <span class="c"><i>4</i>Trencher fees: 0.5%</span>
+        </div>
+        <div class="top3">
+          <div class="pick">
+            <div class="hd"><b>1 · 0xRusdi</b><span class="score">Score 4.30</span></div>
+            <dl>
+              <dt><i>1</i>Proof</dt><dd>$8,463 BasedBot referral pay</dd>
+              <dt><i>2</i>Power traders</dt><dd>His BasedBot referral book</dd>
+              <dt><i>3</i>Flow to move</dt><dd>BasedBot users → OKX</dd>
+            </dl>
+            <div class="kpi"><i>4</i>Trencher · 18 FTDs · 99 trades a day · $238K</div>
+          </div>
+          <div class="pick">
+            <div class="hd"><b>2 · Crypto Ndo</b><span class="score">Score 3.90</span></div>
+            <dl>
+              <dt><i>1</i>Proof</dt><dd>Trades only on OKX Wallet</dd>
+              <dt><i>2</i>Power traders</dt><dd>Traders in his circle</dd>
+              <dt><i>3</i>Flow to move</dt><dd>His fomo links → OKX</dd>
+            </dl>
+            <div class="kpi"><i>4</i>Trencher · 42 FTDs · 136 trades a day · $252K</div>
+          </div>
+          <div class="pick">
+            <div class="hd"><b>3 · Ponyin</b><span class="score">Score 3.80</span></div>
+            <dl>
+              <dt><i>1</i>Proof</dt><dd>~$170K on Trojan in March</dd>
+              <dt><i>2</i>Power traders</dt><dd>His trading circle</dd>
+              <dt><i>3</i>Flow to move</dt><dd>Trojan users → OKX</dd>
+            </dl>
+            <div class="kpi"><i>4</i>Trencher · 16 FTDs · 95 trades a day · $236K</div>
+          </div>
+        </div>
+        <p class="tail"><b>Reach alone isn't enough:</b> TwipsX (#4) brings the most FTDs but has no proof its readers trade; Indonesia's biggest names (100 screened) have none either.</p>
       </div>
     </div>
-    <p class="foot"><sup>1</sup> X posts by @0xRusdi, @cryptondo, @Ponyin, @TwipsX, @TomketLovers (2026); Luma event pages; t.me/baelcalls · <sup>2</sup> Assumption: FTDs = 1% of post readers (2% Telegram, 20% at events); each partner's 5 power traders are counted separately; trades/day on day 30 · <sup>3</sup> Swaps × 0.04%, before the partner's 20–30% share; after shares OKX keeps $508</p>
+    <p class="foot"><sup>1</sup> X posts by @0xRusdi, @cryptondo, @Ponyin, @TwipsX, @TomketLovers (2026); Luma; t.me/baelcalls · <sup>2</sup> FTDs = 1% of post readers (2% Telegram, 20% at events), power traders counted separately; trades/day on day 30 · <sup>3</sup> Swaps × 0.04%, before partner shares (OKX keeps $508) · Score: 30-day plan tab</p>
   </div></article>
   <details class="notes">
     <summary>Speaker notes · slide 2</summary>
     <div class="body">
       <p>All figures are each partner's first 30 days live, base case (BAU): FTDs, trades a day on day 30, swaps, and revenue at the brief's 0.04% before the partner's share (after shares, OKX keeps $508 of the $707). How the numbers are built: FTDs = the partner's verified audience × an FTD rate (1% of a post's readers on X, 2% in Telegram where members already trade and the link is pinned, 20% of attendees at events); 20% of FTDs trade on a given day at 8 trades of $25; plus 5 power traders each partner introduces in days 1-3, trading on 70% of days at 20 trades of $120. Power traders carry about 90% of swaps. Without them, the 8 partners bring $172K of swaps ($69), which is why the power-trader ask is a first-call gate, not a hope. Ranges (pessimistic to optimistic): 0xRusdi $29K-791K, Crypto Ndo $31K-857K, Ponyin $29K-785K, TwipsX $32K-881K, Tomket Lovers $32K-876K, Meteora $25K-700K, Bael calls $29K-768K, Hyperliquid ID $13K-361K; total $220K-6.0M ($88-2,407).</p>
       <p>Ranking: a 7-criterion score (proof of real trading 20%, FTD potential 20%, power-trader access 15%, rival flow to move 15%, reachability 10%, segment value 10%, risk 10%): 0xRusdi 4.30, Crypto Ndo 3.90, Ponyin 3.80, TwipsX 3.75, Tomket Lovers 3.65, Meteora 3.60, Bael calls 3.25, Hyperliquid ID 2.75.</p>
-      <p>Why the top 3 first: 0xRusdi's BasedBot dashboard shows $8,463 of referral earnings at the 25% tier, the only public proof on our list that a partner's referred traders actually trade (at a 1% bot fee that implies about $3.4M referred; we confirm the real figure on the first call); Crypto Ndo has the largest trencher audience on X and says he trades only on OKX Wallet, but posts fomo referral links; Ponyin posted about $170K of Trojan volume for March 2026.</p>
+      <p><b>Why these 3 first: the logic, in order.</b> 1. Proof they already trade: public numbers, not follower counts (the brief says follower count alone isn't evidence). 2. Power traders they can bring: power traders carry about 90% of swaps, so a partner with a referral book or a trading circle beats a bigger audience. 3. Rival flow we can move: their traders already use BasedBot, fomo or Trojan, so we move existing volume to OKX instead of creating new traders from scratch. 4. Trencher fees: memecoin swaps pay OKX 0.5%, the highest fee and the most swaps per trader. Then we measure FTDs first and trades a day second.</p>
+      <p>How each passes: 0xRusdi's BasedBot dashboard shows $8,463 of referral earnings at the 25% tier, the only public proof on our list that a partner's referred traders actually trade (at a 1% bot fee that implies about $3.4M referred; we confirm the real figure on the first call); his referral book is the power-trader pool, and its flow is BasedBot's. Crypto Ndo has the largest trencher audience on X (59.3K) and says he trades only on OKX Wallet, so he can vouch for the product, while his followers' flow goes through fomo referral links we want to move. Ponyin posted about $170K of Trojan volume for March 2026: a proven heavy trader whose circle trades on Trojan.</p>
+      <p>Why TwipsX is #4, not #3: it brings the most FTDs (50) and a 60K-view promo, but it is a paid-promo account with no proof its readers trade, which is criterion 1. Reach alone doesn't get a partner into the first wave; the same test screened out Indonesia's biggest crypto names.</p>
       <p>Priority reasons for the rest: TwipsX, high reach but paid-promo quality to check; Tomket Lovers, an active fomo clan but an airdrop-heavy audience (the 1 of 8 counted as airdrop-led); Meteora LP Army, the largest in-person onchain crowds (462 at LP Army Jakarta, 671 at MET Bali) and meetable; Bael calls, easy to reach but about 500 readers a post and a Bitget Wallet ambassador; Hyperliquid ID, meetable but its perp volume pays Hyperliquid, so Low (its last Jakarta meetup sold out with about 62 going; our 100-person night assumes a bigger co-hosted room).</p>
       <p>Why not the big names: a 100-prospect screen (spreadsheet, Longlist tab) found that Indonesia's largest crypto creators teach CEX, futures or forex trading with no public onchain proof (Andy Senjaya, ~695K YouTube subscribers; Felicia Putri Tjiasaka, ~1.3M followers), and Akademi Crypto, the largest paid academy, was reported to police in January 2026; the inquiry was halted in October and a complainant asked for a special review, so it is on hold. Onchain volume sits with smaller trench accounts that post proof. Four of the big creators sit on a month-2 bench for a CEX-beginner and tokenized-stocks test, once they hold POJK 6/2026 certification.</p>
       <p>Brief checks: 8 partners, 7 not airdrop-led, 4 partner types by the brief's categories (X trading creators: 0xRusdi, Crypto Ndo, Ponyin, TwipsX; a trading clan: Tomket Lovers; event-led onchain communities: Meteora LP Army, Hyperliquid ID; a Telegram call channel: Bael calls), 2 meetable in person (Meteora LP Army, Hyperliquid ID). Replaced after scoring: 0xMegumii, JUP Indonesia and Kenwilboy (under $10 in their first month), Stress Capital (no public link) and Kapten Crypto 707 (a CEX audience with no power traders, ~$13). Links, audience and market, proposed partnership and main risk for all 8: spreadsheet, Shortlist tab.</p>

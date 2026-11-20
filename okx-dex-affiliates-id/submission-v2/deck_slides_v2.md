@@ -43,17 +43,26 @@ How we measure every partner: FTDs (first-time depositors through the partner's 
 | 8 | Hyperliquid ID | Perp community | Sold-out meetup, ~62 going | Events | Low | 20 | 18 | $106K | $42 |
 |  | Total |  |  |  |  | 263 | 802 | $1.77M | $707 ($508 after shares) |
 
-**Top 3 first:** public proof their traders trade, and a referral book or trading circle we ask for 5 power-trader intros on the first call
+**Why these 3 first** (filter, in order): ① Proof they already trade → ② Power traders they bring (~90% of swaps) → ③ Rival flow we move to OKX → ④ Trencher fees: 0.5%
 
-**Screened out (100 checked, Longlist tab):** Indonesia's biggest crypto names teach CEX and futures trading with no onchain proof (Andy Senjaya, ~695K YouTube); the largest paid academy is on legal hold
+| | 1 · 0xRusdi · score 4.30 | 2 · Crypto Ndo · score 3.90 | 3 · Ponyin · score 3.80 |
+|---|---|---|---|
+| ① Proof | $8,463 BasedBot referral pay | Trades only on OKX Wallet | ~$170K on Trojan in March |
+| ② Power traders | His BasedBot referral book | Traders in his circle | His trading circle |
+| ③ Flow to move | BasedBot users → OKX | His fomo links → OKX | Trojan users → OKX |
+| ④ Segment and targets | Trencher · 18 FTDs · 99 trades a day · $238K | Trencher · 42 FTDs · 136 trades a day · $252K | Trencher · 16 FTDs · 95 trades a day · $236K |
 
-**Footer:** ¹ X posts by @0xRusdi, @cryptondo, @Ponyin, @TwipsX, @TomketLovers (2026); Luma event pages; t.me/baelcalls · ² Assumption: FTDs = 1% of post readers (2% Telegram, 20% at events); each partner's 5 power traders are counted separately; trades/day on day 30 · ³ Swaps × 0.04%, before the partner's 20–30% share; after shares OKX keeps $508
+**Reach alone isn't enough:** TwipsX (#4) brings the most FTDs but has no proof its readers trade; Indonesia's biggest names (100 screened) have none either.
+
+**Footer:** ¹ X posts by @0xRusdi, @cryptondo, @Ponyin, @TwipsX, @TomketLovers (2026); Luma; t.me/baelcalls · ² FTDs = 1% of post readers (2% Telegram, 20% at events), power traders counted separately; trades/day on day 30 · ³ Swaps × 0.04%, before partner shares (OKX keeps $508) · Score: 30-day plan tab
 
 **Speaker notes:**
 
-All figures are each partner's first 30 days live, base case (BAU): FTDs, trades a day on day 30, swaps, and revenue at the brief's 0.04% before the partner's share (after shares, OKX keeps $508 of the $707). How the numbers are built: FTDs = the partner's verified audience × an FTD rate (1% of a post's readers on X, 2% in Telegram where members already trade and the link is pinned, 20% of attendees at events); 20% of FTDs trade on a given day at 8 trades of $25; plus 5 power traders each partner introduces in days 1-3, trading on 70% of days at 20 trades of $120. Power traders carry about 90% of swaps. Without them, the 8 partners bring $172K of swaps ($69), which is why the power-trader ask is a first-call gate, not a hope. Ranges (pessimistic to optimistic): 0xRusdi $29K-791K, Crypto Ndo $31K-857K, Ponyin $29K-785K, TwipsX $32K-881K, Tomket Lovers $32K-876K, Meteora $25K-700K, Bael calls $29K-768K, Hyperliquid ID $13K-361K; total $220K-6.0M ($88-2,407).
+All figures are each partner's first 30 days live, base case (BAU): FTDs, trades a day on day 30, swaps, and revenue at the brief's 0.04% before the partner's share (after shares, OKX keeps $508 of the $707). How the numbers are built: FTDs = the partner's verified audience × an FTD rate (1% of a post's readers on X, 2% in Telegram where members already trade and the link is pinned, 20% of attendees at events); 20% of FTDs trade on a given day at 8 trades of $25; plus 5 power traders each partner introduces in days 1-3, trading on 70% of days at 20 trades of $120. Power traders carry about 90% of swaps. Without them, the 8 partners bring $172K of swaps ($69), which is why the power-trader ask is a first-call gate, not a hope. Ranges (pessimistic to optimistic): 0xRusdi $29K**Why these 3 first: the logic, in order.** 1. Proof they already trade: public numbers, not follower counts (the brief says follower count alone isn't evidence). 2. Power traders they can bring: power traders carry about 90% of swaps, so a partner with a referral book or a trading circle beats a bigger audience. 3. Rival flow we can move: their traders already use BasedBot, fomo or Trojan, so we move existing volume to OKX instead of creating new traders from scratch. 4. Trencher fees: memecoin swaps pay OKX 0.5%, the highest fee and the most swaps per trader. Then we measure FTDs first and trades a day second.
 
-Ranking: a 7-criterion score (proof of real trading 20%, FTD potential 20%, power-trader access 15%, rival flow to move 15%, reachability 10%, segment value 10%, risk 10%): 0xRusdi 4.30, Crypto Ndo 3.90, Ponyin 3.80, TwipsX 3.75, Tomket Lovers 3.65, Meteora 3.60, Bael calls 3.25, Hyperliquid ID 2.75.
+How each passes: 0xRusdi's BasedBot dashboard shows $8,463 of referral earnings at the 25% tier, the only public proof on our list that a partner's referred traders actually trade (at a 1% bot fee that implies about $3.4M referred; we confirm the real figure on the first call); his referral book is the power-trader pool, and its flow is BasedBot's. Crypto Ndo has the largest trencher audience on X (59.3K) and says he trades only on OKX Wallet, so he can vouch for the product, while his followers' flow goes through fomo referral links we want to move. Ponyin posted about $170K of Trojan volume for March 2026: a proven heavy trader whose circle trades on Trojan.
+
+Why TwipsX is #4, not #3: it brings the most FTDs (50) and a 60K-view promo, but it is a paid-promo account with no proof its readers trade, which is criterion 1. Reach alone doesn't get a partner into the first wave; the same test screened out Indonesia's biggest crypto names.s 3.25, Hyperliquid ID 2.75.
 
 Why the top 3 first: 0xRusdi's BasedBot dashboard shows $8,463 of referral earnings at the 25% tier, the only public proof on our list that a partner's referred traders actually trade (at a 1% bot fee that implies about $3.4M referred; we confirm the real figure on the first call); Crypto Ndo has the largest trencher audience on X and says he trades only on OKX Wallet, but posts fomo referral links; Ponyin posted about $170K of Trojan volume for March 2026.
 
