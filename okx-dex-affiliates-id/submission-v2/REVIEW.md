@@ -2,7 +2,7 @@
 
 **Verdict:** the strategy is sharper than mine and the maths is clean. Every value in the review brief's section 6 reproduces, and the workbook recalculates with 0 errors across 626 formulas. Ten things needed fixing before sending: mostly labels and evidence framing, not numbers. One real gap: Indonesian compliance risk barely appears, and a panel in Jakarta will ask about it.
 
-**Update after this review:** Hyperliquid Indonesia (a rival venue) and Bael calls (a Bitget Wallet ambassador) were replaced by GuarEmperor and his FnF circle and Superteam Indonesia. Figures in sections 1 and 2 refer to the original partner set; the deck and workbooks carry the new ones (308 FTDs, $1.81M of swaps, $723 at 0.04% in each partner's first 30 days).
+**Update after this review (20 Nov 2026):** Hyperliquid Indonesia (a rival venue) and Bael calls (a Bitget Wallet ambassador) were replaced first. Then your research sheet (Indonesia Crypto KOL & Partner Research: Volume proof and Shortlist deep-dive tabs) was merged in. Bevan Pramudito / Narrative Labs is now #1: the only prospect with verified onchain trading (his published wallet: ~1,080 SOL swapped May to July, +374 SOL net), a paid community he founded (9,238-member Discord, 984 online), GMGN flow to move and a Jakarta route. Kevin Susanto and Stress Capital joined; TwipsX, Superteam Indonesia and Tomket Lovers left; Hyperliquid stays out. Every number now uses the research method (FTDs = reach P x 2% sign up x 15% trade; $2,000 of swaps per FTD) plus FnF power traders at $16,400 a month each: 300 FTDs, $1.12M of swaps and $447 at 0.04% in each partner's first month. Figures in sections 1 and 2 refer to the original partner set.
 
 Files in this folder:
 
@@ -10,8 +10,9 @@ Files in this folder:
 |---|---|
 | `deck_slides_v2.md` | Your 6 slides with every fix below applied |
 | `OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx` | Submission workbook: Task 1, Task 2, Task 3, Task 4, Miscellaneous (live formulas) |
-| `OKX_research_and_checks.xlsx` | Same five tabs plus Checks and history (open checks, partner changes, review findings) |
+| `OKX_research_and_checks.xlsx` | Same five tabs plus Research merge (the research sheet's 20 accounts and our decision on each) and Checks and history (open checks, partner changes, review findings) |
 | `deck_v2.html` / `deck_v2.pdf` | The designed deck (your PowerPoint design, fixes applied) |
+| `tools/` | Rebuild scripts and their inputs (see `tools/README.md`) |
 | `REVIEW.md` | This file |
 
 ## 1. What I checked

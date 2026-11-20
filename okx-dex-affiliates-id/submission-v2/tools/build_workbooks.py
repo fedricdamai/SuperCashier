@@ -1,19 +1,21 @@
 """Build the submission workbook (Task 1-4 + Miscellaneous) and the research workbook (same + research tabs).
 
-Usage: python build_workbooks.py <legacy_model.xlsx> <prospects.csv> <REVIEW.md> <out_dir>
-Partner text for the six kept partners comes from the legacy model; numbers are live formulas.
+Usage: python build_workbooks.py <legacy_model.xlsx> <research_sheet.xlsx> <REVIEW.md> <out_dir>
+
+The volume model is the research sheet's method (FTDs = reach pool P x sign-up rate s x activation a; swaps = FTDs x
+monthly swaps per FTD v, at low/base/high rates) plus an FnF line: the power traders each partner introduces in days 1-3.
+Every number is a live formula on the yellow inputs.
 """
-import csv
 import re
 import sys
-from copy import copy
 from pathlib import Path
 
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
-LEGACY, PROSPECTS, REVIEW, OUTDIR = map(Path, sys.argv[1:5])
+LEGACY, RESEARCH, REVIEW, OUTDIR = map(Path, sys.argv[1:5])
 L = load_workbook(LEGACY, data_only=True)
+R = load_workbook(RESEARCH, data_only=True)
 
 # ---------------------------------------------------------------- styles (match the original workbook)
 F_BODY = Font(name="Calibri", size=11)
@@ -27,7 +29,7 @@ THIN = Side(style="thin", color="D0D0D0")
 BOX = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 WRAP = Alignment(wrap_text=True, vertical="top")
 TOP = Alignment(vertical="top")
-MONEY, MONEY2, PCT, PCT2, NUM1 = '$#,##0', '$#,##0.00', '0%', '0.00%', '0.0'
+MONEY, MONEY2, PCT, PCT1, PCT2, NUM0, NUM1 = '$#,##0', '$#,##0.00', '0%', '0.0%', '0.00%', '#,##0', '0.0'
 
 
 def put(ws, ref, value, font=F_BODY, fmt=None, fill=None, wrap=True, border=False):
@@ -62,69 +64,172 @@ def cell(ws, row, col, value, fmt=None, inp=False, bold=False, wrap=True):
     return c
 
 
+def link(c, url):
+    c.hyperlink = url
+    c.font = F_LINK
+
+
 def widths(ws, spec):
     for col, w in spec.items():
         ws.column_dimensions[col].width = w
 
 
-# ---------------------------------------------------------------- partners (rank order)
-SL, PP, FP, DP, OF = (L["Shortlist (Task 1)"], L["Partner plan (3 scenarios)"], L["FTD plan"],
-                      L["30-day plan"], L["Offers & support"])
-KEEP = [  # name key, shortlist row, partner-plan row, FTD-plan row, ranking row, go-live, event, FnF text, in person, airdrop-led
-    ("0xRusdi", 8, 26, 6, 8, 10, "No", "His BasedBot referral book: his 5 most active referred traders", "No", "No"),
-    ("Crypto Ndo", 9, 21, 7, 9, 10, "No", "Traders in his circle (FnF): 5 onboarded first", "No", "No"),
-    ("Ponyin", 10, 28, 8, 10, 10, "No", "His trading circle (FnF): 5 onboarded first", "No", "No"),
-    ("TwipsX", 11, 27, 9, 11, 17, "No", "5 heavy traders from his promo network", "No", "No"),
-    ("Tomket Lovers", 12, 24, 10, 12, 24, "No", "Its fomo clan of 13-15 active traders: 5 onboarded first", "No", "Yes"),
-    ("Meteora LP Army", 13, 23, 11, 13, 17, "Yes", "5 LP whales from the community", "Yes", "No"),
+def col(n):
+    s = ""
+    while n:
+        n, r = divmod(n - 1, 26)
+        s = chr(65 + r) + s
+    return s
+
+
+# ---------------------------------------------------------------- partners (rank order = score order)
+SL = L["Shortlist (Task 1)"]
+TREN, LP = "Memecoin trenchers", "DeFi / LP users"
+partners = [
+    dict(short="Bevan / Narrative Labs", name="Bevan Pramudito / Narrative Labs (@bevanpramudt)",
+         link="https://x.com/bevanpramudt ; https://narrativelabs.id",
+         type="Trader-educator with a paid trading community and own tools",
+         audience="Intermediate and advanced Indonesian memecoin and onchain traders (its site: 'advanced, not for beginners'); Jakarta",
+         evidence=("Published wallet 8DC3hp...qGxg (Solscan): 91 swaps from 14 May to 30 Jul 2026, 352.6 SOL bought and 726.8 SOL "
+                   "sold (~1,080 SOL), +374 SOL net; Discord 9,238 members, 984 online (20 Nov 2026); paid Masterclass (29 of 40 "
+                   "promo seats sold); member meetup in Jakarta on 29 Oct; X 26,983, median 7,545 views a post"),
+         assumptions=("No swaps on the published wallet since 30 Jul: which wallet he trades from now; self-reported +Rp13.7B PnL "
+                      "(Feb-Aug 2026); share of Discord members who trade weekly; GMGN and Mobee referral terms"),
+         route="X DM, then a Narrative Labs session in Jakarta (in person)",
+         proposal=("OKX DEX referral fee share with a follower discount; 5 Masterclass traders onboarded 1:1 in days 1-3; a "
+                   "co-branded Discord workshop where he trades his own workflow on Meme Mode and Track; scope an OKX DEX API "
+                   "trade button for his Narrative Alpha tool"),
+         risk="Already pays out GMGN (BEVANP) and Mobee referral codes; published wallet idle since 30 Jul",
+         reason="Passes all four filters and can be met in Jakarta: verified onchain trading, a paid community he founded, GMGN flow to move, memecoin fees",
+         vampire="GMGN (code BEVANP); Mobee (code BEVAN)",
+         fnf="His paid Masterclass traders: 5 onboarded first (29 seats sold in the promo batch)",
+         in_person="Yes", airdrop="No", segment=TREN, pool=9240, ptraders=5, share=0.3, members=9238, per_member="trade",
+         basis="Measured (research, 20 Nov 2026): median 7,545 + 711 (Narrative Labs) views a post + 984 Discord members online",
+         deliverables=("Days 1-3: 5 Masterclass traders onboarded 1:1 in Jakarta; day 5: co-branded Discord workshop on Meme Mode "
+                       "and Track, replay pinned; 2 X posts and a Narrative Labs announcement with the link"),
+         need="A trading tool his paid members can't get elsewhere, plus income on the execution he already teaches",
+         support=("OKX DEX API docs and a technical contact to scope a Narrative Alpha trade button; co-hosted Discord workshop; "
+                  "Bahasa Meme Mode and Track guide; wallet-level referral dashboard"),
+         check=("Which wallet he trades from now (the published one is idle since 30 Jul) and its history; Discord active-member "
+                "stats; Masterclass enrolment and how many members trade weekly; GMGN (BEVANP) referral stats"),
+         line="Proof: published wallet, ~1,080 SOL swapped May-Jul, +374 SOL · FnF: his paid Masterclass traders · Flow: GMGN (code BEVANP) → OKX · Meet: Jakarta",
+         scores=(5, 3, 5, 4, 5, 5, 4), go_live=10, event="No"),
+    dict(short="0xRusdi", name=SL.cell(8, 1).value, link=SL.cell(8, 2).value, type=SL.cell(8, 3).value,
+         audience=SL.cell(8, 5).value, evidence=SL.cell(8, 6).value, assumptions=SL.cell(8, 11).value,
+         route=SL.cell(8, 7).value, proposal=SL.cell(8, 8).value, risk=SL.cell(8, 9).value,
+         reason=SL.cell(8, 10).value.replace("power-trader pool", "FnF pool"), vampire=SL.cell(8, 12).value,
+         fnf="His BasedBot referral book: his 5 most active referred traders", in_person="No", airdrop="No",
+         segment=TREN, pool=5160, ptraders=5, share=0.3, members=None, per_member="trade",
+         basis="Estimated: 20% of 25.8K X followers (median views not yet measured)",
+         deliverables="Days 1-3: his 5 most active referred traders onboarded 1:1; then 6 posts and 1 X Spaces with the referral link and follower discount",
+         need="Terms and tools at least as good as BasedBot's 25% tier",
+         support="Multi-chain Meme Mode guide (Solana, BSC, Base); wallet-level referral dashboard; early briefings on OKX Boost campaigns (if OKX agrees)",
+         check="BasedBot dashboard export: referred traders, volume per trader, days active, chains; share of his referred traders in Indonesia",
+         line="Proof: $8,463 of BasedBot referral earnings at the 25% tier, the only public proof of a referred trading book · FnF: his referral book · Flow: BasedBot users → OKX",
+         scores=(5, 2, 4, 5, 3, 5, 4), go_live=10, event="No"),
+    dict(short="Ponyin", name=SL.cell(10, 1).value, link=SL.cell(10, 2).value, type=SL.cell(10, 3).value,
+         audience=SL.cell(10, 5).value,
+         evidence=("Trojan PnL card, March 2026: bought 1.13K SOL and sold 1.24K SOL (~$170K of volume at ~$72 SOL), +112 SOL; "
+                   "ex-Trojan partner who ran KOL volume campaigns; X 22,718, median 4,628 views a post"),
+         assumptions="Size of his circle (he lists ApexFNF and The STavern; not verified); share of followers who trade daily; whether he would move his own trading",
+         route=SL.cell(10, 7).value, proposal=SL.cell(10, 8).value,
+         risk="Loyal to Trojan; Head of Marketing at Dawn since Oct 2026 (check conflicts); one bonus-farming tutorial (code ELPONTIN)",
+         reason=SL.cell(10, 10).value, vampire=SL.cell(10, 12).value,
+         fnf="His trading circle: 5 onboarded first", in_person="No", airdrop="No (one bonus-farming tutorial)",
+         segment=TREN, pool=4628, ptraders=5, share=0.3, members=None, per_member="trade",
+         basis="Measured (research): median 4,628 views a post; no owned group found",
+         deliverables="Days 1-3: 5 traders from his circle; then 4 posts comparing Meme Mode with Trojan (speed, fees) and his monthly results",
+         need="Execution at least as fast and cheap as Trojan, for him and his circle",
+         support="Meme Mode presets and MEV-protection walkthrough; wallet-level referral dashboard; Bahasa support chat for his circle",
+         check="Trojan dashboard or wallet history for him and his circle; how many in the circle trade daily; terms of his Dawn role",
+         line="Proof: Trojan PnL card, ~$170K of volume in March 2026 · FnF: his trading circle · Flow: Trojan users → OKX",
+         scores=(4, 2, 4, 5, 3, 5, 3), go_live=10, event="No"),
+    dict(short="Crypto Ndo", name=SL.cell(9, 1).value, link=SL.cell(9, 2).value, type=SL.cell(9, 3).value,
+         audience=SL.cell(9, 5).value, evidence=SL.cell(9, 6).value, assumptions=SL.cell(9, 11).value,
+         route=SL.cell(9, 7).value, proposal=SL.cell(9, 8).value, risk=SL.cell(9, 9).value,
+         reason=SL.cell(9, 10).value, vampire=SL.cell(9, 12).value,
+         fnf="Traders in his circle: 5 onboarded first", in_person="No", airdrop="No",
+         segment=TREN, pool=11860, ptraders=5, share=0.3, members=None, per_member="trade",
+         basis="Estimated: 20% of 59.3K X followers (median views not yet measured)",
+         deliverables="Days 1-3: 5 traders from his circle; then 8 Meme Mode trade threads and 2 X Spaces",
+         need="A reason to move his followers' referral flow from fomo to OKX (he already trades on OKX Wallet)",
+         support="Co-branded Meme Mode preset guide in Bahasa; weekly wallet-level dashboard; Bahasa support chat; compliance check of posts",
+         check="", line="", scores=(3, 3, 4, 4, 3, 5, 4), go_live=17, event="No"),
+    dict(short="Kevin Susanto", name="Kevin Susanto (@KevinSusanto)",
+         link="https://x.com/KevinSusanto ; https://t.me/KevinSusantoAlpha",
+         type="Large KOL and active onchain trader",
+         audience="Regional SEA and Indonesian crypto audience, English posts; Jakarta",
+         evidence=("fomo Top Traders 24h PnL, 19-20 Nov 2026: #3, +$53,566 (screenshot); a tracker logged ~$402K across 99 of "
+                   "his fomo trades; X 168,874, median 41,248 views a post; Telegram KevinSusantoAlpha 2,860"),
+         assumptions=("Engagement is low (0.84%), so the base FTD count may be high; whether his OKX link is a CEX affiliate deal OKX "
+                      "already pays; his Lighter advisory terms"),
+         route="Through OKX's regional marketing team, which already works with him; then DM. In person in Jakarta",
+         proposal="KOL ambassador on performance: OKX DEX referral fee share, no fixed fee; 2 traders from his Telegram onboarded first; one co-hosted onchain trading session for his Telegram",
+         risk="Already holds an OKX referral link (okx.ac/join/VVIP7777), so part of his flow may already count for OKX; advises Lighter, a rival perp DEX; runs volume giveaways",
+         reason="Most FTDs of the 8 (biggest measured reach), but no FnF circle on record and an existing OKX link",
+         vampire="fomo (fee code KevinSusanto); Binance, Bitget and Tokocrypto links",
+         fnf="No circle on record: 2 traders from his Telegram, onboarded first", in_person="Yes", airdrop="No (volume giveaways)",
+         segment=TREN, pool=41820, ptraders=2, share=0.3, members=2860, per_member="trade",
+         basis="Measured (research): median 41,248 views a post + 20% of 2,860 Telegram subscribers",
+         deliverables="Days 1-3: 2 traders from his Telegram onboarded 1:1; then 2 market threads with the link and 1 co-hosted onchain session for KevinSusantoAlpha",
+         need="Clear, non-exclusive terms that sit alongside his existing exchange deals",
+         support="One co-hosted onchain session; Bahasa and English Meme Mode guide; wallet-level referral dashboard",
+         check="", line="", scores=(3, 5, 2, 3, 5, 4, 2), go_live=17, event="No"),
+    dict(short="GuarEmperor + FnF", name="GuarEmperor / Emperor Journal (@GuarEmperor) and his FnF circle",
+         link="https://x.com/GuarEmperor ; https://x.com/emperorjournal_",
+         type="Alpha caller with an FnF circle and a tools Discord",
+         audience="Indonesian and global CT degens: memecoin traders on new chains, NFT minters, whitelist hunters",
+         evidence=("X 94,421, median 15,885 views a post, 1.9% engagement (~47 replies a post); members post results from his "
+                   "tools (GMGN +$802, +$387); public smart-money wallet lists formatted for BasedBot and GMGN; 'Enjoy being poor' "
+                   "Telegram ~16.5K (third-party snapshot)"),
+         assumptions="Size and activity of his FnF circle; Emperor Journal Discord size (invite-gated); share of followers who trade rather than farm",
+         route="X DM; sister account @emperorjournal_",
+         proposal=("OKX DEX referral fee share with a follower discount; his FnF circle (5 traders) onboarded 1:1 in days 1-3; OKX "
+                   "DEX API for his Discord tools; alpha calls executed through Meme Mode and Track"),
+         risk="WL, mint and airdrop posts in his feed; alpha calls need front-running and disclosure checks",
+         reason="Best engagement among the big accounts and an FnF circle that trades from his tools; airdrop-adjacent feed",
+         vampire="GMGN and BasedBot (his wallet lists are built for their import)",
+         fnf="His FnF circle and Emperor Journal members: 5 onboarded first", in_person="No", airdrop="Partly (WL and mint posts)",
+         segment=TREN, pool=19185, ptraders=5, share=0.3, members=16500, per_member="nft",
+         basis="Measured (research): median 15,885 views a post + 20% of ~16.5K Telegram (third-party snapshot); Discord size not public",
+         deliverables="Days 1-3: his FnF circle (5 traders) onboarded 1:1; then 6 alpha threads executed on OKX Wallet and 1 X Spaces with the referral link",
+         need="Better execution for the calls his members already copy",
+         support="OKX DEX API docs for his Discord tools; Meme Mode and Track guide; wallet-level referral dashboard",
+         check="", line="", scores=(2, 4, 4, 4, 3, 4, 3), go_live=17, event="No"),
+    dict(short="Meteora LP Army", name="Meteora Indonesia 'LP Army' (hosts: Evil Panda, Friday7th)",
+         link=SL.cell(13, 2).value, type=SL.cell(13, 3).value, audience=SL.cell(13, 5).value,
+         evidence=SL.cell(13, 6).value + "; co-host Friday7th posts a DLMM bot journal (+1.946 SOL over 155 trades, 1-17 Nov)",
+         assumptions=SL.cell(13, 11).value, route=SL.cell(13, 7).value, proposal=SL.cell(13, 8).value,
+         risk=SL.cell(13, 9).value, reason=SL.cell(13, 10).value, vampire=SL.cell(13, 12).value,
+         fnf="5 LP whales from the community", in_person="Yes", airdrop="No",
+         segment=LP, pool=2982, ptraders=5, share=0.25, members=462, per_member="trade",
+         basis="Estimated: 20% of MeteoraIDN's 13,411 X followers + 300 at one co-hosted night (past nights: 462 and 671)",
+         deliverables="Day 1: co-hosted community night with wallets funded on site; 5 LP whales onboarded in days 1-3",
+         need="Event costs and good speakers",
+         support="Co-hosted community nights (venue and food budget, needs OKX approval); OKX speaker on swaps and Bridge; on-site wallet set-up desk",
+         check="", line="", scores=(3, 1, 4, 3, 5, 3, 4), go_live=24, event="Yes"),
+    dict(short="Stress Capital", name="Stress Capital (admin: Orpheuzkaze, @orpheuskaze)",
+         link="https://x.com/StressCapitals ; https://discord.gg/stresscapitals",
+         type="Degen trading clan (Discord) run by a community operator",
+         audience="Indonesian crypto, NFT and gaming audience; Monad NFT community",
+         evidence=("Stress Capital Discord 30,663 members, 2,453 online (20 Nov 2026); X 25.3K; Orpheuzkaze admin since 2021, "
+                   "X 22,468, median 2,731 views a post"),
+         assumptions="Share of members who trade rather than farm NFTs; who approves placements; his 1.03M reach and 850 collaborations are self-reported",
+         route="X DM to Orpheuzkaze; pitch as a clan partner",
+         proposal="Clan referral: one community code with tiered clan rewards; 3 clan leads onboarded 1:1; a 7-day trading competition in the Discord",
+         risk="NFT and airdrop lean, so volume per member is low; freelance KOL for MEXC and OSL",
+         reason="Largest owned trading-clan Discord we could measure; FnF through clan leads, but no trading proof yet",
+         vampire="MEXC and OSL campaigns; members' trading tools not public (ask on the first call)",
+         fnf="3 clan leads from Stress Capital, onboarded first", in_person="No", airdrop="Partly (NFT and airdrop audience)",
+         segment=TREN, pool=5184, ptraders=3, share=0.25, members=30663, per_member="nft",
+         basis="Measured (research): median 2,731 views a post + 2,453 Discord members online",
+         deliverables="Days 1-3: 3 clan leads onboarded 1:1; then a clan code with tiered rewards and a 7-day trading competition in the Discord",
+         need="Activity for a big Discord in a dry market",
+         support="Clan leaderboard and rewards (needs OKX approval); Bahasa set-up guide; anti-sybil checklist",
+         check="", line="", scores=(1, 2, 3, 2, 3, 2, 3), go_live=24, event="No"),
 ]
-partners = []
-for key, s, p, f, rk, live, ev, fnf, inperson, airdrop in KEEP:
-    partners.append(dict(
-        name=SL.cell(s, 1).value, link=SL.cell(s, 2).value, type=SL.cell(s, 3).value, audience=SL.cell(s, 5).value,
-        evidence=SL.cell(s, 6).value, route=SL.cell(s, 7).value, proposal=SL.cell(s, 8).value, risk=SL.cell(s, 9).value,
-        reason=SL.cell(s, 10).value, assumptions=SL.cell(s, 11).value, vampire=SL.cell(s, 12).value, fnf=fnf,
-        in_person=inperson, airdrop=airdrop, segment=PP.cell(p, 2).value, aud_n=PP.cell(p, 20).value,
-        rate=PP.cell(p, 21).value, days=PP.cell(p, 22).value, share=PP.cell(p, 14).value, ptraders=5,
-        basis=PP.cell(p, 23).value, deliverables=FP.cell(f, 3).value,
-        scores=tuple(DP.cell(rk, c).value for c in range(2, 9)), go_live=live, event=ev, short=key))
-partners.insert(4, dict(
-    short="GuarEmperor", name="GuarEmperor (@GuarEmperor) and his FnF circle", link="https://x.com/GuarEmperor",
-    type="Alpha-call creator with an FnF trading circle (X)",
-    audience="Indonesian DeFi and memecoin traders following his alpha calls and smart-money wallet lists",
-    evidence=("~63-90K X followers across two public snapshots; listed by ICN among 10 X crypto influencers growing the "
-              "Indonesian cryptosphere; pinned 'alpha results' record (Dec 2025); public smart-money wallet lists "
-              "('Stable Meme Wallets', 'Arc Smart Money Wallets', 'Top 60 Wallets') formatted for BasedBot and GMGN"),
-    assumptions="Size and activity of his FnF circle; share of followers who trade rather than farm airdrops; current follower count",
-    route="X DM; sister account @emperorjournal_",
-    proposal=("OKX DEX referral fee share with a follower discount; his FnF circle (5 traders) onboarded 1:1 in days 1-3; "
-              "his wallet lists and alpha calls executed through OKX Wallet Meme Mode and Track"),
-    risk="Airdrop and testnet guides in his history (farming audience); alpha calls need front-running and disclosure checks",
-    reason="Brings an FnF trading circle, and followers who already copy his wallet lists on BasedBot and GMGN",
-    vampire="BasedBot and GMGN (his wallet lists are built for their import)",
-    fnf="His FnF circle: 5 traders onboarded first (size to confirm on the first call)", in_person="No", airdrop="No",
-    segment="Memecoin trenchers", aud_n=4410, rate=0.01, days=15, share=0.3, ptraders=5,
-    basis="~7% of ~63K X followers see a typical post (lower of two public snapshots)",
-    deliverables="Days 1-3: his FnF circle (5 traders) onboarded 1:1; then 6 alpha threads executed on OKX Wallet and 1 X Spaces with the referral link",
-    scores=(3, 4, 3, 5, 3, 5, 3), go_live=17, event="No"))
-partners.append(dict(
-    short="Superteam Indonesia", name="Superteam Indonesia (Solana community)", link="https://luma.com/7gbaanxq",
-    type="Solana ecosystem community (events)", audience="Solana users, traders and builders in Jakarta and Bali",
-    evidence=("Solana Superteam Indonesia Ecosystem Showcase in Jakarta: 502 went (Luma); runs Superteam Hub Jakarta with "
-              "Indonesia Crypto Hub; its Country Lead was named a Coinvestasi 2025 most impactful figure"),
-    assumptions="Share of members who trade memecoins rather than build; capacity of a co-hosted trader night",
-    route="Superteam Hub Jakarta in person; biweekly community call; Country Lead via LinkedIn",
-    proposal=("Co-hosted Solana trader night at Superteam Hub with wallets funded on site; Meme Mode and Track walkthrough; "
-              "2 active traders from the community onboarded 1:1; tracked host link; fee share"),
-    risk="Builder-first community; Solana Foundation neutrality may limit exchange-branded events",
-    reason="Meetable every week in Jakarta and already onchain, but builder-led: proof of trading still to check",
-    vampire="Solana wallets and bots its members already use (Phantom, Jupiter, GMGN; to confirm)",
-    fnf="2 active traders from the community (builder-led, so fewer than the trench partners)", in_person="Yes", airdrop="No",
-    segment="Memecoin trenchers", aud_n=150, rate=0.2, days=28, share=0.25, ptraders=2,
-    basis="One co-hosted trader night of ~150 (its Jakarta showcase drew 502); wallets funded on site, so these FTDs trade from day 1",
-    deliverables="Day 1: co-hosted Solana trader night at Superteam Hub Jakarta with wallets funded on site; 2 active traders onboarded in days 1-3",
-    scores=(2, 4, 2, 3, 5, 4, 4), go_live=24, event="Yes"))
 assert len(partners) == 8
+N0, N1, TOT = 37, 44, 45  # section C rows
 
 
 def build(research=False):
@@ -136,64 +241,79 @@ def build(research=False):
 
     # ============================================================ Miscellaneous (inputs first: other tabs read them)
     put(mi, "A1", "Miscellaneous: assumptions, products and fees, benchmarks, growth path, brief checklist, sources and longlist", F_TITLE, wrap=False)
-    put(mi, "A3", "A. Assumptions (yellow cells are inputs; every tab recalculates)", F_SECTION, wrap=False)
-    header(mi, 4, ["Assumption", "Pessimistic", "BAU", "Optimistic", "Basis"])
-    for i, r in enumerate(range(6, 17)):
-        row = 5 + i
-        label = PP.cell(r, 1).value
-        cell(mi, row, 1, label)
-        fmt = {5: "0.0", 6: PCT, 8: MONEY, 10: PCT, 12: MONEY, 15: PCT2}.get(row)
-        for j, col in enumerate((2, 3, 4)):
-            cell(mi, row, 2 + j, PP.cell(r, col).value, fmt=fmt, inp=True)
-        basis = PP.cell(r, 5).value or ""
-        basis = basis.replace("columns T-U", "Task 1, section C").replace(
-            "between @AiSlimx (~$8K a month, OKX Wallet Boost) and", "above @AiSlimx (~$550 a day on OKX Wallet Boost) and below")
-        if label.startswith("Power traders per partner"):
-            label = "FnF power traders per partner (scales each partner's own count in Task 1)"
-            mi.cell(row, 1).value = label
-        cell(mi, row, 5, basis)
-    # rows: 5 FTD mult, 6 share trading, 7 retail trades, 8 retail size, 9 power traders, 10 share active,
-    #       11 power trades, 12 power size, 13 start day, 14 days in month, 15 net revenue rate
-    put(mi, "A17", "B. Trade profiles by segment (BAU; pessimistic and optimistic scale every segment by the ratios in row 24)", F_SECTION, wrap=False)
-    header(mi, 18, ["Segment", "Retail trades per active day", "Retail average trade", "Retail $ a day per FTD",
-                    "Power trades per active day", "Power average trade", "Power $ a day per trader", "Basis"])
-    segs = [("Memecoin trenchers", "=C7", "=C8", "=C11", "=C12", "Rows 7-12"),
-            ("DeFi / LP users", 3, 50, 10, 150, "Assumption: fewer, larger swaps when LPs rebalance")]
-    for i, (name, rt, rs, pt, ps, basis) in enumerate(segs):
+    put(mi, "A3", "A. Assumptions (yellow cells are inputs; every tab recalculates). Swaps per partner = reach P x s x a x v, plus FnF power traders", F_SECTION, wrap=False)
+    header(mi, 4, ["Assumption", "Low", "Base", "High", "Basis"])
+    A = [  # row 5 onwards
+        ("Sign-up rate s: share of the reach pool P that signs up through the partner's link in 30 days", (0.01, 0.02, 0.04), PCT1,
+         "Research sheet (20 Nov 2026). P = median views on recent original posts + Discord members online, or + 20% of Telegram subscribers"),
+        ("Activation a: share of sign-ups who trade (an FTD)", (0.061, 0.15, 0.3), PCT1,
+         "Low: 7 of 115 Trojan referrals active (@0xSarimin, Mar 2026). Base: midpoint. High: campaign-boosted"),
+        ("Swaps per FTD in its first month (v)", (286, 2000, 16400), MONEY,
+         "Low: @0xSarimin's referred volume under $2K across 7 active traders. Base: midpoint, consistent with @0xRusdi's ~$3.4M referred on BasedBot. High: @AiSlimx, $547 a day on OKX Wallet Boost"),
+        ("Swaps per FnF power trader in their first month", (2000, 16400, 50000), MONEY,
+         "Low: trades like an average FTD. Base: @AiSlimx, $547 a day on OKX Wallet Boost (May 2026), the only measured OKX Wallet trader. High: between that and @Ponyin's ~$170K a month on Trojan"),
+        ("FnF power traders start trading on day", (8, 4, 2), None, "Base: onboarded 1:1 in the partner's first 3 days"),
+        ("Days in the partner's first month", (30, 30, 30), None, "Each partner's first 30 days live (the same basis as Task 2's first month)"),
+        ("Reach of a typical post, accounts not yet measured (share of followers)", (0.2, 0.2, 0.2), PCT,
+         "Median views divided by followers across the 11 accounts the research measured: 10% to 44%, median 20%"),
+        ("Community benchmark: trading community, swaps a member a month", (300, 300, 300), MONEY,
+         "15% of members active x $2,000 a month (research). A ceiling for context, never added to the forecast"),
+        ("Community benchmark: NFT or airdrop community, swaps a member a month", (14, 14, 14), MONEY,
+         "5% active x $286 a month (research)"),
+        ("Net revenue rate", (0.0004, 0.0004, 0.0004), PCT2,
+         "Brief (OKX DEX actually averaged ~0.09% in Oct 2026, DefiLlama)"),
+    ]
+    for i, (label, vals, fmt, basis) in enumerate(A):
+        r = 5 + i
+        cell(mi, r, 1, label)
+        for j, v in enumerate(vals):
+            cell(mi, r, 2 + j, v, fmt=fmt, inp=True)
+        cell(mi, r, 5, basis)
+    # row map
+    S_, A_, V_, VF_, ST_, D_, REACH_, BT_, BN_, RT_ = 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    s = {k: f"{M}${c}${S_}" for k, c in zip("lbh", "BCD")}
+    a = {k: f"{M}${c}${A_}" for k, c in zip("lbh", "BCD")}
+    v = {k: f"{M}${c}${V_}" for k, c in zip("lbh", "BCD")}
+    vf = {k: f"{M}${c}${VF_}" for k, c in zip("lbh", "BCD")}
+    st = {k: f"{M}${c}${ST_}" for k, c in zip("lbh", "BCD")}
+    DAYS, RATE = f"{M}$C${D_}", f"{M}$C${RT_}"
+    RATE_L = f"$C${RT_}"  # same-sheet form
+
+    put(mi, "A17", "B. Trade size by segment (turns swaps into trades a day)", F_SECTION, wrap=False)
+    header(mi, 18, ["Segment", "Average FTD trade", "Average FnF trade", "Trades a day per FTD (base)", "Trades a day per FnF trader (base)", "Basis"])
+    for i, (name, rs, ps, basis) in enumerate([(TREN, 25, 120, "~0.35 SOL buys at ~$72 SOL; FnF traders size up"),
+                                               (LP, 50, 150, "Assumption: fewer, larger swaps when LPs rebalance")]):
         r = 19 + i
         cell(mi, r, 1, name)
-        cell(mi, r, 2, rt, inp=not str(rt).startswith("="))
-        cell(mi, r, 3, rs, fmt=MONEY, inp=not str(rs).startswith("="))
-        cell(mi, r, 4, f"=B{r}*C{r}*$C$6", fmt=MONEY)
-        cell(mi, r, 5, pt, inp=not str(pt).startswith("="))
-        cell(mi, r, 6, ps, fmt=MONEY, inp=not str(ps).startswith("="))
-        cell(mi, r, 7, f"=E{r}*F{r}*$C$10", fmt=MONEY)
-        cell(mi, r, 8, basis)
-    header(mi, 23, ["Scenario scale vs BAU", "Retail, pessimistic", "Retail, optimistic", "Power, pessimistic", "Power, optimistic"])
-    cell(mi, 24, 1, "Scale")
-    for col, f in zip("BCDE", ["=(B6*B7*B8)/(C6*C7*C8)", "=(D6*D7*D8)/(C6*C7*C8)",
-                              "=(B10*B11*B12)/(C10*C11*C12)", "=(D10*D11*D12)/(C10*C11*C12)"]):
-        c = cell(mi, 24, "ABCDE".index(col) + 1, f, fmt="0.00")
+        cell(mi, r, 2, rs, fmt=MONEY, inp=True)
+        cell(mi, r, 3, ps, fmt=MONEY, inp=True)
+        cell(mi, r, 4, f"=$C${V_}/$C${D_}/B{r}", fmt=NUM1)
+        cell(mi, r, 5, f"=$C${VF_}/$C${D_}/C{r}", fmt=NUM1)
+        cell(mi, r, 6, basis)
     SEG = f"{M}$A$19:$A$20"
 
     # C. products and fees
     put(mi, "A26", "C. OKX products and fees (published fee vs the brief's 0.04%)", F_SECTION, wrap=False)
     PR = L["Products & revenue"]
-    header(mi, 27, [PR.cell(2, c).value for c in range(1, 10)])
+    hdr = [PR.cell(2, c).value for c in range(1, 10)]
+    hdr[4] = "Swaps per active trader a month (research base for swaps; others assumed)"
+    header(mi, 27, hdr)
     for i, r in enumerate(range(3, 13)):
         row = 28 + i
         for c in range(1, 10):
-            v = PR.cell(r, c).value
-            if c == 6:
-                v = f"=D{row}*E{row}"
+            vv = PR.cell(r, c).value
+            if c == 5 and r in (3, 6):
+                vv = f"=$C${V_}"
+            elif c == 6:
+                vv = f"=D{row}*E{row}"
             elif c == 7:
-                v = f"=E{row}*$C$15"
+                vv = f"=E{row}*{RATE_L}"
             elif c == 8 and r == 9:
-                v = "Multi-chain traders moving funds between chains"
+                vv = "Multi-chain traders moving funds between chains"
             elif c == 8 and r == 11:
-                v = "Not a target: fees go to a rival venue"
-            fmt = MONEY2 if c in (6, 7) else (PCT2 if c == 4 or (c == 3 and isinstance(v, (int, float))) else (MONEY if c == 5 else None))
-            cell(mi, row, c, v, fmt=fmt, inp=c in (4, 5) and v not in (None, ""))
+                vv = "Not a target: fees go to a rival venue"
+            fmt = MONEY2 if c in (6, 7) else (PCT2 if c == 4 or (c == 3 and isinstance(vv, (int, float))) else (MONEY if c == 5 else None))
+            cell(mi, row, c, vv, fmt=fmt, inp=c in (4, 5) and vv not in (None, "") and not str(vv).startswith("="))
     MEME_FEE = f"{M}$D$28"
     header(mi, 39, ["OKX DEX actuals (DefiLlama, mid-Nov 2026)", "Value", "Note"])
     for i, r in enumerate(range(15, 18)):
@@ -203,6 +323,7 @@ def build(research=False):
         cell(mi, row, 3, PR.cell(r, 3).value)
 
     # D. rival benchmark
+    OF = L["Offers & support"]
     put(mi, "A44", "D. What rival trading tools pay referrers (secondary sources, Nov 2026)", F_SECTION, wrap=False)
     header(mi, 45, [OF.cell(34, c).value for c in range(1, 6)])
     for i, r in enumerate(range(35, 40)):
@@ -215,23 +336,22 @@ def build(research=False):
     put(mi, "A51", OF.cell(40, 1).value, wrap=False)
 
     # E. growth path
-    put(mi, "A53", "E. How the number grows (0.04%, before partner shares; each partner's first 30 days live, BAU)", F_SECTION, wrap=False)
+    put(mi, "A53", "E. How the number grows (0.04%, before partner shares; each partner's first month, base case)", F_SECTION, wrap=False)
     header(mi, 54, ["Step", "Swaps", "Revenue (0.04%)", "Why it's realistic"])
+    fnf_month = f"$C${VF_}*($C${D_}-$C${ST_}+1)/$C${D_}"
     steps = [
-        ("1. Posts first; FnF power traders join mid-month (day 15)",
-         f"={T1}K45+{T1}L45*($C$14-15+1)/($C$14-$C$13+1)", "The usual sequence: content first, intros later"),
-        ("2. FnF power traders first (onboarded by day 4): our plan", f"={T1}M45",
-         "FnF power traders carry most swaps, so every earlier day counts"),
-        ("3. 10 FnF power traders (not 5) at the 3 partners with books or clans",
-         "=B56+3*5*$G$19*($C$14-$C$13+1)", "0xRusdi's BasedBot book, Ponyin's trading circle, Tomket Lovers' 13-15-member clan"),
+        ("1. Audience only: FTDs x $2,000 (no FnF power traders)", f"={T1}J{TOT}", "The research sheet's base case for the same 8"),
+        ("2. Plus FnF power traders onboarded by day 4: our plan", f"={T1}M{TOT}", "FnF power traders trade from day 4, before any post"),
+        ("3. 10 FnF power traders (not 5) at the top 3", f"=B56+3*5*{fnf_month}",
+         "Bevan's Masterclass (29 paid seats), 0xRusdi's referral book, Ponyin's circle"),
         ("4. Plus the Partner B pilot ($2M a month, brief)", f"=B57+{T2}C5", "The one pilot the brief allows; positive on its own terms"),
-        ("5. $10K a month", "=10000/$C$15", "A and C on revenue share only if their 90-day data holds, plus more partners at this profile: a month 4-6 goal"),
+        ("5. $10K a month", f"=10000/{RATE_L}", "A and C on revenue share only if their 90-day data holds, plus more partners at this profile: a month 4-6 goal"),
     ]
-    for i, (a, b, d) in enumerate(steps):
+    for i, (aa, b, d) in enumerate(steps):
         row = 55 + i
-        cell(mi, row, 1, a)
+        cell(mi, row, 1, aa)
         cell(mi, row, 2, b, fmt=MONEY)
-        cell(mi, row, 3, f"=B{row}*$C$15", fmt=MONEY)
+        cell(mi, row, 3, f"=B{row}*{RATE_L}", fmt=MONEY)
         cell(mi, row, 4, d)
 
     # F. brief checklist
@@ -241,11 +361,11 @@ def build(research=False):
         ("Public information only; no contact, spend or private contacts", "All tabs; slide 6"),
         ("Task 1: 8 potential partners", "Task 1, section A; slide 2"),
         ("Task 1: at least 6 whose main proposition is not airdrops", "Task 1, brief checks (row 21)"),
-        ("Task 1: at least 3 partner types", "Task 1, column D (4 types)"),
+        ("Task 1: at least 3 partner types", "Task 1, column D (5 types)"),
         ("Task 1: at least 2 you could meet in person", "Task 1, column O; Task 4, in-person day"),
         ("Task 1: link, audience and market, evidence, route, proposed partnership, main risk, priority with reason", "Task 1, section A"),
         ("Task 1: top 3 and why you'd approach them first", "Task 1, rows 4-8; slide 2"),
-        ("Task 1: verified facts vs assumptions; follower count alone is not evidence", "Task 1, columns H and I; deck footers; slide 6"),
+        ("Task 1: verified facts vs assumptions; follower count alone is not evidence", "Task 1, columns H and I, and section C (measured vs estimated reach); slide 6"),
         ("Task 2: first-month contribution for each partner, with the calculation", "Task 2, rows 3-7; slide 3"),
         ("Task 2: preferred pilot and reasoning", "Task 2, row 9"),
         ("Task 2: counter-offer or pilot structure", "Task 2, rows 10-11"),
@@ -253,7 +373,7 @@ def build(research=False):
         ("Task 2: chosen partner's economics at 50% of forecast", "Task 2, columns K-L and rows 16-20"),
         ("Task 2: exclude other costs, then say which you'd investigate", "Task 2, row 13"),
         ("Task 2: pilot only one partner at first", "Task 2, row 14"),
-        ("Task 3: use your highest-priority real prospect", "Task 3 (0xRusdi); slide 4"),
+        ("Task 3: use your highest-priority real prospect", "Task 3 (Bevan / Narrative Labs); slide 4"),
         ("Task 3: first outreach message of 120 words or fewer", "Task 3, row 4 (word count in the label)"),
         ("Task 3: follow-up after no response", "Task 3, row 6"),
         ("Task 3: reply to 'another platform offers a higher commission'", "Task 3, row 7"),
@@ -292,12 +412,19 @@ def build(research=False):
         ("OKX Wallet Meme Mode", "https://www.okx.com/learn/meme-mode"),
         ("OKX DEX fees and volume (DefiLlama)", "https://defillama.com/protocol/okx-dex"),
         ("Partner public pages (8)", "Task 1, column C"),
+        ("Bevan's published wallet (Solscan)", "https://solscan.io/account/8DC3hpFtU3mEU3FUCtDfU72SmxTbrw4w35fyMYP8qGxg"),
+        ("Narrative Labs (Masterclass, Discord, meetups)", "https://narrativelabs.id"),
+        ("Bevan's weekly live sessions (X)", "https://x.com/bevanpramudt/status/2115727803245347257"),
+        ("Kevin Susanto fomo PnL, 19-20 Nov 2026 (X)", "https://x.com/KevinSusanto/status/2123472525070102987"),
+        ("Kevin Susanto fomo trades (tracker)", "https://fomoradar.io/traders/kevinsusanto"),
+        ("Ponyin Trojan PnL card (X)", "https://x.com/Ponyin/status/2037746268039209077"),
+        ("GuarEmperor member results (X)", "https://x.com/GuarEmperor/status/2115414023114256560"),
+        ("GuarEmperor wallet lists (BasedBot, GMGN)", "https://github.com/ariefzzz5421/wallet-tracker-transfer"),
+        ("Stress Capital Discord", "https://discord.gg/stresscapitals"),
+        ("Orpheuzkaze portfolio", "https://orpheuzkaze-portfolio.vercel.app"),
         ("Meteora LP Army Jakarta (462 went)", "https://luma.com/76fvdt2j"),
         ("MET Bali (671 went)", "https://luma.com/pkr27xr4"),
-        ("Superteam Indonesia Ecosystem Showcase (502 went)", "https://luma.com/7gbaanxq"),
-        ("Superteam Hub Jakarta (with Indonesia Crypto Hub)", "https://luma.com/2fpz2q5p"),
         ("W3AI Wednesday at JURA (weekly)", "https://luma.com/zkq937gq"),
-        ("GuarEmperor wallet lists (BasedBot, GMGN)", "https://github.com/ariefzzz5421/wallet-tracker-transfer"),
         ("ICN: 10 X crypto influencers in Indonesia", "https://indonesiacrypto.network/blog/10-x-twitter-crypto-influencers-growing-the-indonesian-cryptosphere"),
         ("ICN community sizes (Mar 2026)", "https://indonesiacrypto.network/blog/crypto-community-indonesia"),
         ("POJK 6/2026 finfluencer certification", "https://economy.okezone.com/read/2026/07/08/320/3228975/ojk-wajibkan-sertifikasi-influencer-kripto-ini-tujuannya"),
@@ -305,7 +432,8 @@ def build(research=False):
         ("Akademi Crypto inquiry halted (Oct 2026)", "https://justisio.com/berita/2026-10-26-polda-metro-hentikan-penyelidikan-laporan-dugaan-penipuan-kripto-timot"),
         ("OKX Alpha Traders Summit, Bali", "https://bitpinas.com/feature/okx-alpha-traders-summit/"),
         ("Rival referral rates", "pump.fun: PrimeXBT, Crypto Briefing; Axiom: affiliate guides (unconfirmed); fomo: Datawallet"),
-        ("Indonesian X evidence", "@0xRusdi BasedBot dashboard; @0xSarimin Trojan referrals; @AiSlimx OKX Wallet Boost; @Ponyin Trojan results; @TomketLovers fomo clan; @cryptondo OKX Wallet use"),
+        ("Indonesian X evidence", "@0xRusdi BasedBot dashboard; @0xSarimin Trojan referrals; @AiSlimx OKX Wallet Boost; @Ponyin Trojan results; @cryptondo OKX Wallet use; @KevinSusanto fomo PnL; @GuarEmperor member results"),
+        ("Reach, FTD and volume rates", "Indonesia Crypto KOL & Partner Research, Volume proof and Shortlist deep-dive tabs (X API and Discord invite counts, 20 Nov 2026)"),
     ]
     header(mi, g0 + 1, ["Topic", "Source"])
     for i, (topic, url) in enumerate(sources):
@@ -313,27 +441,78 @@ def build(research=False):
         cell(mi, row, 1, topic)
         c = cell(mi, row, 2, url)
         if url.startswith("http"):
-            c.hyperlink = url
-            c.font = F_LINK
+            link(c, url)
     h0 = g0 + 2 + len(sources) + 1
 
     # H. longlist
     put(mi, f"A{h0}", "H. Longlist: 100 public Indonesian prospects screened", F_SECTION, wrap=False)
     put(mi, f"A{h0 + 1}", "Each prospect checked against the same filter: proof of trading, FnF power traders it can bring, rival flow to move, trencher fees.", wrap=False)
     LL = L["Longlist (100 screened)"]
+    drop = {"Bitcoinist Indonesia", "Blockchainmedia.id", "CoinDesk Indonesia", "CoinSpeaker Indonesia", "Cryptonews Indonesia",
+            "Investortrust.id", "Blockplay", "Crypto Indonesia (Discord)", "CryptoHack (Indonesia)", "Edwin Nazir / NQvers",
+            "Indonesia Paham Bitcoin", "Komunitas BlockBali (Egy)", "Neko Group", "Xenorize", "BEM FEB UI (Biro Project)",
+            "BINUS Blockchain and Crypto Club (BBCC)", "YESCON (IDBW @ UI)", "Bali Blockchain Weeks Campus Tour",
+            "Bulan Literasi Kripto (OJK + ABI)", "Solana Village Bali"}
     rows = []
     for r in range(15, 115):
         rec = [LL.cell(r, c).value for c in range(1, 11)]
         name = rec[1]
+        if name in drop:
+            continue
         if name == "vemi.pramudya":
-            rec = [None, partners[4]["name"], "Trading creator", partners[4]["link"], "Memecoin trenchers", "Y", "In the 8",
-                   "#5: FnF circle plus followers who copy his wallet lists on BasedBot and GMGN", "Wave 2 (day 17)",
-                   "https://github.com/ariefzzz5421/wallet-tracker-transfer"]
+            rec = [None, partners[5]["name"], "Trading creator", "https://x.com/GuarEmperor", TREN, "Y", "In the 8",
+                   "#6: FnF circle; members post results from his tools; 1.9% engagement", "Wave 2 (day 17)",
+                   "https://x.com/GuarEmperor/status/2115414023114256560"]
         elif name == "Hyperliquid Indonesia (community)":
             rec[6], rec[7], rec[8] = "Excluded by rule", "Rival perp venue: OKX can't send traffic there", ""
         elif name == "Superteam Indonesia":
-            rec[6], rec[7], rec[8] = "In the 8", "#8: meetable every week in Jakarta; Solana users already onchain", "Wave 3 (day 24): co-hosted trader night"
+            rec[6], rec[7], rec[8] = "Bench (month 2)", "Meetable weekly in Jakarta, but builder-led: no trading proof yet", "Month 2: co-hosted trader night once a partner proves demand"
         rows.append(rec)
+    new = [
+        ("Bevan Pramudito / Narrative Labs", "Trading educator", "https://x.com/bevanpramudt", TREN, "Y", "In the 8",
+         "#1: verified wallet, a paid community he founded, GMGN flow to move, meetable in Jakarta", "Wave 1 (day 10)", "https://narrativelabs.id"),
+        ("0xRusdi", "Trading creator", "https://x.com/0xRusdi", TREN, "Y", "In the 8",
+         "#2: the only public proof of a referred trading book (BasedBot)", "Wave 1 (day 10)", "https://x.com/0xRusdi"),
+        ("Ponyin", "Trading creator", "https://x.com/Ponyin", TREN, "Y", "In the 8",
+         "#3: Trojan PnL card, ~$170K of volume in March", "Wave 1 (day 10)", "https://x.com/Ponyin/status/2037746268039209077"),
+        ("Crypto Ndo", "Trading creator", "https://x.com/cryptondo", TREN, "Y", "In the 8",
+         "#4: largest trencher reach; trades on OKX Wallet himself", "Wave 2 (day 17); swaps into wave 1 if a top-3 partner says no", "https://x.com/cryptondo"),
+        ("Kevin Susanto", "Trading creator", "https://x.com/KevinSusanto", TREN, "Y", "In the 8",
+         "#5: most FTDs, but an existing OKX link and no FnF circle on record", "Wave 2 (day 17), through OKX's regional team", "https://x.com/KevinSusanto/status/2123472525070102987"),
+        ("Meteora LP Army", "Onchain trading community", "https://x.com/EvilPanda", LP, "Y", "In the 8",
+         "#7: largest in-person onchain crowds (462 and 671)", "Wave 3 (day 24): co-hosted night", "https://luma.com/76fvdt2j"),
+        ("Stress Capital (Orpheuzkaze)", "Trading community", "https://x.com/StressCapitals", TREN, "Y", "In the 8",
+         "#8: 30.7K-member clan Discord; FnF through clan leads", "Wave 3 (day 24)", "https://discord.gg/stresscapitals"),
+        ("TwipsX", "Trading creator", "https://x.com/TwipsX", TREN, "Y", "Bench (month 2)",
+         "60K-view BasedBot promo, but no proof its readers trade", "Month 2 if its promo quality checks out", "https://x.com/TwipsX"),
+        ("Nicholas Jason Santoso", "Finance creator", "https://instagram.com/nicholasjasons", "Beginners", "N", "Bench (month 2)",
+         "~15M Instagram views in 30 days (self-reported); no trading proof; airdrop community", "Month 2: CEX-beginner and tokenized-stocks test", "https://nicholasjasons.vercel.app"),
+        ("Tequila / Lil Stars", "Ecosystem community", "https://x.com/0xtequilaa", "NFT holders", "N", "Bench (month 2)",
+         "128K-member Discord but 1.2% online; NFT and Monad audience", "Month 2: holder-only trading competition", "https://x.com/Lilstarrrs"),
+        ("mage (@magersih)", "Trading creator", "https://x.com/magersih", TREN, "Y", "Bench (month 2)",
+         "Strong execution content (Telegram 2,271); moved his main wallet from OKX to Bitget Wallet on 11 Nov", "Month 2 win-back: ask what made him leave", "https://x.com/magersih/status/2120438997705224345"),
+        ("VIBI (@vibixuee)", "Finance creator", "https://x.com/vibixuee", "Beginners", "N", "Bench (month 2)",
+         "Beginner onboarding content, 2.6% engagement; no trading proof", "Month 2: onboarding Reel", "https://linktr.ee/VIBI"),
+        ("DegenRex", "Trading creator", "https://x.com/degen2ex", TREN, "Y", "Bench (month 2)",
+         "Won Clash of Trenchers, Jakarta, 12 Nov (1 SOL to 10 SOL); Telegram 1,845", "Guest trader at Bevan's workshop", "https://x.com/aveai_id/status/2120950749580677430"),
+        ("Friday7th / Hedgin", "Onchain tool", "https://x.com/Friday_SOL", LP, "Y", "Bench (month 2)",
+         "Co-hosts Meteora LP Army; DLMM bot journal (+1.946 SOL over 155 trades)", "Through the Meteora night: vault rebalances on the DEX API", "https://x.com/Friday_SOL/status/2122600631651164614"),
+        ("Luna (@iamretardio)", "Trading creator", "https://x.com/iamretardio", TREN, "Y", "Screened out",
+         "Grows the Cove trading bot (rival tool tie); 6.1K followers", "", "https://x.com/iamretardio/status/2123200836331585876"),
+        ("Limitmaxi", "Trading creator", "https://x.com/limitmaxi", TREN, "Y", "Screened out",
+         "Clash of Trenchers runner-up; ~440 followers", "Guest trader only", "https://x.com/aveai_id/status/2120950749580677430"),
+        ("melon (@melonbuskk)", "Builder", "https://x.com/melonbuskk", TREN, "N", "Screened out",
+         "Low activity; access to the EnclaviumFNF group not verified", "", "https://x.com/melonbuskk"),
+        ("celinejoo", "Trading creator", "https://x.com/celinejoo__", "Beginners", "N", "Screened out",
+         "~900 X followers; newer trader", "", "https://x.com/celinejoo__"),
+        ("zeraa (@0xzeraa)", "Ecosystem community", "https://x.com/0xzeraa", "NFT holders", "N", "Screened out",
+         "Team role at Lil Stars; reach not measured", "", "https://x.com/0xzeraa"),
+        ("Tomket Lovers", "Trading community", "https://x.com/TomketLovers", TREN, "Y", "Screened out",
+         "Competitor-aligned: runs Bitget Wallet promos (its fomo clan of 13-15 traders was the draw)", "", "https://x.com/TomketLovers"),
+    ]
+    for rec in new:
+        rows.append([None, *rec])
+    assert len(rows) == 100, len(rows)
     order = {"In the 8": 0, "Bench (month 2)": 1, "Access channel": 2, "Lead to verify": 3, "Excluded by rule": 4, "Legal hold": 5, "Screened out": 6}
     rows.sort(key=lambda x: (order[x[6]], str(x[1]).lower()))
     header(mi, h0 + 3, ["Screen result", "Count"])
@@ -346,49 +525,47 @@ def build(research=False):
     for i, rec in enumerate(rows):
         row = h0 + 14 + i
         rec[0] = i + 1
-        for c, v in enumerate(rec, 1):
-            cell(mi, row, c, v)
+        for c, vv in enumerate(rec, 1):
+            cc = cell(mi, row, c, vv)
+            if c in (4, 10) and str(vv).startswith("http"):
+                link(cc, vv)
     widths(mi, {"A": 44, "B": 30, "C": 30, "D": 30, "E": 34, "F": 16, "G": 18, "H": 50, "I": 40, "J": 44})
     mi.freeze_panes = "A3"
 
     # ============================================================ Task 1
     put(t1, "A1", "Task 1: 8 partners beyond airdrop communities", F_TITLE, wrap=False)
-    put(t1, "A2", "Each partner's first 30 days live, base case (BAU); revenue at the brief's 0.04%. Yellow cells are inputs.", wrap=False)
+    put(t1, "A2", "Each partner's first month, base case: FTDs = reach P x 2% sign up x 15% trade; swaps = FTDs x $2,000 + FnF power traders x $16,400 from day 4. Revenue at the brief's 0.04%. Yellow cells are inputs.", wrap=False)
     put(t1, "A4", "Why these 3 first", F_BOLD, wrap=False)
-    put(t1, "B4", "Filter, in order: 1 Proof they already trade → 2 FnF power traders they bring (~90% of swaps) → 3 Rival flow we move to OKX → 4 Trencher fees: 0.5%", F_BOLD, wrap=False)
-    lines = [
-        ("1. 0xRusdi", "Proof: $8,463 of BasedBot referral earnings at the 25% tier, the only public proof of a referred trading book · FnF: his referral book · Flow: BasedBot users → OKX", 37),
-        ("2. Crypto Ndo", "Proof: says he trades only on OKX Wallet; largest trencher audience on X (59.3K) · FnF: traders in his circle · Flow: his fomo referral links → OKX", 38),
-        ("3. Ponyin", "Proof: ~$170K of Trojan volume posted for March 2026 · FnF: his trading circle · Flow: Trojan users → OKX", 39),
-    ]
-    for i, (a, b, r) in enumerate(lines):
-        put(t1, f"A{5 + i}", a, F_BOLD, wrap=False)
-        put(t1, f"B{5 + i}", f'="{b} · Trencher: "&TEXT(G{r},"0")&" FTDs, "&TEXT(I{r},"0")&" trades a day, $"&TEXT(M{r}/1000,"0")&"K swaps"', wrap=False)
+    put(t1, "B4", f'="Filter, in order: 1 Proof they already trade → 2 FnF power traders they bring ("&TEXT(B48,"0%")&" of swaps) → 3 Rival flow we move to OKX → 4 Trencher fees: 0.5%"', F_BOLD, wrap=False)
+    for i, p in enumerate(partners[:3]):
+        r = N0 + i
+        put(t1, f"A{5 + i}", f"{i + 1}. {p['short']}", F_BOLD, wrap=False)
+        put(t1, f"B{5 + i}", f'="{p["line"]} · Trencher: "&TEXT(F{r},"0")&" FTDs, "&TEXT(I{r},"0")&" trades a day, $"&TEXT(M{r}/1000,"0")&"K swaps"', wrap=False)
     put(t1, "A8", "Reach alone isn't enough", F_BOLD, wrap=False)
-    put(t1, "B8", "TwipsX (#4) brings more FTDs than any top-3 partner but has no proof its readers trade; Indonesia's biggest crypto names (100 screened, Miscellaneous section H) have none either.", wrap=False)
+    put(t1, "B8", f'="Kevin Susanto (#5) brings more FTDs than the top 3 together ("&TEXT(F41,"0")&" vs "&TEXT(SUM(F37:F39),"0")&") but already holds an OKX referral link and has no FnF circle on record. Indonesia\'s biggest crypto names (100 screened, Miscellaneous section H) show no onchain proof."', wrap=False)
 
     put(t1, "A10", "A. The 8 partners (all fields the brief asks for)", F_SECTION, wrap=False)
     header(t1, 11, ["#", "Partner", "Public link", "Partner type", "Priority", "Priority reason", "Audience and market",
                     "Evidence of fit (verified)", "Assumptions to verify", "Acquisition route", "Proposed partnership",
-                    "Main risk", "FnF / power traders they bring", "Rival tool their traders use now", "Meetable in person", "Airdrop-led"])
+                    "Main risk", "FnF / power traders they bring", "Rival tool their traders use now", "Meetable in person",
+                    "Airdrop-led (main proposition)"])
     for i, p in enumerate(partners):
         r = 12 + i
         vals = [i + 1, p["name"], p["link"], p["type"], f'=IF(J{26 + i}<=3,"High",IF(J{26 + i}<=7,"Medium","Low"))', p["reason"],
                 p["audience"], p["evidence"], p["assumptions"], p["route"], p["proposal"], p["risk"], p["fnf"], p["vampire"],
                 p["in_person"], p["airdrop"]]
-        for c, v in enumerate(vals, 1):
-            cc = cell(t1, r, c, v)
+        for c, vv in enumerate(vals, 1):
+            cc = cell(t1, r, c, vv)
             if c == 3:
-                cc.hyperlink = str(v).split(" ; ")[0]
-                cc.font = F_LINK
+                link(cc, str(vv).split(" ; ")[0])
     cell(t1, 21, 1, "Brief checks", bold=True)
     cell(t1, 21, 2, "Partners")
     cell(t1, 21, 3, "=COUNTA(B12:B19)")
     cell(t1, 21, 4, "Not airdrop-led (6+ needed)")
-    cell(t1, 21, 5, '=COUNTIF(P12:P19,"No")')
+    cell(t1, 21, 5, '=COUNTIF(P12:P19,"No*")')
     cell(t1, 21, 6, "Meetable in person (2+ needed)")
     cell(t1, 21, 7, '=COUNTIF(O12:O19,"Yes")')
-    cell(t1, 21, 8, "Partner types (3+ needed): 4 = X trading creators, a trading clan, an LP community, a Solana ecosystem community")
+    cell(t1, 21, 8, "Partner types (3+ needed): 5 = a trader-educator with a paid community, X trading creators, a large KOL, an LP community, a trading clan")
 
     put(t1, "A23", "B. Ranking (1-5 per criterion; yellow = inputs)", F_SECTION, wrap=False)
     header(t1, 24, ["Partner", "Proof of real trading", "FTD potential", "FnF / power-trader access", "Rival flow to move",
@@ -400,66 +577,70 @@ def build(research=False):
     for i, p in enumerate(partners):
         r = 26 + i
         cell(t1, r, 1, f"=B{12 + i}")
-        for c, s in enumerate(p["scores"], 2):
-            cell(t1, r, c, s, inp=True)
+        for c, sc in enumerate(p["scores"], 2):
+            cell(t1, r, c, sc, inp=True)
         cell(t1, r, 9, f"=SUMPRODUCT(B{r}:H{r},$B$25:$H$25)", fmt="0.00")
         cell(t1, r, 10, f"=RANK(I{r},$I$26:$I$33)")
 
-    put(t1, "A35", "C. First 30 days live, by partner (BAU unless stated; revenue at the brief's 0.04%)", F_SECTION, wrap=False)
-    header(t1, 36, ["Partner", "Segment", "Audience (post readers or attendees)", "FTD rate", "Days an FTD trades", "Partner share",
-                    "FTDs", "FnF power traders", "Trades a day (day 30)", "Swaps a day (day 30)", "Retail swaps",
-                    "FnF power-trader swaps", "Swaps (BAU)", "Swaps (pessimistic)", "Swaps (optimistic)", "Revenue (0.04%)",
-                    "Paid to partner", "OKX keeps", "Audience basis"])
+    put(t1, "A35", "C. Each partner's first month (research method: FTDs = P x s x a; swaps = FTDs x v; plus FnF power traders). Revenue at the brief's 0.04%", F_SECTION, wrap=False)
+    header(t1, 36, ["Partner", "Segment", "Reach pool P (people a month)", "Reach measured or estimated", "FTDs (low)", "FTDs (base)",
+                    "FTDs (high)", "FnF power traders", "Trades a day (base, once all are trading)", "FTD swaps (base)",
+                    "FnF power-trader swaps (base)", "Swaps (low)", "Swaps (base)", "Swaps (high)", "Revenue (0.04%, base)",
+                    "Partner share", "Paid to partner", "OKX keeps", "Owned community (members)", "Benchmark swaps a member a month",
+                    "Community benchmark a month (context only)", "Reach basis"])
     for i, p in enumerate(partners):
-        r = 37 + i
+        r = N0 + i
         seg = f"MATCH($B{r},{SEG},0)"
-        rd, pd = f"INDEX({M}$D$19:$D$20,{seg})", f"INDEX({M}$G$19:$G$20,{seg})"
-        rt, pt = f"INDEX({M}$B$19:$B$20,{seg})", f"INDEX({M}$E$19:$E$20,{seg})"
+        tpd_r, tpd_f = f"INDEX({M}$D$19:$D$20,{seg})", f"INDEX({M}$E$19:$E$20,{seg})"
+        live = lambda k: f"({DAYS}-{st[k]}+1)/{DAYS}"
         cell(t1, r, 1, f"=B{12 + i}")
         cell(t1, r, 2, p["segment"], inp=True)
-        cell(t1, r, 3, p["aud_n"], fmt="#,##0", inp=True)
-        cell(t1, r, 4, p["rate"], fmt=PCT, inp=True)
-        cell(t1, r, 5, p["days"], inp=True)
-        cell(t1, r, 6, p["share"], fmt=PCT, inp=True)
-        cell(t1, r, 7, f"=C{r}*D{r}*{M}$C$5", fmt=NUM1)
+        cell(t1, r, 3, p["pool"], fmt=NUM0, inp=True)
+        cell(t1, r, 4, p["basis"].split(":")[0].split(" (")[0])
+        cell(t1, r, 5, f"=C{r}*{s['l']}*{a['l']}", fmt=NUM1)
+        cell(t1, r, 6, f"=C{r}*{s['b']}*{a['b']}", fmt=NUM1)
+        cell(t1, r, 7, f"=C{r}*{s['h']}*{a['h']}", fmt=NUM1)
         cell(t1, r, 8, p["ptraders"], inp=True)
-        cell(t1, r, 9, f"=G{r}*{M}$C$6*{rt}+H{r}*{M}$C$10*{pt}", fmt=NUM1)
-        cell(t1, r, 10, f"=G{r}*{rd}+H{r}*{pd}", fmt=MONEY)
-        cell(t1, r, 11, f"=G{r}*{rd}*E{r}", fmt=MONEY)
-        cell(t1, r, 12, f"=H{r}*{pd}*({M}$C$14-{M}$C$13+1)", fmt=MONEY)
-        cell(t1, r, 13, f"=K{r}+L{r}", fmt=MONEY)
-        cell(t1, r, 14, f"=C{r}*D{r}*{M}$B$5*{rd}*{M}$B$24*E{r}+H{r}*{M}$B$9/{M}$C$9*{pd}*{M}$D$24*({M}$B$14-{M}$B$13+1)", fmt=MONEY)
-        cell(t1, r, 15, f"=C{r}*D{r}*{M}$D$5*{rd}*{M}$C$24*E{r}+H{r}*{M}$D$9/{M}$C$9*{pd}*{M}$E$24*({M}$D$14-{M}$D$13+1)", fmt=MONEY)
-        cell(t1, r, 16, f"=M{r}*{M}$C$15", fmt=MONEY2)
-        cell(t1, r, 17, f"=P{r}*F{r}", fmt=MONEY2)
-        cell(t1, r, 18, f"=P{r}-Q{r}", fmt=MONEY2)
-        cell(t1, r, 19, p["basis"])
-    cell(t1, 45, 1, "Total, 8 partners", bold=True)
-    for c in range(7, 19):
-        if c == 6:
-            continue
-        col = "ABCDEFGHIJKLMNOPQRS"[c - 1]
-        cell(t1, 45, c, f"=SUM({col}37:{col}44)", fmt=t1.cell(37, c).number_format, bold=True)
+        cell(t1, r, 9, f"=F{r}*{tpd_r}+H{r}*{tpd_f}", fmt=NUM1)
+        cell(t1, r, 10, f"=F{r}*{v['b']}", fmt=MONEY)
+        cell(t1, r, 11, f"=H{r}*{vf['b']}*{live('b')}", fmt=MONEY)
+        cell(t1, r, 12, f"=E{r}*{v['l']}+H{r}*{vf['l']}*{live('l')}", fmt=MONEY)
+        cell(t1, r, 13, f"=J{r}+K{r}", fmt=MONEY)
+        cell(t1, r, 14, f"=G{r}*{v['h']}+H{r}*{vf['h']}*{live('h')}", fmt=MONEY)
+        cell(t1, r, 15, f"=M{r}*{RATE}", fmt=MONEY2)
+        cell(t1, r, 16, p["share"], fmt=PCT, inp=True)
+        cell(t1, r, 17, f"=O{r}*P{r}", fmt=MONEY2)
+        cell(t1, r, 18, f"=O{r}-Q{r}", fmt=MONEY2)
+        cell(t1, r, 19, p["members"], fmt=NUM0, inp=p["members"] is not None)
+        bench = f"{M}$C${BT_}" if p["per_member"] == "trade" else f"{M}$C${BN_}"
+        cell(t1, r, 20, f"={bench}", fmt=MONEY)
+        cell(t1, r, 21, f'=IF(S{r}="","",S{r}*T{r})', fmt=MONEY)
+        cell(t1, r, 22, p["basis"])
+    cell(t1, TOT, 1, "Total, 8 partners", bold=True)
+    for c in list(range(3, 4)) + list(range(5, 16)) + [17, 18]:
+        L_ = col(c)
+        cell(t1, TOT, c, f"=SUM({L_}{N0}:{L_}{N1})", fmt=t1.cell(N0, c).number_format, bold=True)
+    cell(t1, TOT, 21, "Not summed: communities overlap")
     checks = [
-        ("FnF power traders' share of swaps", "=L45/M45", PCT),
-        ("Swaps if no FnF power traders arrive (retail FTDs only)", "=K45", MONEY),
-        ("Revenue in that case (0.04%)", f"=K45*{M}$C$15", MONEY),
-        ("Retail swaps per FTD in month 1", "=K45/G45", MONEY),
-        ("Monthly swaps after day 30 (run-rate)", "=J45*30", MONEY),
+        ("FnF power traders' share of swaps (base)", f"=K{TOT}/M{TOT}", PCT),
+        ("Swaps if no FnF power traders arrive (FTDs only, base)", f"=J{TOT}", MONEY),
+        ("Revenue in that case (0.04%)", f"=J{TOT}*{RATE}", MONEY),
+        ("Largest single partner's share of FTDs (base)", f"=MAX(F{N0}:F{N1})/F{TOT}", PCT),
+        ("Revenue range, low to high (0.04%)", f'="$"&TEXT(L{TOT}*{RATE},"#,##0")&" to $"&TEXT(N{TOT}*{RATE},"#,##0")&" (base $"&TEXT(O{TOT},"#,##0")&")"', None),
         ("Published-fee upside before partner shares (trenchers 0.5%; LP at the blend in C53)",
-         f'=SUMIF(B37:B44,"Memecoin trenchers",M37:M44)*{MEME_FEE}+SUMIF(B37:B44,"DeFi / LP users",M37:M44)*C53', MONEY),
+         f'=SUMIF(B{N0}:B{N1},"{TREN}",M{N0}:M{N1})*{MEME_FEE}+SUMIF(B{N0}:B{N1},"{LP}",M{N0}:M{N1})*C53', MONEY),
     ]
     put(t1, "A47", "Checks", F_BOLD, wrap=False)
-    for i, (a, f, fmt) in enumerate(checks):
-        cell(t1, 48 + i, 1, a)
+    for i, (aa, f, fmt) in enumerate(checks):
+        cell(t1, 48 + i, 1, aa)
         cell(t1, 48 + i, 2, f, fmt=fmt)
     cell(t1, 53, 3, 0.0015, fmt=PCT2, inp=True)
-    put(t1, "A55", "Where prospects come from: Telegram directories and t.me previews, X (KOL posts, PnL and referral screenshots, "
-                   "public wallet lists), Luma event pages, rival ambassador and campaign lists (Bitget Wallet, BasedBot, Trojan, "
-                   "fomo clans, pump.fun), GMGN and Kolscan KOL wallets. Hyperliquid Indonesia and Bael calls were screened out "
-                   "as rival-venue and rival-wallet ties.", wrap=False)
+    put(t1, "A55", "Where prospects come from: X (KOL posts, PnL and referral screenshots, public wallet lists; median views via the X API), "
+                   "Solscan wallet reads, Discord invite counts, Telegram previews, Luma event pages, rival ambassador and campaign lists "
+                   "(Bitget Wallet, BasedBot, Trojan, fomo, pump.fun). Hyperliquid Indonesia and Bael calls were screened out"
+                   " as rival-venue and rival-wallet ties.", wrap=False)
     widths(t1, {"A": 30, "B": 30, "C": 30, "D": 26, "E": 12, "F": 34, "G": 30, "H": 46, "I": 34, "J": 26, "K": 44, "L": 34,
-                "M": 34, "N": 30, "O": 14, "P": 12, "Q": 14, "R": 14, "S": 44})
+                "M": 34, "N": 30, "O": 14, "P": 16, "Q": 14, "R": 14, "S": 14, "T": 14, "U": 18, "V": 48})
     t1.freeze_panes = "C12"
 
     # ============================================================ Task 2
@@ -471,135 +652,130 @@ def build(research=False):
         cell(t2, row, 1, LT2.cell(r, 1).value)
         cell(t2, row, 2, LT2.cell(r, 2).value)
         cell(t2, row, 3, LT2.cell(r, 3).value, fmt=MONEY, inp=True)
-        cell(t2, row, 4, f"=C{row}*{M}$C$15", fmt=MONEY)
+        cell(t2, row, 4, f"=C{row}*{RATE}", fmt=MONEY)
         cell(t2, row, 5, LT2.cell(r, 5).value, fmt=MONEY, inp=True)
         cell(t2, row, 6, LT2.cell(r, 6).value, fmt=PCT, inp=True)
         cell(t2, row, 7, f"=D{row}-E{row}-D{row}*F{row}", fmt=MONEY)
         cell(t2, row, 8, LT2.cell(r, 8).value, fmt=PCT, inp=True)
         cell(t2, row, 9, f"=D{row}-D{row}*H{row}", fmt=MONEY)
-        cell(t2, row, 10, f'=IF(E{row}=0,"No fixed fee",E{row}/({M}$C$15*(1-F{row})))', fmt=MONEY)
+        cell(t2, row, 10, f'=IF(E{row}=0,"No fixed fee",E{row}/({RATE}*(1-F{row})))', fmt=MONEY)
         cell(t2, row, 11, f"=D{row}/2-E{row}-D{row}/2*F{row}", fmt=MONEY)
         cell(t2, row, 12, f"=D{row}/2-D{row}/2*H{row}", fmt=MONEY)
     cell(t2, 7, 1, "Total", bold=True)
-    for col in "CDEGIKL":
-        cell(t2, 7, "ABCDEFGHIJKL".index(col) + 1, f"=SUM({col}4:{col}6)", fmt=MONEY, bold=True)
+    for cc in "CDEGIKL":
+        cell(t2, 7, "ABCDEFGHIJKL".index(cc) + 1, f"=SUM({cc}4:{cc}6)", fmt=MONEY, bold=True)
     for r in range(9, 15):
         cell(t2, r, 1, LT2.cell(r, 1).value, bold=True)
         cell(t2, r, 2, LT2.cell(r, 2).value)
     put(t2, "A16", "Partner B's own payout, and the step-up case", F_SECTION, wrap=False)
     header(t2, 17, ["Case", "Full volume", "At 50% volume"])
-    for i, (a, b, c) in enumerate([("B's payout on its ask (35%)", "=D5*F5", "=D5/2*F5"),
-                                   ("B's payout on our counter (25%)", "=D5*H5", "=D5/2*H5"),
-                                   ("OKX month 1 if B reaches the 35% step-up inside month 1", "=D5-D5*F5", "=D5/2-D5/2*F5")]):
-        cell(t2, 18 + i, 1, a)
+    for i, (aa, b, c) in enumerate([("B's payout on its ask (35%)", "=D5*F5", "=D5/2*F5"),
+                                    ("B's payout on our counter (25%)", "=D5*H5", "=D5/2*H5"),
+                                    ("OKX month 1 if B reaches the 35% step-up inside month 1", "=D5-D5*F5", "=D5/2-D5/2*F5")]):
+        cell(t2, 18 + i, 1, aa)
         cell(t2, 18 + i, 2, b, fmt=MONEY)
         cell(t2, 18 + i, 3, c, fmt=MONEY)
-    put(t2, "A22", "Our real top 3 on the same test (each partner's first 30 days live, BAU, 0.04%)", F_SECTION, wrap=False)
-    header(t2, 23, ["Partner", "Swaps, first 30 days (BAU)", "Revenue (0.04%)", "Fixed fee (our offer)", "Revenue share (our offer)",
+    put(t2, "A22", "Our real top 3 on the same test (each partner's first month, base case, 0.04%)", F_SECTION, wrap=False)
+    header(t2, 23, ["Partner", "Swaps, first month (base)", "Revenue (0.04%)", "Fixed fee (our offer)", "Revenue share (our offer)",
                     "1. Month-1 contribution", "5. At 50% of forecast", "Partner earns (0.04%)", "Partner earns at 50%",
                     "Volume the illustrative fixed fee (B33) needs to break even", "OKX keeps at the published 0.5% fee", "4. Evidence before signing"])
-    evid = ["BasedBot dashboard export: referred traders, volume per trader, days active, chains; share of his referred traders in Indonesia",
-            "fomo referral stats (active referrals, volume); share of followers trading daily; disclosure on his own launchpad (@flapdotsh)",
-            "Trojan dashboard or wallet history for him and his circle; how many in the circle trade daily"]
     for k in range(3):
-        r, src = 24 + k, 37 + k
+        r, src = 24 + k, N0 + k
         cell(t2, r, 1, f"={T1}A{src}")
         cell(t2, r, 2, f"={T1}M{src}", fmt=MONEY)
-        cell(t2, r, 3, f"=B{r}*{M}$C$15", fmt=MONEY2)
+        cell(t2, r, 3, f"=B{r}*{RATE}", fmt=MONEY2)
         cell(t2, r, 4, 0, fmt=MONEY, inp=True)
-        cell(t2, r, 5, f"={T1}F{src}", fmt=PCT)
+        cell(t2, r, 5, f"={T1}P{src}", fmt=PCT)
         cell(t2, r, 6, f"=C{r}-D{r}-C{r}*E{r}", fmt=MONEY2)
         cell(t2, r, 7, f"=C{r}/2-D{r}-C{r}/2*E{r}", fmt=MONEY2)
         cell(t2, r, 8, f"=C{r}*E{r}", fmt=MONEY2)
         cell(t2, r, 9, f"=C{r}/2*E{r}", fmt=MONEY2)
-        cell(t2, r, 10, f"=$B$33/({M}$C$15*(1-E{r}))", fmt=MONEY)
+        cell(t2, r, 10, f"=$B$33/({RATE}*(1-E{r}))", fmt=MONEY)
         cell(t2, r, 11, f"=B{r}*{MEME_FEE}*(1-E{r})", fmt=MONEY2)
-        cell(t2, r, 12, evid[k])
+        cell(t2, r, 12, partners[k]["check"])
     cell(t2, 27, 1, "Top 3 total", bold=True)
-    for col in "BCDFGHIK":
-        cell(t2, 27, "ABCDEFGHIJKL".index(col) + 1, f"=SUM({col}24:{col}26)", fmt=t2[f"{col}24"].number_format, bold=True)
+    for cc in "BCDFGHIK":
+        cell(t2, 27, "ABCDEFGHIJKL".index(cc) + 1, f"=SUM({cc}24:{cc}26)", fmt=t2[f"{cc}24"].number_format, bold=True)
     answers = [
-        ("2. Preferred pilot", "All three go live together in wave 1 (day 10); the one-pilot limit applies to the brief's A, B and C. If only one could go first: 0xRusdi, the only partner with public proof of a referred trading book."),
+        ("2. Preferred pilot", "All three go live together in wave 1 (day 10); the one-pilot limit applies to the brief's A, B and C. If only one could go first: Bevan / Narrative Labs, the only partner who passes all four filters and can be met in Jakarta."),
         ("3. Pilot structure", "Revenue share only: 30% base, 40% once at least $1M of referred swaps and 50 wallets trading on 3+ days; follower discount up to 10% from the partner's share; 30-day clawback for wash trading, self-referral and sybil wallets; no fixed fee."),
         ("Why no fixed fee", '="At 0.04%, even a $"&TEXT(B33,"#,##0")&" fixed fee needs about $"&TEXT(J24/1000000,"0.0")&"M of swaps to break even, while each of these partners is forecast at about $"&TEXT(B27/3/1000,"0")&"K. A fixed fee only comes back with 90 days of data, and at published fees (column K)."'),
-        ("5. If volume reaches only 50%", '="Contribution halves from $"&TEXT(F27,"0")&" to $"&TEXT(G27,"0")&" for the three but stays positive, because there is no fixed fee. Each partner\'s payout halves too ($"&TEXT(H24,"0")&" to $"&TEXT(I24,"0")&" for 0xRusdi at 0.04%), so the offer leans on support and FnF onboarding, not the rate."'),
+        ("5. If volume reaches only 50%", '="Contribution halves from $"&TEXT(F27,"0")&" to $"&TEXT(G27,"0")&" for the three but stays positive, because there is no fixed fee. Each partner\'s payout halves too ($"&TEXT(H24,"0")&" to $"&TEXT(I24,"0")&" for Bevan at 0.04%), so the offer leans on support and FnF onboarding, not the rate."'),
     ]
-    for i, (a, b) in enumerate(answers):
-        cell(t2, 29 + i, 1, a, bold=True)
+    for i, (aa, b) in enumerate(answers):
+        cell(t2, 29 + i, 1, aa, bold=True)
         cell(t2, 29 + i, 2, b)
     cell(t2, 33, 1, "Illustrative fixed fee to test", bold=True)
     cell(t2, 33, 2, 500, fmt=MONEY, inp=True)
     widths(t2, {"A": 30, "B": 30, "C": 14, "D": 14, "E": 14, "F": 14, "G": 16, "H": 16, "I": 16, "J": 18, "K": 16, "L": 44})
 
     # ============================================================ Task 3
-    LT3 = L["Task 3 outreach"]
-    put(t3, "A1", "Task 3: win and activate 0xRusdi, our #1 prospect", F_TITLE, wrap=False)
+    put(t3, "A1", "Task 3: win and activate Bevan / Narrative Labs, our #1 prospect", F_TITLE, wrap=False)
     header(t3, 3, ["Item", "Text"] + (["Word count"] if research else []))
-    for r in range(4, 12):
-        cell(t3, r, 1, LT3.cell(r, 1).value, bold=True)
-        cell(t3, r, 2, LT3.cell(r, 2).value)
+    for i, (aa, b) in enumerate(TASK3):
+        r = 4 + i
+        cell(t3, r, 1, aa, bold=True)
+        cell(t3, r, 2, b)
         if research and r <= 7:
             cell(t3, r, 3, f'=LEN(TRIM(B{r}))-LEN(SUBSTITUTE(TRIM(B{r})," ",""))+1')
     t3["A4"].value = '="First message (X DM), "&(LEN(TRIM(B4))-LEN(SUBSTITUTE(TRIM(B4)," ",""))+1)&" words"'
-    t3["B11"].value = ("The messages promise no rates, rewards or features OKX hasn't confirmed. The fee share (up to 50% by tier) and "
-                       "the follower discount are published OKX DEX referral features; any specific rate needs OKX approval.")
     put(t3, "A13", "14-day activation plan (day 1 = agreement signed)", F_SECTION, wrap=False)
     header(t3, 14, ["Days", "What happens", "Target"])
-    for i, r in enumerate(range(14, 20)):
-        row = 15 + i
-        cell(t3, row, 1, LT3.cell(r, 1).value, bold=True)
-        txt = (LT3.cell(r, 2).value or "").replace("his 5 most active referred traders", "his 5 most active referred traders (his FnF power traders)")
-        cell(t3, row, 2, txt)
-        cell(t3, row, 3, LT3.cell(r, 3).value)
-    put(t3, "A22", "Offer to 0xRusdi (OKX DEX referral programme; any rate needs OKX approval)", F_SECTION, wrap=False)
+    for i, (aa, b, c) in enumerate(PLAN14):
+        cell(t3, 15 + i, 1, aa, bold=True)
+        cell(t3, 15 + i, 2, b)
+        cell(t3, 15 + i, 3, c)
+    put(t3, "A22", "Offer to Bevan (OKX DEX referral programme; any rate needs OKX approval)", F_SECTION, wrap=False)
     header(t3, 23, ["Term", "Value"])
-    offer = [("Base revenue share", f"={T1}F37", PCT, True), ("Step-up share", 0.4, PCT, True),
+    p0 = partners[0]
+    offer = [("Base revenue share", f"={T1}P{N0}", PCT, False), ("Step-up share", 0.4, PCT, True),
              ("Step-up trigger", OF.cell(6, 6).value, None, False), ("Follower discount", "Up to 10%, from the partner's share", None, False),
-             ("Swap fee his traders pay", "0.5% on memecoins (published OKX DEX fee)", None, False),
-             ("What he needs most", OF.cell(19, 6).value, None, False), ("Support from us", OF.cell(19, 7).value, None, False),
-             ("He earns in his first 30 days (published fee)", f"={T1}M37*{MEME_FEE}*{T1}F37", MONEY2, False),
+             ("Swap fee his members pay", "0.5% on memecoins (published OKX DEX fee)", None, False),
+             ("What he needs most", p0["need"], None, False), ("Support from us", p0["support"], None, False),
+             ("He earns in his first month (published fee)", f"={T1}M{N0}*{MEME_FEE}*{T1}P{N0}", MONEY2, False),
              ("Rules for all partners", OF.cell(10, 1).value.replace("Rules for all: ", ""), None, False)]
-    for i, (a, b, fmt, inp) in enumerate(offer):
-        cell(t3, 24 + i, 1, a, bold=True)
-        cell(t3, 24 + i, 2, b, fmt=fmt, inp=inp and not str(b).startswith("="))
+    for i, (aa, b, fmt, inp) in enumerate(offer):
+        cell(t3, 24 + i, 1, aa, bold=True)
+        cell(t3, 24 + i, 2, b, fmt=fmt, inp=inp)
     put(t3, "A34", "Support every partner gets", F_SECTION, wrap=False)
     for i, r in enumerate(range(26, 32)):
         cell(t3, 35 + i, 1, f"{i + 1}.")
         cell(t3, 35 + i, 2, OF.cell(r, 1).value)
-    widths(t3, {"A": 36, "B": 110, "C": 40 if not research else 40})
+    widths(t3, {"A": 36, "B": 110, "C": 40})
 
     # ============================================================ Task 4
+    DP = L["30-day plan"]
     put(t4, "A1", "Task 4: first 30 days (calendar days 1-30 of the job)", F_TITLE, wrap=False)
     put(t4, "A2", "Main metrics: FTDs, then trades a day; swaps and revenue follow. Partners go live in three waves: days 10, 17 and 24.", wrap=False)
     put(t4, "A4", "A. Weekly targets", F_SECTION, wrap=False)
     header(t4, 5, ["Target", "Week 1 (days 1-7)", "Week 2 (days 8-14)", "Week 3 (days 15-21)", "Week 4 (days 22-30)", "Day 30", "How it's set"])
-    R0, R1 = 25, 32  # ramp rows (partners); 33 total; 34 Partner B
+    R0, R1 = 25, 32
     weekly = [
         ("Prospects scored", 25, 20, 15, 10, "=SUM(B6:E6)", "Score everyone before messaging"),
         ("Outreach messages (warm intro first)", 25, 20, 15, 10, "=SUM(B7:E7)", "100% of scored"),
         ("Replies", 8, 6, 5, 3, "=SUM(B8:E8)", "~30% of messages"),
-        ("Meetings (call or in person)", 3, 6, 5, 4, "=SUM(B9:E9)", "~80% of replies; the Jakarta day is in week 2"),
+        ("Meetings (call or in person)", 3, 6, 5, 4, "=SUM(B9:E9)", "~80% of replies; the Jakarta day (Bevan, Kevin Susanto) is in week 2"),
         ("Pilots live (running total, our 8)", 0, f'=COUNTIF($C${R0}:$C${R1},"<=14")', f'=COUNTIF($C${R0}:$C${R1},"<=21")',
          f'=COUNTIF($C${R0}:$C${R1},"<=30")', "=E10",
-         "Waves: top 3 on day 10; TwipsX, GuarEmperor and the Meteora night on day 17; Tomket Lovers and the Superteam night on day 24. If one of the top 3 says no in week 1, TwipsX moves into wave 1"),
+         "Waves: the top 3 (Bevan, 0xRusdi, Ponyin) on day 10; Crypto Ndo, Kevin Susanto and GuarEmperor on day 17; the Meteora night and Stress Capital on day 24. If one of the top 3 says no in week 1, Crypto Ndo moves into wave 1"),
         ("Partner B pilot (the brief's hypothetical)", "Signing", "Live from day 10", "Live", "Live", "Live", "The one A/B/C pilot; counted separately because its volume is the brief's estimate"),
-        ("Activated partners (running total, our 8)", 0, 0, 0, f'=COUNTIF(R{R0}:R{R1},"Yes")', "=E12", "FTDs >= 10, trades a day >= 50 and swaps >= $100K within 30 days live"),
+        ("Activated partners (running total, our 8)", 0, 0, 0, f'=COUNTIF(R{R0}:R{R1},"Yes")', "=E12", "FTDs >= 10 and trades a day >= 50 by day 30 (section B)"),
         ("FTDs (running total)", 0, f"=SUM(H{R0}:H{R1})", f"=SUM(I{R0}:I{R1})", f"=SUM(J{R0}:J{R1})", "=E13", "Task 1 FTDs x share of each partner's month live; event FTDs on the night"),
-        ("Trades a day (last day of the week)", 0, f"=SUM(K{R0}:K{R1})", f"=SUM(L{R0}:L{R1})", f"=SUM(M{R0}:M{R1})", "=E14", "FTDs x share trading x trades + FnF power traders x share active x trades"),
-        ("Swaps from our 8 (running total)", 0, f"=SUM(N{R0}:N{R1})", f"=SUM(O{R0}:O{R1})", f"=SUM(P{R0}:P{R1})", "=E15", "Each partner's live days in the calendar month"),
+        ("Trades a day (last day of the week)", 0, f"=SUM(K{R0}:K{R1})", f"=SUM(L{R0}:L{R1})", f"=SUM(M{R0}:M{R1})", "=E14", "FTDs so far x trades a day per FTD + FnF power traders x trades a day each"),
+        ("Swaps from our 8 (running total)", 0, f"=SUM(N{R0}:N{R1})", f"=SUM(O{R0}:O{R1})", f"=SUM(P{R0}:P{R1})", "=E15", "Calendar days: FTDs arrive through the month, so this trails Task 1's first-month cohort"),
         ("Swaps from Partner B (running total)", 0, "=N34", "=O34", "=P34", "=E16", "$2M a month from day 10"),
-        ("Revenue at 0.04% (running total)", f"=(B15+B16)*{M}$C$15", f"=(C15+C16)*{M}$C$15", f"=(D15+D16)*{M}$C$15", f"=(E15+E16)*{M}$C$15", "=E17", "Swaps x 0.04%"),
+        ("Revenue at 0.04% (running total)", f"=(B15+B16)*{RATE}", f"=(C15+C16)*{RATE}", f"=(D15+D16)*{RATE}", f"=(E15+E16)*{RATE}", "=E17", "Swaps x 0.04%"),
         ("Revenue after partner shares (running total)", 0,
-         f"=(SUMPRODUCT(N{R0}:N{R1},1-$G${R0}:$G${R1})+N34*(1-{T2}$H$5))*{M}$C$15",
-         f"=(SUMPRODUCT(O{R0}:O{R1},1-$G${R0}:$G${R1})+O34*(1-{T2}$H$5))*{M}$C$15",
-         f"=(SUMPRODUCT(P{R0}:P{R1},1-$G${R0}:$G${R1})+P34*(1-{T2}$H$5))*{M}$C$15", "=E18",
+         f"=(SUMPRODUCT(N{R0}:N{R1},1-$G${R0}:$G${R1})+N34*(1-{T2}$H$5))*{RATE}",
+         f"=(SUMPRODUCT(O{R0}:O{R1},1-$G${R0}:$G${R1})+O34*(1-{T2}$H$5))*{RATE}",
+         f"=(SUMPRODUCT(P{R0}:P{R1},1-$G${R0}:$G${R1})+P34*(1-{T2}$H$5))*{RATE}", "=E18",
          "Revenue x (1 - each partner's share; B at our 25%)"),
         ("Monthly run-rate on day 30 (our 8 + B)", "", "", "", f"=(SUM(Q{R0}:Q{R1})+Q34)*30", "=E19",
-         f'="Swaps a day on day 30 x 30 -> $"&TEXT(E19*{M}$C$15,"#,##0")&" a month at 0.04%"'),
+         f'="Swaps a day on day 30 x 30 -> $"&TEXT(E19*{RATE},"#,##0")&" a month at 0.04%"'),
     ]
     for i, rowvals in enumerate(weekly):
         r = 6 + i
-        for c, v in enumerate(rowvals, 1):
+        for c, vv in enumerate(rowvals, 1):
             fmt = None
             if r in (13, 14):
                 fmt = NUM1
@@ -607,55 +783,54 @@ def build(research=False):
                 fmt = MONEY
             elif r in (17, 18):
                 fmt = MONEY2
-            cell(t4, r, c, v, fmt=fmt if 2 <= c <= 6 else None, inp=(r <= 9 and 2 <= c <= 5), bold=(c == 1))
+            cell(t4, r, c, vv, fmt=fmt if 2 <= c <= 6 else None, inp=(r <= 9 and 2 <= c <= 5), bold=(c == 1))
 
-    put(t4, "A22", "B. Calendar ramp behind the weekly targets (links to Task 1)", F_SECTION, wrap=False)
+    put(t4, "A22", "B. Calendar ramp behind the weekly targets (links to Task 1; posted FTDs arrive evenly through the partner's month, event FTDs on the night)", F_SECTION, wrap=False)
     header(t4, 24, ["Partner", "Event night?", "Go-live day", "Live days by day 14", "Live days by day 21", "Live days by day 30",
                     "Partner share", "FTDs by day 14", "FTDs by day 21", "FTDs by day 30", "Trades a day, day 14",
                     "Trades a day, day 21", "Trades a day, day 30", "Swaps by day 14", "Swaps by day 21", "Swaps by day 30",
                     "Swaps a day on day 30", "Activated by day 30?"])
     for i, p in enumerate(partners):
-        r, t = R0 + i, 37 + i
+        r, t = R0 + i, N0 + i
         seg = f"MATCH({T1}$B{t},{SEG},0)"
-        rd, pd = f"INDEX({M}$D$19:$D$20,{seg})", f"INDEX({M}$G$19:$G$20,{seg})"
-        rt, ptr = f"INDEX({M}$B$19:$B$20,{seg})", f"INDEX({M}$E$19:$E$20,{seg})"
-        ftd, ptn, start, month = f"{T1}$G{t}", f"{T1}$H{t}", f"{M}$C$13", f"{M}$C$14"
+        tpd_r, tpd_f = f"INDEX({M}$D$19:$D$20,{seg})", f"INDEX({M}$E$19:$E$20,{seg})"
+        ftd, ptn, start, month = f"{T1}$F{t}", f"{T1}$H{t}", st["b"], DAYS
+        vday, vfday = f"{v['b']}/{month}", f"{vf['b']}/{month}"
         cell(t4, r, 1, f"={T1}A{t}")
         cell(t4, r, 2, p["event"], inp=True)
         cell(t4, r, 3, p["go_live"], inp=True)
         for k, d in enumerate((14, 21, 30)):
             cell(t4, r, 4 + k, f"=MAX(0,{d}-$C{r})")
-        cell(t4, r, 7, f"={T1}F{t}", fmt=PCT)
-        for k, live in enumerate("DEF"):
-            L_ = f"{live}{r}"
-            cell(t4, r, 8 + k, f'=IF({L_}=0,0,IF($B{r}="Yes",{ftd},{ftd}*{L_}/{month}))', fmt=NUM1)
+        cell(t4, r, 7, f"={T1}P{t}", fmt=PCT)
+        for k, lv in enumerate("DEF"):
+            L_ = f"{lv}{r}"
+            cell(t4, r, 8 + k, f'=IF({L_}=0,0,IF($B{r}="Yes",{ftd},{ftd}*MIN({L_},{month})/{month}))', fmt=NUM1)
             fcol = "HIJ"[k]
-            cell(t4, r, 11 + k, f"=IF({L_}=0,0,{fcol}{r}*{M}$C$6*{rt}+IF({L_}>={start},{ptn}*{M}$C$10*{ptr},0))", fmt=NUM1)
-            cell(t4, r, 14 + k, f'=IF({L_}=0,0,IF($B{r}="Yes",{ftd}*{rd}*{L_},{ftd}*{rd}*{L_}^2/(2*{month}))+{ptn}*{pd}*MAX(0,{L_}-{start}+1))', fmt=MONEY)
-        cell(t4, r, 17, f"=IF(F{r}=0,0,J{r}*{rd}+IF(F{r}>={start},{ptn}*{pd},0))", fmt=MONEY)
-        cell(t4, r, 18, f'=IF(AND(J{r}>=10,M{r}>=50,P{r}>=100000),"Yes","No")')
+            cell(t4, r, 11 + k, f"=IF({L_}=0,0,{fcol}{r}*{tpd_r}+IF({L_}>={start},{ptn}*{tpd_f},0))", fmt=NUM1)
+            cell(t4, r, 14 + k, f'=IF({L_}=0,0,IF($B{r}="Yes",{ftd}*{vday}*{L_},{ftd}*{vday}*{L_}^2/(2*{month}))+{ptn}*{vfday}*MAX(0,{L_}-{start}+1))', fmt=MONEY)
+        cell(t4, r, 17, f"=IF(F{r}=0,0,J{r}*{vday}+IF(F{r}>={start},{ptn}*{vfday},0))", fmt=MONEY)
+        cell(t4, r, 18, f'=IF(AND(J{r}>=10,M{r}>=50),"Yes","No")')
     cell(t4, 33, 1, "Total, our 8", bold=True)
-    for c in list(range(8, 18)):
-        col = "ABCDEFGHIJKLMNOPQR"[c - 1]
-        cell(t4, 33, c, f"=SUM({col}{R0}:{col}{R1})", fmt=t4.cell(R0, c).number_format, bold=True)
+    for c in range(8, 18):
+        cell(t4, 33, c, f"=SUM({col(c)}{R0}:{col(c)}{R1})", fmt=t4.cell(R0, c).number_format, bold=True)
     cell(t4, 34, 1, "Partner B pilot (brief)")
     cell(t4, 34, 2, "No")
     cell(t4, 34, 3, 10, inp=True)
     for k, d in enumerate((14, 21, 30)):
         cell(t4, 34, 4 + k, f"=MAX(0,{d}-C34)")
-        cell(t4, 34, 14 + k, f"={T2}$C$5/{M}$C$14*{'DEF'[k]}34", fmt=MONEY)
-    cell(t4, 34, 17, f"={T2}$C$5/{M}$C$14", fmt=MONEY)
-    put(t4, "A35", "Activated partner: at least 10 FTDs, at least 50 trades a day, at least $100K of swaps, at least 30% of FTDs still "
-                   "trading in days 15-30 and under 5% flagged wallets. The ramp checks the first three; retention and flags come from the dashboard.", wrap=False)
+        cell(t4, 34, 14 + k, f"={T2}$C$5/{DAYS}*{'DEF'[k]}34", fmt=MONEY)
+    cell(t4, 34, 17, f"={T2}$C$5/{DAYS}", fmt=MONEY)
+    put(t4, "A35", "Activated partner: at least 10 FTDs and at least 50 trades a day within 30 days live, at least 30% of FTDs still "
+                   "trading after 14 days and under 5% flagged wallets. The ramp checks the first two; retention and flags come from the dashboard.", wrap=False)
 
-    put(t4, "A37", "C. What each partner delivers in its first 30 days live", F_SECTION, wrap=False)
-    header(t4, 38, ["Partner", "Deliverables", "FnF power traders", "FTD target (day 30)", "Trades a day (day 30)", "Swaps (first 30 days)"])
+    put(t4, "A37", "C. What each partner delivers in its first month", F_SECTION, wrap=False)
+    header(t4, 38, ["Partner", "Deliverables", "FnF power traders", "FTD target (base)", "Trades a day (base, once all are trading)", "Swaps (first month, base)"])
     for i, p in enumerate(partners):
-        r, t = 39 + i, 37 + i
+        r, t = 39 + i, N0 + i
         cell(t4, r, 1, f"={T1}A{t}")
         cell(t4, r, 2, p["deliverables"])
         cell(t4, r, 3, f"={T1}H{t}")
-        cell(t4, r, 4, f"={T1}G{t}", fmt=NUM1)
+        cell(t4, r, 4, f"={T1}F{t}", fmt=NUM1)
         cell(t4, r, 5, f"={T1}I{t}", fmt=NUM1)
         cell(t4, r, 6, f"={T1}M{t}", fmt=MONEY)
 
@@ -663,25 +838,34 @@ def build(research=False):
     header(t4, 49, [DP.cell(35, c).value for c in range(1, 8)])
     for i, r in enumerate(range(36, 45)):
         row = 50 + i
-        for c in range(1, 8):
-            v = DP.cell(r, c).value
-            if isinstance(v, str):
-                v = v.replace("Power traders active", "FnF power traders active").replace("Swaps per power trader", "Swaps per FnF power trader")
-            cell(t4, row, c, v, bold=(c == 1))
+        vals = [DP.cell(r, c).value for c in range(1, 8)]
+        if vals[0] == "Power traders active":
+            vals[0], vals[1] = "FnF power traders active", "Introduced FnF power traders trading this week"
+            vals[3] = "5 per partner by day 4 (2-3 for Kevin Susanto and Stress Capital)"
+        elif vals[0] == "Swaps per power trader":
+            vals[0], vals[1], vals[3], vals[4] = "Swaps per FnF power trader", "Swap volume a day per FnF power trader", ">= $547 a day (the OKX Wallet Boost benchmark)", "Under $250"
+        elif vals[0] == "Compliance gate":
+            vals[5] = "Hold paid posts; private 1:1 FnF onboarding continues"
+        for c, vv in enumerate(vals, 1):
+            cell(t4, row, c, vv, bold=(c == 1))
 
     put(t4, "A60", "E. Operating cadence, in-person day and day-30 decisions", F_SECTION, wrap=False)
     header(t4, 61, ["When", "What", "Output"])
     cadence = [(DP.cell(r, 1).value, DP.cell(r, 2).value, DP.cell(r, 3).value) for r in range(47, 53)]
+    cadence[0] = (cadence[0][0], "FTDs, trades a day and FnF power traders for every live partner", cadence[0][2])
     cadence[3] = ("Week 2, Wednesday",
-                  "In-person day in Jakarta, set on a Wednesday so a weekly event is always on. 10:00 Superteam Hub Jakarta (run "
-                  "with Indonesia Crypto Hub): agree the Solana trader night with the hub team, arranged through the Luma host page "
-                  "5 days ahead. 13:00-15:00 two coffee meetings with Jakarta-based trench creators from the pipeline. 19:00 the next "
-                  "LP Army night if one is listed on Luma; otherwise W3AI Wednesday at JURA Kemanggisan (weekly). Fallback: same-day "
-                  "video call, the next Jakarta prospect on the list, and the evening event regardless", "Meetings held even if some cancel")
-    for i, (a, b, c) in enumerate(cadence):
+                  "In-person day in Jakarta, set on a Wednesday so a weekly event is always on. 10:00 Narrative Labs with Bevan: sign, "
+                  "then onboard his first Masterclass traders 1:1 on site (set up by DM a week ahead). 13:00 coffee with Kevin Susanto, "
+                  "arranged through OKX's regional marketing team, which already works with him. 15:00 a Jakarta-based trench creator from "
+                  "the pipeline. 19:00 the next LP Army night if one is listed on Luma (meet Evil Panda and Friday7th about the co-hosted "
+                  "night); otherwise W3AI Wednesday at JURA Kemanggisan (weekly). Fallback: same-day video call, the next Jakarta prospect "
+                  "on the list, and the evening event regardless", "Meetings held even if some cancel")
+    cadence[4] = ("Day 14", "Mid-point: partners under 10 FTDs or 50 trades a day get the FnF power-trader track again or pause", "Time reallocated")
+    cadence[5] = ("Day 30", "Decision per partner: continue (activated, under 5% flagged), renegotiate (FnF trade but under 10 FTDs or 50 trades a day), stop (under 5 FTDs or over 10% flagged); month-2 plan to manager", "Decisions and month-2 plan")
+    for i, (aa, b, c) in enumerate(cadence):
         row = 62 + i
-        cell(t4, row, 1, a, bold=True)
-        cell(t4, row, 2, (b or "").replace("power-trader track", "FnF power-trader track"))
+        cell(t4, row, 1, aa, bold=True)
+        cell(t4, row, 2, b)
         cell(t4, row, 3, c)
     widths(t4, {"A": 34, "B": 60, "C": 16, "D": 18, "E": 18, "F": 18, "G": 40, "H": 12, "I": 12, "J": 12, "K": 12, "L": 12,
                 "M": 12, "N": 14, "O": 14, "P": 14, "Q": 14, "R": 14})
@@ -689,45 +873,167 @@ def build(research=False):
 
     # ============================================================ research-only tabs
     if research:
+        rm = wb.create_sheet("Research merge")
+        put(rm, "A1", "Research merge: the research sheet's 20 accounts, what we took and why (research copy only)", F_TITLE, wrap=False)
+        put(rm, "A2", "Source: Indonesia Crypto KOL & Partner Research (Shortlist deep-dive and Volume proof tabs, 20 Nov 2026). Our model uses the deep-dive's reach pool P and rates.", wrap=False)
+        put(rm, "A4", "A. Shortlist deep-dive (as delivered) and our decision", F_SECTION, wrap=False)
+        hd = ["Rank (base volume)", "Account", "Founder / lead of a group?", "Pool P", "FTD low", "FTD base", "FTD high",
+              "Volume low", "Volume base", "Volume high", "Net revenue base (0.04%)", "Research priority", "Our decision", "Why"]
+        header(rm, 5, hd)
+        DD = R["Shortlist deep-dive"]
+        decide = {
+            "Kevin": ("In the 8 (#5)", "Most FTDs, but an existing OKX link, low engagement (0.84%) and no FnF circle on record"),
+            "GuarEmperor": ("In the 8 (#6)", "FnF circle and tools Discord; we add 20% of his ~16.5K Telegram to P (from the written research)"),
+            "Bevan": ("In the 8 (#1)", "The only account with verified onchain trading, a paid community he founded and an in-person route"),
+            "Nicholas": ("Bench (month 2)", "FTD source with no trading proof; airdrop community"),
+            "Orpheu": ("In the 8 (#8, as Stress Capital)", "Largest owned clan Discord we could measure; FnF through clan leads"),
+            "Ponyin": ("In the 8 (#3)", "Verified Trojan PnL card; the circle size is still to confirm"),
+            "Tequila": ("Bench (month 2)", "128K Discord but 1.2% online; NFT audience"),
+            "VIBI": ("Bench (month 2)", "Beginner onboarding; no trading proof"),
+            "Luna": ("Screened out", "Grows the Cove bot: rival tool tie"),
+            "mage": ("Bench (month 2)", "Moved his main wallet from OKX to Bitget Wallet on 11 Nov: win-back later"),
+            "DegenRex": ("Bench (month 2)", "Guest trader for Bevan's workshop"),
+            "Friday7th": ("Via Meteora LP Army (#7)", "Co-hosts LP Army; his reach sits inside the Meteora estimate"),
+            "celinejoo": ("Screened out", "~900 followers"),
+            "zeraa": ("Screened out", "Team role only; reach not measured"),
+            "Bryan": ("Removed", "Leads Hyperliquid Indonesia, a rival perp venue: OKX can't send traffic there"),
+            "Limitmaxi": ("Screened out", "~440 followers; guest trader only"),
+            "edb": ("Screened out", "Reach not measured"),
+            "melon": ("Screened out", "Low activity"),
+            "marvellalexanderr": ("Not assessed", "Account not identified"),
+            "reyk1cv_": ("Not assessed", "Account not identified"),
+        }
+        for i, rr in enumerate(range(2, 22)):
+            vals = [DD.cell(rr, c).value for c in (1, 2, 6, 9, 10, 11, 12, 13, 14, 15, 16, 22)]
+            key = next(k for k in decide if k.lower() in str(vals[1]).lower())
+            row = 6 + i
+            for c, vv in enumerate(vals, 1):
+                fmt = NUM0 if c in (4, 5, 6, 7) else (MONEY if c in (8, 9, 10) else (MONEY2 if c == 11 else None))
+                cell(rm, row, c, vv, fmt=fmt)
+            cell(rm, row, 13, decide[key][0], bold=True)
+            cell(rm, row, 14, decide[key][1])
+        put(rm, "A28", "B. Reconciliation notes", F_SECTION, wrap=False)
+        notes = [
+            ("Bevan's pool P", "Volume proof counts all 9,238 Discord members (P 17,494, base $105K); the deep-dive counts only the 984 online (P 9,240, base $55K). We use the deep-dive: online members are the ones a post reaches."),
+            ("Kevin Susanto's pool P", "Volume proof counts all 2,860 Telegram subscribers (P 44,108); the deep-dive counts 20% (P 41,820). We use the deep-dive."),
+            ("GuarEmperor's pool P", "The deep-dive left Telegram out (P 15,885). The written research found ~16.5K on his 'Enjoy being poor' channel, so we add 20% (P 19,185). Snapshot from a third-party viewer: verify on t.me."),
+            ("Written research vs the sheet", "The written shortlist sized FTDs from visits x conversion (Bevan 40 FTDs, $112K; Ponyin 30, $144K; Kevin 28, $120K). The sheet uses one formula for every account. We use the sheet so every partner is sized the same way; the written figures sit inside our low-to-high range."),
+            ("Timing", "The research's volume is a cohort's first month of trading. Task 4's calendar ramp counts calendar days, so FTDs who arrive late in the month trade into month 2 and day-30 swaps trail Task 1."),
+            ("FnF power traders", "The research leaves out partners' own trading. We add only the traders each partner introduces, at the research's high per-trader rate ($16,400 a month, @AiSlimx on OKX Wallet Boost); the partner's own trading is evidence, not forecast volume."),
+            ("Bryan.HL", "Removed: he leads Hyperliquid Indonesia, a rival perp venue."),
+            ("Kevin Susanto's OKX link", "He already holds okx.ac/join/VVIP7777. Route through OKX's regional marketing team and confirm which volume would be new."),
+            ("mage", "Said on 11 Nov 2026 he is moving his main wallet from OKX to Bitget Wallet: a month-2 win-back, not a month-1 partner."),
+            ("Reach for partners the research didn't measure", "0xRusdi, Crypto Ndo and MeteoraIDN use 20% of followers, the median views-to-followers ratio across the 11 accounts the research measured. Measure their median views before sending."),
+        ]
+        header(rm, 29, ["Topic", "Note"])
+        for i, (aa, b) in enumerate(notes):
+            cell(rm, 30 + i, 1, aa, bold=True)
+            cell(rm, 30 + i, 2, b)
+        put(rm, "A42", "C. Volume proof tab (as delivered)", F_SECTION, wrap=False)
+        VP = R["Volume proof"]
+        header(rm, 43, [VP.cell(1, c).value for c in (2, 5, 6, 8, 9, 10, 11, 12, 14, 19)])
+        rr_out = 44
+        for rr in range(2, 13):
+            name = VP.cell(rr, 2).value
+            if not name:
+                continue
+            vals = [VP.cell(rr, c).value for c in (2, 5, 6, 8, 9, 10, 11, 12, 14, 19)]
+            for c, vv in enumerate(vals, 1):
+                cell(rm, rr_out, c, vv, fmt=NUM0 if c in (2, 3, 8) else (MONEY if c == 9 else None))
+            rr_out += 1
+        widths(rm, {"A": 26, "B": 44, "C": 30, "D": 12, "E": 10, "F": 10, "G": 10, "H": 14, "I": 14, "J": 14, "K": 14, "L": 14, "M": 26, "N": 60})
+
         rv = wb.create_sheet("Checks and history")
         put(rv, "A1", "Checks and history (research copy only)", F_TITLE, wrap=False)
         put(rv, "A3", "A. Verify before sending", F_SECTION, wrap=False)
         header(rv, 4, ["#", "Check", "Where it shows"])
         todo = [
-            ("Re-open the 8 partner links and re-check follower counts and quoted posts on-platform", "Task 1, columns C and H"),
-            ("GuarEmperor: confirm his FnF circle (who, how many trade daily) and his current follower count (63K vs 90K snapshots)", "Task 1 row 16; ranking row 30 (FnF score 3 until confirmed)"),
-            ("Superteam Indonesia: confirm a trader night is possible and its capacity (model assumes ~150)", "Task 1 row 19 and row 44"),
+            ("Re-open the 8 partner links and re-check follower counts, median views and quoted posts on-platform", "Task 1, columns C and H; section C"),
+            ("Bevan: which wallet he trades from now (the published one is idle since 30 Jul); Discord online count on the day", "Task 1 row 12; Task 3"),
+            ("Measure median views for 0xRusdi, Crypto Ndo and MeteoraIDN (reach is estimated at 20% of followers)", "Task 1 section C, column D"),
+            ("Kevin Susanto: whether okx.ac/join/VVIP7777 is an active OKX affiliate deal, and who at OKX owns it", "Task 1 row 16"),
+            ("GuarEmperor: confirm his FnF circle and the ~16.5K Telegram count on t.me", "Task 1 row 17; section C"),
             ("OKX DEX referral tiers: confirm the live tier table (regional help pages differ)", "Task 3 offer; deck footers"),
-            ("Meme Mode limit orders: confirm before mentioning on a call", "Miscellaneous, products table"),
-            ("BasedBot fee and 0xRusdi's tier history behind the ~$3.4M estimate", "Task 1 row 12, column I"),
             ("Legal: promotion of OKX DEX in Indonesia under Law 4/2026; partner POJK 6/2026 certification status", "Task 4, compliance gate"),
             ("Fill slide 6: commitment and the AI-use line", "Deck slide 6"),
         ]
-        for i, (a, b) in enumerate(todo):
+        for i, (aa, b) in enumerate(todo):
             cell(rv, 5 + i, 1, i + 1)
-            cell(rv, 5 + i, 2, a)
+            cell(rv, 5 + i, 2, aa)
             cell(rv, 5 + i, 3, b)
         put(rv, "A14", "B. Partner changes after review", F_SECTION, wrap=False)
         header(rv, 15, ["Change", "Why"])
-        for i, (a, b) in enumerate([
-                ("Hyperliquid Indonesia replaced by GuarEmperor and his FnF circle", "Hyperliquid is a rival venue: OKX can't send traffic there"),
-                ("Bael calls replaced by Superteam Indonesia", "Bael is a Bitget Wallet Indonesia ambassador; Superteam keeps 2 partners meetable in person"),
-                ("Power traders shown as FnF power traders, with a per-partner count", "Makes the FnF circle each partner brings visible; Superteam set to 2 as a builder-led community"),
-                ("Four cryptokolz.com-only prospects removed from the longlist", "Promotional directory; replaced by four licensed exchanges screened out as competitors")]):
-            cell(rv, 16 + i, 1, a)
+        changes = [
+            ("Hyperliquid Indonesia replaced by GuarEmperor and his FnF circle", "Hyperliquid is a rival venue: OKX can't send traffic there"),
+            ("Bael calls replaced by Superteam Indonesia (since benched)", "Bael is a Bitget Wallet Indonesia ambassador"),
+            ("Four cryptokolz.com-only prospects removed from the longlist", "Promotional directory; replaced by four licensed exchanges screened out as competitors"),
+            ("Research merge: Bevan / Narrative Labs in as #1; Kevin Susanto and Stress Capital in", "Measured reach and verified trading from the research sheet; Bevan is the only partner to pass all four filters and be meetable"),
+            ("TwipsX and Superteam Indonesia to the bench; Tomket Lovers screened out", "No proof TwipsX's readers trade; Superteam is builder-led; Tomket Lovers runs Bitget Wallet promos"),
+            ("Volume model replaced by the research method plus an FnF line", "FTDs = P x s x a, swaps = FTDs x v (low/base/high); FnF at $16,400 a month each, down from $50,400"),
+            ("Bryan.HL removed", "Hyperliquid Indonesia lead (rival venue)"),
+            ("20 generic screened-out longlist rows swapped for the research's 20 named accounts", "Media sites, campus clubs and size-unknown groups; the count stays at 100"),
+        ]
+        for i, (aa, b) in enumerate(changes):
+            cell(rv, 16 + i, 1, aa)
             cell(rv, 16 + i, 2, b)
-        put(rv, "A21", "C. Review findings (from REVIEW.md)", F_SECTION, wrap=False)
-        header(rv, 22, ["#", "Where", "What was wrong", "Fix"])
-        r = 23
+        put(rv, "A25", "C. Review findings (from REVIEW.md)", F_SECTION, wrap=False)
+        header(rv, 26, ["#", "Where", "What was wrong", "Fix"])
+        r = 27
         for line in REVIEW.read_text().splitlines():
             m = re.match(r"\| (E\d+) \| (.*?) \| (.*?) \| (.*?) \|", line)
             if m:
-                for c, v in enumerate(m.groups(), 1):
-                    cell(rv, r, c, v.replace("**", ""))
+                for c, vv in enumerate(m.groups(), 1):
+                    cell(rv, r, c, vv.replace("**", ""))
                 r += 1
         widths(rv, {"A": 40, "B": 70, "C": 70, "D": 70})
     return wb
 
+
+# ---------------------------------------------------------------- Task 3 texts (Bevan / Narrative Labs)
+TASK3 = [
+    ("First message (X DM)",
+     "Hi Bevan, I'm Fedric, working on DEX partnerships for OKX in Indonesia. I went through the wallet you publish on Narrative "
+     "Labs: 91 swaps from May to July, ~1,080 SOL traded, up 374 SOL. That, plus 984 members online in your Discord, is the "
+     "clearest trading community I've found here. I'd like to explore a partnership around OKX Wallet's Meme Mode. "
+     "Through OKX's DEX referral programme you'd earn a share of the swap fees your members generate, and could pass part back as a "
+     "discount. First I'd like to hear what your members need that GMGN doesn't. Could we meet in Jakarta or call "
+     "for 20 minutes next week? If it isn't a fit, I'll say so."),
+    ("First message, Bahasa Indonesia version",
+     "Halo Bevan, saya Fedric, menangani kemitraan DEX OKX di Indonesia. Saya sudah lihat wallet yang kamu publikasikan di Narrative "
+     "Labs: 91 swap dari Mei sampai Juli, sekitar 1.080 SOL diperdagangkan dan untung 374 SOL. Itu, ditambah 984 member online di "
+     "Discord kamu, adalah komunitas trading paling jelas yang saya temukan di Indonesia. Saya ingin menjajaki kerja sama seputar Meme "
+     "Mode dan Track di OKX Wallet. Lewat program referral DEX OKX, kamu mendapat bagian dari biaya swap yang dihasilkan member kamu, "
+     "dan bisa mengembalikan sebagian sebagai diskon. Sebelumnya, saya ingin tahu apa yang dibutuhkan member kamu yang belum didapat "
+     "dari GMGN. Bisa ketemu di Jakarta atau call 20 menit minggu depan? Kalau tidak cocok, saya akan bilang langsung."),
+    ("Follow-up (day 4, no reply)",
+     "Hi Bevan, a quick follow-up. Happy to send a one-page summary of how OKX's DEX referral works (fee share, member discount, "
+     "dashboard) so you can judge it before we meet. One question in the meantime: when your members act on a call, where do they "
+     "lose most: fees, speed or missed entries?"),
+    ("Reply to 'another platform pays more'",
+     "That's fair, and you should compare. Put three things next to the headline rate: what it's paid on (your members' real swaps, "
+     "after discounts and caps), how long it lasts, and what comes with it. OKX's DEX referral programme shares up to 50% of the swap "
+     "fee, depending on tier, and your members can get part of it back as a discount. It doesn't have to replace GMGN. I'd suggest a "
+     "30-day pilot with 5 of your Masterclass traders; we track real activity and set terms from that data together. If the numbers "
+     "don't work for you, we stop."),
+    ("Meeting question 1",
+     "Which wallet do you trade from now, and could you share its history? Of your Discord members, how many trade every week, and on which chains?"),
+    ("Meeting question 2",
+     "Could you introduce 5 of your Masterclass traders in week 1, and what would they need to switch: fees, speed, chains or tools?"),
+    ("Meeting question 3",
+     "What do your GMGN and Mobee codes pay today, is any of it exclusive, and would an OKX DEX trade button in Narrative Alpha be worth more to you than commission?"),
+    ("No unverified promises",
+     "The messages promise no rates, rewards or features OKX hasn't confirmed. The fee share (up to 50% by tier; OKX's regional help "
+     "pages list different tier tables, so confirm the live rate before quoting one) and the follower discount are published OKX DEX "
+     "referral features; any specific rate, and any DEX API integration, needs OKX approval."),
+]
+PLAN14 = [  # targets follow the Task 4 ramp for Bevan (base case)
+    ("Days 1-2", "Referral link with the follower discount; Bahasa Meme Mode and Track guide for Narrative Labs; compliance check (disclosure, no profit promises, POJK 6/2026); shared dashboard", "Link live; guide pinned in the Discord"),
+    ("Days 2-4", "1:1 onboarding of 5 Masterclass traders in Jakarta: wallet set-up, presets, Track alerts, first trades", "5 FnF power traders trading by day 4 (~23 trades a day)"),
+    ("Day 5", "Co-branded Discord workshop: Bevan trades his own workflow on Meme Mode and Track; replay pinned", "Workshop held; first FTDs"),
+    ("Days 6-7", "2 X posts and a Narrative Labs announcement with the referral link", ">= 6 FTDs by day 7"),
+    ("Days 8-10", "Daily check of FTDs, trades a day and flagged wallets; fix the weakest metric; scope the Narrative Alpha trade button with OKX's DEX API team (no promise)", ">= 9 FTDs, ~47 trades a day by day 10"),
+    ("Days 11-14", "Second workshop or live session; review with Bevan: FTDs, trades a day, FnF traders active, flags; agree days 15-30", "~13 FTDs and ~57 trades a day by day 14"),
+]
 
 for research, name in ((False, "OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx"), (True, "OKX_research_and_checks.xlsx")):
     wb = build(research)
