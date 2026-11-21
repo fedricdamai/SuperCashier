@@ -2,16 +2,16 @@
 
 **Verdict:** the strategy is sharper than mine and the maths is clean. Every value in the review brief's section 6 reproduces, and the workbook recalculates with 0 errors across 626 formulas. Ten things needed fixing before sending: mostly labels and evidence framing, not numbers. One real gap: Indonesian compliance risk barely appears, and a panel in Jakarta will ask about it.
 
-**Update after this review (21 Nov 2026):** Hyperliquid Indonesia (a rival venue) and Bael calls (a Bitget Wallet ambassador) were replaced first. Then your research sheet (Indonesia Crypto KOL & Partner Research: Volume proof and Shortlist deep-dive tabs) was merged in, and the ranking set to your order: Kevin Susanto #1 (the most FTDs, a verified top fomo trader and the fastest yes through OKX's regional team), Bevan / Narrative Labs #2, GuarEmperor #3. 0xRusdi (+ Tomket Lovers), Ponyin (+ ApexFNF) and Setya are one CVC Ventures network (#4); Brandon Salim + a79 (#5), Crypto Ndo, DegenRex and Meteora LP Army complete the 8. Every number uses the research method (FTDs = reach P x 2% sign up x 15% trade; $2,000 of swaps per FTD) plus FnF power traders at $16,400 a month each: 379 FTDs, 46 FnF traders, $1.44M of swaps and $575 at 0.04% in each partner's first month. Figures in sections 1 and 2 refer to the original partner set.
+**Update after this review (21 Nov 2026):** Hyperliquid Indonesia and Bael calls were replaced first, then your research sheet was merged in and the plan reworked to your direction. Task 1: Kevin Susanto, Bevan / Narrative Labs and Ponyin (with ApexFNF and the CVC Ventures circle: 0xRusdi with the Tomket clan, and Setya) are the top 3; only Kevin and Bevan count as meetable in person. Task 2: pilot B first on a growth deal (no retainer, revenue share rising by bracket, a cash bonus at each milestone, an OKX-funded trading competition), then C once B passes 2x, then A on share only. Task 3 is written for Kevin. Figures in sections 1 and 2 refer to the original partner set.
 
 Files in this folder:
 
 | File | What it is |
 |---|---|
-| `deck_slides_v2.md` | Your 6 slides with every fix below applied |
+| `OKX_DEX_BD_Affiliate_Indonesia_Writeup.docx` | The write-up (4 pages): Tasks 1-4, commitment, method |
+| `OKX_DEX_BD_Affiliate_Indonesia_Slides.pptx` | 6-slide companion deck, main points only |
 | `OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx` | Submission workbook: Task 1, Task 2, Task 3, Task 4, Miscellaneous (live formulas) |
-| `OKX_research_and_checks.xlsx` | Same five tabs plus Research merge (the research sheet's 20 accounts and our decision on each) and Checks and history (open checks, partner changes, review findings) |
-| `deck_v2.html` / `deck_v2.pdf` | The designed deck (your PowerPoint design, fixes applied) |
+| `OKX_research_and_checks.xlsx` | Same five tabs plus Research merge and Checks and history |
 | `tools/` | Rebuild scripts and their inputs (see `tools/README.md`) |
 | `REVIEW.md` | This file |
 

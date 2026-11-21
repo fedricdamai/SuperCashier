@@ -1,21 +1,27 @@
 # Rebuild tools
 
-Run from `okx-dex-affiliates-id/submission-v2/`:
+Run from `okx-dex-affiliates-id/submission-v2/`.
+
+1. Workbooks (submission and research):
 
 ```bash
 python tools/build_workbooks.py tools/legacy_model.xlsx tools/research_sheet.xlsx REVIEW.md .
 ```
 
-Writes both workbooks (submission and research). Partner inputs (reach pool P, FnF power traders, share, scores, go-live day and all partner text) are in the `partners` list at the top of `build_workbooks.py`; the rates (sign-up, activation, swaps per FTD and per FnF trader, low/base/high) are yellow cells in the Miscellaneous tab, section A. `research_sheet.xlsx` is an export of the Indonesia Crypto KOL & Partner Research sheet, used for the Research merge tab. Open each workbook in Excel once so formulas recalculate.
+Partner inputs are in the `partners` list at the top of `build_workbooks.py`; rates are yellow cells in the Miscellaneous tab (section A) and the Task 2 deal terms are yellow cells in the Task 2 tab (rows 6-20). Recalculate once (open in Excel, or LibreOffice headless) before the next steps, which read calculated values.
+
+2. Write-up (.docx, 4 pages):
 
 ```bash
-python tools/make_deck.py deck_v2.html OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx
+python tools/make_writeup.py OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx /tmp/writeup.json
+node tools/build_writeup.js /tmp/writeup.json OKX_DEX_BD_Affiliate_Indonesia_Writeup.docx 11
 ```
 
-Rewrites the six slides of `deck_v2.html` from the recalculated submission workbook, so every number on a slide matches a cell. Recalculate the workbook first (Excel, or LibreOffice headless).
+3. Slides (.pptx, 6 slides; needs `npm install pptxgenjs@3.12.0`):
 
 ```bash
-python tools/html_to_md.py deck_v2.html deck_slides_v2.md
+python tools/slides_data.py OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx /tmp/slides.json
+node tools/build_slides.js /tmp/slides.json OKX_DEX_BD_Affiliate_Indonesia_Slides.pptx
 ```
 
-Regenerates the deck text from the HTML deck.
+`research_sheet.xlsx` is an export of the Indonesia Crypto KOL & Partner Research sheet, used for the Research merge tab.

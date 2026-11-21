@@ -256,6 +256,21 @@ partners = [
          check="", line="", scores=(3, 1, 4, 3, 5, 3, 4), go_live=24, event="Yes"),
 ]
 assert len(partners) == 8
+partners.insert(2, partners.pop(3))  # Ponyin + CVC network to #3, GuarEmperor to #4
+_net, _ge = partners[2], partners[3]
+_net.update(
+    short="Ponyin + CVC network",
+    name="Ponyin (@Ponyin) + CVC Ventures network: ApexFNF, 0xRusdi (+ Tomket Lovers), Setya",
+    route="X DM to Ponyin; he opens the CVC team (0xRusdi, Setya) and ApexFNF, his FnF",
+    reason="Ponyin's verified trading opens a whole circle: ApexFNF, 0xRusdi's referral book with the Tomket clan, and Setya's airdrop traders",
+    check="Ponyin's Trojan dashboard or wallet history; ApexFNF member wallets and activity; 0xRusdi's BasedBot referral export; Tomket clan size; who signs for the network",
+    line="Proof: Ponyin's Trojan PnL card, ~$170K in March 2026; 0xRusdi's $8,463 BasedBot referral pay · FnF: ApexFNF and the Tomket clan · Network: one DM to Ponyin opens the CVC team (0xRusdi, Setya) · Flow: Trojan, BasedBot, fomo → OKX",
+    scores=(5, 4, 5, 5, 3, 5, 1), go_live=10)
+_ge.update(go_live=17)
+for _p in partners:
+    if _p["short"] not in ("Kevin Susanto", "Bevan / Narrative Labs"):
+        _p["in_person"] = "No"
+partners[7]["route"] = "X DM to the hosts (Evil Panda, Friday7th)"
 WEIGHTS = [0.15, 0.25, 0.2, 0.1, 0.15, 0.05, 0.1]
 
 
@@ -383,8 +398,8 @@ def build(research=False):
         ("2. Plus FnF power traders onboarded by day 4: our plan", f"={T1}M{TOT}", "FnF power traders trade from day 4, before any post"),
         ("3. Double the FnF power traders at the top 3", f"=B56+({T1}H37+{T1}H38+{T1}H39)*{fnf_month}",
          "Kevin's Jakarta circle, Bevan's Masterclass (29 paid seats), GuarEmperor's Emperor Journal"),
-        ("4. Plus the Partner B pilot ($2M a month, brief)", f"=B57+{T2}C5", "The one pilot the brief allows; positive on its own terms"),
-        ("5. $10K a month", f"=10000/{RATE_L}", "A and C on revenue share only if their 90-day data holds, plus more partners at this profile: a month 4-6 goal"),
+        ("4. Plus pilot B pushed to 3x with campaigns", f"=B57+3*{T2}$C$6", "B's growth deal: share brackets, milestone bonus and a funded trading competition"),
+        ("5. $10K a month", f"=10000/{RATE_L}", "B at 3x, C at 2x and A at forecast (about $22M) plus our 8 with more FnF traders: a month 4-6 goal"),
     ]
     for i, (aa, b, d) in enumerate(steps):
         row = 55 + i
@@ -396,39 +411,39 @@ def build(research=False):
     # F. brief checklist
     put(mi, "A61", "F. Brief checklist: where each request is answered", F_SECTION, wrap=False)
     checklist = [
-        ("Format: up to 6 slides plus a prospect spreadsheet", "Deck (6 slides) + this workbook"),
-        ("Public information only; no contact, spend or private contacts", "All tabs; slide 6"),
-        ("Task 1: 8 potential partners", "Task 1, section A; slide 2"),
+        ("Format: up to 6 slides or 4 pages, plus a prospect spreadsheet", "Doc (4 pages) + 6 slides + this workbook"),
+        ("Public information only; no contact, spend or private contacts", "All tabs; doc, method note"),
+        ("Task 1: 8 potential partners", "Task 1, section A; doc, Task 1; slide 2"),
         ("Task 1: at least 6 whose main proposition is not airdrops", "Task 1, brief checks (row 21)"),
         ("Task 1: at least 3 partner types", "Task 1, column D (6 types)"),
-        ("Task 1: at least 2 you could meet in person", "Task 1, column O; Task 4, in-person day"),
+        ("Task 1: at least 2 you could meet in person", "Task 1, column O (Kevin Susanto and Bevan, Jakarta)"),
         ("Task 1: link, audience and market, evidence, route, proposed partnership, main risk, priority with reason", "Task 1, section A"),
-        ("Task 1: top 3 and why you'd approach them first", "Task 1, rows 4-8; slide 2"),
-        ("Task 1: verified facts vs assumptions; follower count alone is not evidence", "Task 1, columns H and I, and section C (measured vs estimated reach); slide 6"),
-        ("Task 2: first-month contribution for each partner, with the calculation", "Task 2, rows 3-7; slide 3"),
-        ("Task 2: preferred pilot and reasoning", "Task 2, row 9"),
-        ("Task 2: counter-offer or pilot structure", "Task 2, rows 10-11"),
-        ("Task 2: evidence before signing", "Task 2, row 12"),
-        ("Task 2: chosen partner's economics at 50% of forecast", "Task 2, columns K-L and rows 16-20"),
-        ("Task 2: exclude other costs, then say which you'd investigate", "Task 2, row 13"),
-        ("Task 2: pilot only one partner at first", "Task 2, row 14"),
-        ("Task 3: use your highest-priority real prospect", "Task 3 (Kevin Susanto); slide 4"),
+        ("Task 1: top 3 and why you'd approach them first", "Task 1, rows 4-8; doc, Task 1; slide 2"),
+        ("Task 1: verified facts vs assumptions; follower count alone is not evidence", "Task 1, columns H and I, and section C (measured vs estimated reach)"),
+        ("Task 2: first-month contribution for each partner, with the calculation", "Task 2, rows 23-35 and 40; doc, Task 2; slide 3"),
+        ("Task 2: preferred pilot and reasoning", "Task 2, row 41"),
+        ("Task 2: counter-offer or pilot structure", "Task 2, rows 6-20, 42 and 43"),
+        ("Task 2: evidence before signing", "Task 2, row 44"),
+        ("Task 2: chosen partner's economics at 50% of forecast", "Task 2, row 28 and row 45"),
+        ("Task 2: exclude other costs, then say which you'd investigate", "Task 2, rows 46-47"),
+        ("Task 2: pilot only one partner at first", "Task 2, row 41 (B first; C once B passes 2x; A later)"),
+        ("Task 3: use your highest-priority real prospect", "Task 3 (Kevin Susanto); doc, Task 3; slide 4"),
         ("Task 3: first outreach message of 120 words or fewer", "Task 3, row 4 (word count in the label)"),
         ("Task 3: follow-up after no response", "Task 3, row 6"),
         ("Task 3: reply to 'another platform offers a higher commission'", "Task 3, row 7"),
         ("Task 3: activation plan for the first 14 days after agreement", "Task 3, rows 13-20"),
         ("Task 3: 3 most important first-meeting questions", "Task 3, rows 8-10"),
         ("Task 3: no unverified product, incentive or commercial promises", "Task 3, row 11"),
-        ("Task 4: weekly targets for outreach, meetings, pilots and activated partners", "Task 4, section A; slide 5"),
-        ("Task 4: one in-person prospecting day (where, whom, access, fallback)", "Task 4, section E; slide 5"),
-        ("Task 4: response to 20 messages, 2 replies, 0 meetings", "Task 4, section D (outreach reply rate); slide 5"),
-        ("Task 4: results that mean continue, renegotiate or stop", "Task 4, section E (day 30); slide 5"),
-        ("Task 4: activated-partner definition", "Task 4, section B note and section D; slide 5"),
-        ("Task 4: commitment statement", "Slide 6"),
-        ("Cite the public sources you use", "Miscellaneous, section G; deck footers"),
-        ("Explain how you used AI and what you verified yourself", "Slide 6"),
-        ("Be ready to adapt when assumptions change", "Miscellaneous, section A (yellow inputs)"),
-        ("Extra: Task 2's five answers for our real top 3", "Task 2, rows 22-33"),
+        ("Task 4: weekly targets for outreach, meetings, pilots and activated partners", "Task 4, section A; doc, Task 4; slide 5"),
+        ("Task 4: one in-person prospecting day (where, whom, access, fallback)", "Task 4, section E; doc, Task 4"),
+        ("Task 4: response to 20 messages, 2 replies, 0 meetings", "Task 4, section D (outreach reply rate); doc, Task 4; slide 5"),
+        ("Task 4: results that mean continue, renegotiate or stop", "Task 4, section E (day 30); doc, Task 4"),
+        ("Task 4: activated-partner definition", "Task 4, row 23 and section D; doc, Task 4; slide 5"),
+        ("Task 4: commitment statement", "Doc, commitment; slide 6"),
+        ("Cite the public sources you use", "Miscellaneous, section G; doc, sources"),
+        ("Explain how you used AI and what you verified yourself", "Doc, method note; slide 6"),
+        ("Be ready to adapt when assumptions change", "Miscellaneous, section A and Task 2, rows 6-9 (yellow inputs)"),
+        ("Extra: the same deal terms for our real top 3", "Task 2, rows 50-55"),
         ("Extra: 100 prospects screened, with the reason each was cut", "Miscellaneous, section H"),
     ]
     header(mi, 62, ["#", "Brief request", "Where it's answered"] + (["Status"] if research else []))
@@ -438,7 +453,7 @@ def build(research=False):
         cell(mi, row, 2, req)
         cell(mi, row, 3, where)
         if research:
-            cell(mi, row, 4, "To fill" if where == "Slide 6" and ("commitment" in req or "AI" in req) else "Done")
+            cell(mi, row, 4, "Done")
     last_ck = 63 + len(checklist) - 1
 
     # G. sources
@@ -506,8 +521,8 @@ def build(research=False):
         if name in drop:
             continue
         if name == "vemi.pramudya":
-            rec = [None, partners[2]["name"], "Trading creator", "https://x.com/GuarEmperor", TREN, "Y", "In the 8",
-                   "#3: FnF circle; members post results from his tools; 1.9% engagement", "Wave 1 (day 10)",
+            rec = [None, next(q["name"] for q in partners if q["short"].startswith("GuarEmperor")), "Trading creator", "https://x.com/GuarEmperor", TREN, "Y", "In the 8",
+                   "#4: FnF circle; members post results from his tools; 1.9% engagement", "Wave 2 (day 17)",
                    "https://x.com/GuarEmperor/status/2115414023114256560"]
         elif name == "Airdrop Finder (Telegram)":
             rec[7] = "Airdrop-led: fails the brief's main filter. Its co-founder Setya joins through the CVC Ventures network (#4), not this channel"
@@ -522,7 +537,7 @@ def build(research=False):
         ("Bevan Pramudito / Narrative Labs", "Trading educator", "https://x.com/bevanpramudt", TREN, "Y", "In the 8",
          "#2: verified wallet and a live 1-to-10 SOL run, a paid community he founded, GMGN flow, meetable in Jakarta", "Wave 1 (day 10)", "https://narrativelabs.id"),
         ("CVC Ventures network (0xRusdi + Tomket Lovers, Ponyin + ApexFNF, Setya)", "Trading community", "https://x.com/CVC_Ventures", TREN, "Y", "In the 8",
-         "#4: BasedBot referral book and Trojan PnL; 15 FnF traders across two clans; four parties to align", "Wave 2 (day 17)", "https://x.com/0xRusdi"),
+         "#3, through Ponyin: Trojan PnL, BasedBot referral book, ApexFNF and the Tomket clan (15 FnF traders)", "Wave 1 (day 10)", "https://x.com/Ponyin"),
         ("Brandon Salim + a79", "Trading creator", "https://x.com/brandonsalim", TREN, "Y", "In the 8",
          "#5: 14K median views, fomo code on almost every trade, founder of the a79 trader group", "Wave 2 (day 17), intro through Kevin", "https://x.com/brandonsalim/status/2096005957692301790"),
         ("Crypto Ndo", "Trading creator", "https://x.com/cryptondo", TREN, "Y", "In the 8",
@@ -589,8 +604,8 @@ def build(research=False):
         r = N0 + i
         put(t1, f"A{5 + i}", f"{i + 1}. {p['short']}", F_BOLD, wrap=False)
         put(t1, f"B{5 + i}", f'="{p["line"]} · Trencher: "&TEXT(F{r},"0")&" FTDs, "&TEXT(I{r},"0")&" trades a day, $"&TEXT(M{r}/1000,"0")&"K swaps"', wrap=False)
-    put(t1, "A8", "Proof alone isn't enough", F_BOLD, wrap=False)
-    put(t1, "B8", f'="The CVC Ventures network (#4) has the strongest proof and the most FnF traders ("&TEXT(H40,"0")&"), but four people must agree, so it goes live in wave 2. Indonesia\'s biggest crypto names (100 screened, Miscellaneous section H) show no onchain proof."', wrap=False)
+    put(t1, "A8", "Engagement alone isn't enough", F_BOLD, wrap=False)
+    put(t1, "B8", "GuarEmperor (#4) has the best engagement of the big accounts, but his circle's trading is not verified yet and his feed mixes WL and mint posts, so he starts in wave 2. Indonesia's biggest crypto names (100 screened, Miscellaneous section H) show no onchain proof.", wrap=False)
 
     put(t1, "A10", "A. The 8 partners (all fields the brief asks for)", F_SECTION, wrap=False)
     header(t1, 11, ["#", "Partner", "Public link", "Partner type", "Priority", "Priority reason", "Audience and market",
@@ -692,70 +707,117 @@ def build(research=False):
     t1.freeze_panes = "C12"
 
     # ============================================================ Task 2
+    put(t2, "A1", "Task 2: pilot B first, then C, then A, on a growth deal instead of a retainer (net revenue rate 0.04%, from the brief)", F_TITLE, wrap=False)
+    put(t2, "A2", "Month-1 contribution = revenue at 0.04% - retainer - revenue share - milestone bonus - campaign spend. Brackets are marginal: each rate applies only to the volume inside its bracket. Yellow cells are inputs.", wrap=False)
+    put(t2, "A4", "A. Their asks and our growth deal", F_SECTION, wrap=False)
+    header(t2, 5, ["Input", "A", "B", "C", "How it works"])
     LT2 = L["Task 2 numbers"]
-    put(t2, "A1", "Task 2: one pilot from partners A, B and C (net revenue rate 0.04%, from the brief)", F_TITLE, wrap=False)
-    header(t2, 3, [LT2.cell(3, c).value for c in range(1, 13)])
-    for i, r in enumerate((4, 5, 6)):
-        row = 4 + i
-        cell(t2, row, 1, LT2.cell(r, 1).value)
-        cell(t2, row, 2, LT2.cell(r, 2).value)
-        cell(t2, row, 3, LT2.cell(r, 3).value, fmt=MONEY, inp=True)
-        cell(t2, row, 4, f"=C{row}*{RATE}", fmt=MONEY)
-        cell(t2, row, 5, LT2.cell(r, 5).value, fmt=MONEY, inp=True)
-        cell(t2, row, 6, LT2.cell(r, 6).value, fmt=PCT, inp=True)
-        cell(t2, row, 7, f"=D{row}-E{row}-D{row}*F{row}", fmt=MONEY)
-        cell(t2, row, 8, LT2.cell(r, 8).value, fmt=PCT, inp=True)
-        cell(t2, row, 9, f"=D{row}-D{row}*H{row}", fmt=MONEY)
-        cell(t2, row, 10, f'=IF(E{row}=0,"No fixed fee",E{row}/({RATE}*(1-F{row})))', fmt=MONEY)
-        cell(t2, row, 11, f"=D{row}/2-E{row}-D{row}/2*F{row}", fmt=MONEY)
-        cell(t2, row, 12, f"=D{row}/2-D{row}/2*H{row}", fmt=MONEY)
-    cell(t2, 7, 1, "Total", bold=True)
-    for cc in "CDEGIKL":
-        cell(t2, 7, "ABCDEFGHIJKL".index(cc) + 1, f"=SUM({cc}4:{cc}6)", fmt=MONEY, bold=True)
-    for r in range(9, 15):
-        cell(t2, r, 1, LT2.cell(r, 1).value, bold=True)
-        cell(t2, r, 2, LT2.cell(r, 2).value)
-    put(t2, "A16", "Partner B's own payout, and the step-up case", F_SECTION, wrap=False)
-    header(t2, 17, ["Case", "Full volume", "At 50% volume"])
-    for i, (aa, b, c) in enumerate([("B's payout on its ask (35%)", "=D5*F5", "=D5/2*F5"),
-                                    ("B's payout on our counter (25%)", "=D5*H5", "=D5/2*H5"),
-                                    ("OKX month 1 if B reaches the 35% step-up inside month 1", "=D5-D5*F5", "=D5/2-D5/2*F5")]):
-        cell(t2, 18 + i, 1, aa)
-        cell(t2, 18 + i, 2, b, fmt=MONEY)
-        cell(t2, 18 + i, 3, c, fmt=MONEY)
-    put(t2, "A22", "Our real top 3 on the same test (each partner's first month, base case, 0.04%)", F_SECTION, wrap=False)
-    header(t2, 23, ["Partner", "Swaps, first month (base)", "Revenue (0.04%)", "Fixed fee (our offer)", "Revenue share (our offer)",
-                    "1. Month-1 contribution", "5. At 50% of forecast", "Partner earns (0.04%)", "Partner earns at 50%",
-                    "Volume the illustrative fixed fee (B33) needs to break even", "OKX keeps at the published 0.5% fee", "4. Evidence before signing"])
-    for k in range(3):
-        r, src = 24 + k, N0 + k
+    vol = [LT2.cell(r, 3).value for r in (4, 5, 6)]
+    fee = [LT2.cell(r, 5).value for r in (4, 5, 6)]
+    ask = [LT2.cell(r, 6).value for r in (4, 5, 6)]
+    rows_in = [
+        ("Monthly volume forecast (brief)", vol, MONEY, "Brief; profiles: A airdrop community, B repeat onchain traders, C trading educator (volume unverified)"),
+        ("Their ask: fixed fee", fee, MONEY, "Paid once at the start of the pilot (brief)"),
+        ("Their ask: revenue share", ask, PCT, "Brief"),
+        ("Our offer: retainer at signing", [0, 0, 500], MONEY, "C only, and far below its $3,000 ask"),
+        ("Our offer: retainer when forecast is reached", [0, 0, 500], MONEY, "C's second $500 is paid only once its volume reaches forecast"),
+        ("Our offer: base revenue share (volume up to forecast)", [0.2, 0.3, 0.15], PCT, "B starts below its 35% ask; C above its 10%; A keeps its 20%"),
+        ("Our offer: share step-up per bracket above forecast", [0, 0.05, 0.05], PCT, "Brackets: 100-200%, 200-300% and above 300% of forecast"),
+        ("Our offer: milestone cash bonus (share of revenue at the milestone reached)", [0, 0.1, 0.1], PCT, "Paid in USDT within 7 days at 100%, 200% and 300% of forecast; each payment tops up to this share"),
+        ("Our offer: launch campaign (OKX-funded)", [0, 250, 300], MONEY, "B: trading competition prize pool; C: co-hosted event"),
+        ("Our offer: campaign reinvestment (share of revenue above forecast)", [0, 0.1, 0.1], PCT, "Funds more competitions and events as volume grows"),
+        ("Pilot order", [3, 1, 2], None, "B first; C once B passes 2x its forecast; A later, on revenue share only"),
+    ]
+    for i, (lab, vals, fmt, note) in enumerate(rows_in):
+        r = 6 + i
+        cell(t2, r, 1, lab, bold=(i == 0))
+        for j, vv in enumerate(vals):
+            cell(t2, r, 2 + j, vv, fmt=fmt, inp=True)
+        cell(t2, r, 5, note)
+    for i, (lab, vv) in enumerate((("Milestone 1 (share of forecast)", 1.0), ("Milestone 2", 2.0), ("Milestone 3", 3.0))):
+        cell(t2, 18 + i, 1, lab)
+        cell(t2, 18 + i, 2, vv, fmt=PCT, inp=True)
+    # input rows: 6 volume, 7 fee, 8 ask share, 9 retainer, 10 retainer at forecast, 11 base share, 12 step, 13 bonus,
+    #             14 launch, 15 reinvest, 16 order; milestones B18:B20
+    PC = {"A": "B", "B": "C", "C": "D"}
+
+    put(t2, "A22", "B. Month-1 contribution at 50%, 100%, 200% and 300% of forecast", F_SECTION, wrap=False)
+    header(t2, 23, ["Partner", "Volume vs forecast", "Volume", "Revenue (0.04%)", "Volume up to 100%", "Volume 100-200%",
+                    "Volume 200-300%", "Volume above 300%", "Retainer", "Revenue share paid", "Milestone bonus", "Launch campaign",
+                    "Campaign reinvestment", "1. Month 1 at our offer", "Partner earns (our offer)", "1. Month 1 at their ask",
+                    "Partner earns (their ask)"])
+    SC = {}
+    r = 24
+    for pn in "ABC":
+        X = PC[pn]
+        for mult in (0.5, 1, 2, 3):
+            F = f"${X}$6"
+            cell(t2, r, 1, pn, bold=True)
+            cell(t2, r, 2, mult, fmt=PCT, inp=True)
+            cell(t2, r, 3, f"={F}*B{r}", fmt=MONEY)
+            cell(t2, r, 4, f"=C{r}*{RATE}", fmt=MONEY)
+            cell(t2, r, 5, f"=MIN(C{r},{F}*$B$18)", fmt=MONEY)
+            cell(t2, r, 6, f"=MIN(MAX(C{r}-{F}*$B$18,0),{F}*($B$19-$B$18))", fmt=MONEY)
+            cell(t2, r, 7, f"=MIN(MAX(C{r}-{F}*$B$19,0),{F}*($B$20-$B$19))", fmt=MONEY)
+            cell(t2, r, 8, f"=MAX(C{r}-{F}*$B$20,0)", fmt=MONEY)
+            cell(t2, r, 9, f"=${X}$9+IF(C{r}>={F}*$B$18,${X}$10,0)", fmt=MONEY)
+            cell(t2, r, 10, f"={RATE}*(E{r}*${X}$11+F{r}*(${X}$11+${X}$12)+G{r}*(${X}$11+2*${X}$12)+H{r}*(${X}$11+3*${X}$12))", fmt=MONEY)
+            cell(t2, r, 11, f"=${X}$13*{RATE}*IF(C{r}>={F}*$B$20,{F}*$B$20,IF(C{r}>={F}*$B$19,{F}*$B$19,IF(C{r}>={F}*$B$18,{F}*$B$18,0)))", fmt=MONEY)
+            cell(t2, r, 12, f"=${X}$14", fmt=MONEY)
+            cell(t2, r, 13, f"=${X}$15*MAX(D{r}-{F}*{RATE},0)", fmt=MONEY)
+            cell(t2, r, 14, f"=D{r}-I{r}-J{r}-K{r}-L{r}-M{r}", fmt=MONEY)
+            cell(t2, r, 15, f"=I{r}+J{r}+K{r}", fmt=MONEY)
+            cell(t2, r, 16, f"=D{r}-${X}$7-D{r}*${X}$8", fmt=MONEY)
+            cell(t2, r, 17, f"=${X}$7+D{r}*${X}$8", fmt=MONEY)
+            SC[(pn, mult)] = r
+            r += 1
+    # r is now 36
+    rB1, rB2, rB05, rC05, rC1 = SC[("B", 1)], SC[("B", 2)], SC[("B", 0.5)], SC[("C", 0.5)], SC[("C", 1)]
+    cell(t2, 37, 1, "B's campaign pays for itself above (x forecast)", bold=True)
+    cell(t2, 37, 2, f"=1+(P{rB1}-N{rB1})/($C$6*{RATE}*(1-$C$11-$C$12-$C$15))", fmt='0.00"x"')
+    cell(t2, 37, 3, "Volume at which B's month 1 on our deal matches B's own ask at forecast; below it, the campaign spend has not paid back yet")
+    t2.merge_cells(start_row=37, start_column=3, end_row=37, end_column=12)
+    cell(t2, 38, 1, "Largest C retainer that stays positive at 50%", bold=True)
+    cell(t2, 38, 2, f"=D{rC05}-J{rC05}-K{rC05}-L{rC05}-M{rC05}", fmt=MONEY)
+    cell(t2, 38, 3, "So C's retainer is $500 at signing, with the second $500 paid only once C reaches forecast")
+    t2.merge_cells(start_row=38, start_column=3, end_row=38, end_column=12)
+
+    answers = [
+        ("1. First-month contribution", f'="At their asks: A $"&TEXT(-P{SC[("A", 1)]},"#,##0")&" short ($1,600 - $2,000 - $320), B +$"&TEXT(P{rB1},"#,##0")&" ($800 - $280), C $"&TEXT(-P{rC1},"#,##0")&" short ($2,400 - $3,000 - $240). On our growth deal at forecast: B +$"&TEXT(N{rB1},"#,##0")&" after a $250 campaign, C +$"&TEXT(N{rC1},"#,##0")&" after a $1,000 retainer and a $300 event, A +$"&TEXT(N{SC[("A", 1)]},"#,##0")&" on share only."'),
+        ("2. Preferred pilot", "B. It has the clearest evidence (repeat onchain traders), asks for no fixed fee and stays positive at half volume, so it is the one with no downside. I would rather spend on campaigns for B to grow its volume and repeat trading: push B to 2-3x its forecast, then start C to expand once B passes 2x (C could bring volume but has to prove it first), and let A follow later on share only, since an airdrop audience is not our target and tends to arrive with campaigns on its own."),
+        ("3. Counter-offer: a growth deal", "No retainer for B, and a small one for C ($500 at signing, $500 more only at forecast) instead of $3,000. Revenue share in brackets that rise as volume grows (B: 30% up to forecast, 35%, 40% and 45% in each bracket above; C: 15%, then 20%, 25%, 30%). A cash bonus at 100%, 200% and 300% of forecast, paid within 7 days and worth 10% of the revenue at that milestone. OKX-funded campaigns: a trading competition for B, a co-hosted event for C, plus 10% of revenue above forecast reinvested in more of them. Every row of section B stays positive."),
+        ("Making it more attractive at no fixed cost", "Fast payouts (weekly share, bonus within 7 days); a rate ratchet (a bracket reached is kept as next month's starting rate for one month, if retention holds); a network override (5% of the revenue from partners they introduce, for 3 months); member perks paid from the campaign pool (competitions, fee discounts, early access to OKX Boost and X Launch); OKX speakers and co-branded events (need OKX approval)."),
+        ("4. Evidence before signing", "Past numbers: 90 days of referral or bot dashboards (volume, active traders, retention by week). Proof of users: community size and activity (Discord or Telegram analytics) and audience location. Trading history: wallet addresses of the most active members, which we check onchain for unique wallets, trades, repeat days and wash-trade patterns. Past partnership results and a reference. For C, the dashboards behind its $6M estimate; for A, the share of wallets that trade rather than only claim airdrops."),
+        ("5. If volume reaches only 50%", f'="B stays positive (+$"&TEXT(N{rB05},"#,##0")&" on our deal after the campaign, +$"&TEXT(P{rB05},"#,##0")&" on its own ask) because there is no fixed fee, and the bracket share falls to 30% automatically. Then find out why: the market (compare with overall memecoin DEX volume), the incentive (did activity drop when the competition ended), or the group itself (active wallets and members falling). The first two are normal swings: adjust the campaign and keep going. If the group has stopped carrying its weight, renegotiate to the base bracket or stop."'),
+        ("Campaign cost per community: is it worth it?", f'="Each community gets its own campaign budget, and the rule is simple: B\'s $250 campaign has paid for itself once B passes "&TEXT(B37,"0.0")&"x its forecast. If B is not on track for that by week 3, the campaign stops and B continues on share only."'),
+        ("Other costs to investigate", "Campaign budgets per community (prize pools, events), bonus payouts, follower fee discounts (0-20%), gas subsidies, content fees, fraud screening and tracking tools, compliance review (POJK 6/2026, Law 4/2026), translation and BD time."),
+    ]
+    for i, (aa, b) in enumerate(answers):
+        cell(t2, 40 + i, 1, aa, bold=True)
+        cell(t2, 40 + i, 2, b)
+        t2.merge_cells(start_row=40 + i, start_column=2, end_row=40 + i, end_column=14)
+        t2.row_dimensions[40 + i].height = 60
+
+    put(t2, "A50", "C. Our real top 3 on growth-deal terms (each partner's first month, base case, 0.04%)", F_SECTION, wrap=False)
+    header(t2, 51, ["Partner", "Swaps, first month (base)", "Revenue (0.04%)", "Base revenue share", "Milestone bonus at forecast",
+                    "Month-1 contribution", "At 50% of forecast", "Partner earns", "OKX keeps at the published 0.5% fee", "Evidence before signing"])
+    for kk in range(3):
+        r, src = 52 + kk, N0 + kk
         cell(t2, r, 1, f"={T1}A{src}")
         cell(t2, r, 2, f"={T1}M{src}", fmt=MONEY)
         cell(t2, r, 3, f"=B{r}*{RATE}", fmt=MONEY2)
-        cell(t2, r, 4, 0, fmt=MONEY, inp=True)
-        cell(t2, r, 5, f"={T1}P{src}", fmt=PCT)
-        cell(t2, r, 6, f"=C{r}-D{r}-C{r}*E{r}", fmt=MONEY2)
-        cell(t2, r, 7, f"=C{r}/2-D{r}-C{r}/2*E{r}", fmt=MONEY2)
-        cell(t2, r, 8, f"=C{r}*E{r}", fmt=MONEY2)
-        cell(t2, r, 9, f"=C{r}/2*E{r}", fmt=MONEY2)
-        cell(t2, r, 10, f"=$B$33/({RATE}*(1-E{r}))", fmt=MONEY)
-        cell(t2, r, 11, f"=B{r}*{MEME_FEE}*(1-E{r})", fmt=MONEY2)
-        cell(t2, r, 12, partners[k]["check"])
-    cell(t2, 27, 1, "Top 3 total", bold=True)
-    for cc in "BCDFGHIK":
-        cell(t2, 27, "ABCDEFGHIJKL".index(cc) + 1, f"=SUM({cc}24:{cc}26)", fmt=t2[f"{cc}24"].number_format, bold=True)
-    answers = [
-        ("2. Preferred pilot", "All three go live together in wave 1 (day 10); the one-pilot limit applies to the brief's A, B and C. If only one could go first: Kevin Susanto, who brings the most FTDs and is the fastest yes, through OKX's regional team that already works with him."),
-        ("3. Pilot structure", "Revenue share only: 30% base, 40% once at least $1M of referred swaps and 50 wallets trading on 3+ days; follower discount up to 10% from the partner's share; 30-day clawback for wash trading, self-referral and sybil wallets; no fixed fee."),
-        ("Why no fixed fee", '="At 0.04%, even a $"&TEXT(B33,"#,##0")&" fixed fee needs about $"&TEXT(J24/1000000,"0.0")&"M of swaps to break even, while each of these partners is forecast at about $"&TEXT(B27/3/1000,"0")&"K. A fixed fee only comes back with 90 days of data, and at published fees (column K)."'),
-        ("5. If volume reaches only 50%", '="Contribution halves from $"&TEXT(F27,"0")&" to $"&TEXT(G27,"0")&" for the three but stays positive, because there is no fixed fee. Each partner\'s payout halves too ($"&TEXT(H24,"0")&" to $"&TEXT(I24,"0")&" for Kevin at 0.04%), so the offer leans on support and FnF onboarding, not the rate."'),
-    ]
-    for i, (aa, b) in enumerate(answers):
-        cell(t2, 29 + i, 1, aa, bold=True)
-        cell(t2, 29 + i, 2, b)
-    cell(t2, 33, 1, "Illustrative fixed fee to test", bold=True)
-    cell(t2, 33, 2, 500, fmt=MONEY, inp=True)
-    widths(t2, {"A": 30, "B": 30, "C": 14, "D": 14, "E": 14, "F": 14, "G": 16, "H": 16, "I": 16, "J": 18, "K": 16, "L": 44})
+        cell(t2, r, 4, f"={T1}P{src}", fmt=PCT)
+        cell(t2, r, 5, f"=C{r}*$C$13", fmt=MONEY2)
+        cell(t2, r, 6, f"=C{r}-C{r}*D{r}-E{r}", fmt=MONEY2)
+        cell(t2, r, 7, f"=C{r}/2*(1-D{r})", fmt=MONEY2)
+        cell(t2, r, 8, f"=C{r}*D{r}+E{r}", fmt=MONEY2)
+        cell(t2, r, 9, f"=B{r}*{MEME_FEE}*(1-D{r}-$C$13)", fmt=MONEY2)
+        cell(t2, r, 10, partners[kk]["check"])
+    cell(t2, 55, 1, "Top 3 total", bold=True)
+    for cc in "BCEFGHI":
+        cell(t2, 55, "ABCDEFGHIJ".index(cc) + 1, f"=SUM({cc}52:{cc}54)", fmt=t2[f"{cc}52"].number_format, bold=True)
+    widths(t2, {"A": 34, "B": 16, "C": 16, "D": 16, "E": 16, "F": 16, "G": 16, "H": 16, "I": 14, "J": 16, "K": 14, "L": 14,
+                "M": 14, "N": 16, "O": 16, "P": 16, "Q": 16})
 
     # ============================================================ Task 3
     put(t3, "A1", "Task 3: win and activate Kevin Susanto, our #1 prospect", F_TITLE, wrap=False)
@@ -773,22 +835,35 @@ def build(research=False):
         cell(t3, 15 + i, 1, aa, bold=True)
         cell(t3, 15 + i, 2, b)
         cell(t3, 15 + i, 3, c)
-    put(t3, "A22", "Offer to Kevin Susanto (OKX DEX referral programme; any rate needs OKX approval)", F_SECTION, wrap=False)
-    header(t3, 23, ["Term", "Value"])
+    put(t3, "A22", "Offer to Kevin Susanto: a growth deal (published OKX DEX referral fee share; brackets, bonus and campaign need OKX approval)", F_SECTION, wrap=False)
+    header(t3, 23, ["Term", "Value", "Note"])
     p0 = partners[0]
-    offer = [("Base revenue share", f"={T1}P{N0}", PCT, False), ("Step-up share", 0.4, PCT, True),
-             ("Step-up trigger", OF.cell(6, 6).value, None, False), ("Follower discount", "Up to 10%, from the partner's share", None, False),
-             ("Swap fee his followers pay", "0.5% on memecoins (published OKX DEX fee)", None, False),
-             ("What he needs most", p0["need"], None, False), ("Support from us", p0["support"], None, False),
-             ("He earns in his first month (published fee)", f"={T1}M{N0}*{MEME_FEE}*{T1}P{N0}", MONEY2, False),
-             ("Rules for all partners", OF.cell(10, 1).value.replace("Rules for all: ", ""), None, False)]
-    for i, (aa, b, fmt, inp) in enumerate(offer):
+    offer = [("Retainer", "None", None, False, ""),
+             ("Fee share up to milestone 1", 0.30, PCT, True, "Inside OKX's published DEX referral tiers (up to 50%)"),
+             ("Fee share between milestones 1 and 2", 0.35, PCT, True, "Marginal: applies only to the volume in this bracket"),
+             ("Fee share above milestone 2", 0.40, PCT, True, ""),
+             ("Milestone cash bonus (share of swap fees at the milestone reached)", 0.10, PCT, True, "Paid in USDT within 7 days; each payment tops up to this share"),
+             ("Milestone 1: referred swaps in a month", 250000, MONEY, True, ""),
+             ("Milestone 2", 500000, MONEY, True, ""),
+             ("Milestone 3", 1000000, MONEY, True, ""),
+             ("Launch campaign", "Co-hosted live session and a 7-day trading competition for his Telegram", None, False, "Prize pool needs OKX approval"),
+             ("Follower discount", "Up to 10%, from the partner's share", None, False, ""),
+             ("Swap fee his followers pay", "0.5% on memecoins (published OKX DEX fee)", None, False, ""),
+             ("What he needs most", p0["need"], None, False, ""), ("Support from us", p0["support"], None, False, ""),
+             ("He earns in his first month: fee share (published fee)",
+              f"={MEME_FEE}*(MIN({T1}M{N0},B29)*B25+MIN(MAX({T1}M{N0}-B29,0),B30-B29)*B26+MAX({T1}M{N0}-B30,0)*B27)", MONEY2, False, ""),
+             ("He earns in his first month: milestone bonus",
+              f"=IF({T1}M{N0}>=B31,B31,IF({T1}M{N0}>=B30,B30,IF({T1}M{N0}>=B29,B29,0)))*{MEME_FEE}*B28", MONEY2, False, ""),
+             ("Rules for all partners", OF.cell(10, 1).value.replace("Rules for all: ", ""), None, False, "")]
+    for i, (aa, b, fmt, inp, note) in enumerate(offer):
         cell(t3, 24 + i, 1, aa, bold=True)
         cell(t3, 24 + i, 2, b, fmt=fmt, inp=inp)
-    put(t3, "A34", "Support every partner gets", F_SECTION, wrap=False)
+        if note:
+            cell(t3, 24 + i, 3, note)
+    put(t3, "A41", "Support every partner gets", F_SECTION, wrap=False)
     for i, r in enumerate(range(26, 32)):
-        cell(t3, 35 + i, 1, f"{i + 1}.")
-        cell(t3, 35 + i, 2, OF.cell(r, 1).value)
+        cell(t3, 42 + i, 1, f"{i + 1}.")
+        cell(t3, 42 + i, 2, OF.cell(r, 1).value)
     widths(t3, {"A": 36, "B": 110, "C": 40})
 
     # ============================================================ Task 4
@@ -802,23 +877,23 @@ def build(research=False):
         ("Prospects scored", 25, 20, 15, 10, "=SUM(B6:E6)", "Score everyone before messaging"),
         ("Outreach messages (warm intro first)", 25, 20, 15, 10, "=SUM(B7:E7)", "100% of scored"),
         ("Replies", 8, 6, 5, 3, "=SUM(B8:E8)", "~30% of messages"),
-        ("Meetings (call or in person)", 3, 6, 5, 4, "=SUM(B9:E9)", "~80% of replies; the Jakarta day (Kevin Susanto, Bevan, Brandon Salim, DegenRex) is in week 2"),
+        ("Meetings (call or in person)", 3, 6, 5, 4, "=SUM(B9:E9)", "~80% of replies; the Jakarta day (Kevin Susanto, Bevan) is in week 2"),
         ("Pilots live (running total, our 8)", 0, f'=COUNTIF($C${R0}:$C${R1},"<=14")', f'=COUNTIF($C${R0}:$C${R1},"<=21")',
          f'=COUNTIF($C${R0}:$C${R1},"<=30")', "=E10",
-         "Waves: the top 3 (Kevin Susanto, Bevan, GuarEmperor) on day 10; the CVC Ventures network, Brandon Salim and Crypto Ndo on day 17; DegenRex and the Meteora night on day 24. If one of the top 3 says no in week 1, Brandon Salim moves into wave 1"),
-        ("Partner B pilot (the brief's hypothetical)", "Signing", "Live from day 10", "Live", "Live", "Live", "The one A/B/C pilot; counted separately because its volume is the brief's estimate"),
+         "Waves: the top 3 (Kevin Susanto, Bevan, Ponyin with the CVC network) on day 10; GuarEmperor, Brandon Salim and Crypto Ndo on day 17; DegenRex and the Meteora night on day 24. If one of the top 3 says no in week 1, GuarEmperor moves into wave 1"),
+        ("Pilot B, then C, then A (the brief's hypotheticals)", "Signing B", "B live from day 10", "B live; competition running", "B live", "B live", "B first; C starts once B passes 2x its forecast (month 2); A later on share only. Counted separately because the volumes are the brief's estimates"),
         ("Activated partners (running total, our 8)", 0, 0, 0, f'=COUNTIF(R{R0}:R{R1},"Yes")', "=E12", "FTDs >= 10 and trades a day >= 50 by day 30 (section B)"),
         ("FTDs (running total)", 0, f"=SUM(H{R0}:H{R1})", f"=SUM(I{R0}:I{R1})", f"=SUM(J{R0}:J{R1})", "=E13", "Task 1 FTDs x share of each partner's month live; event FTDs on the night"),
         ("Trades a day (last day of the week)", 0, f"=SUM(K{R0}:K{R1})", f"=SUM(L{R0}:L{R1})", f"=SUM(M{R0}:M{R1})", "=E14", "FTDs so far x trades a day per FTD + FnF power traders x trades a day each"),
         ("Swaps from our 8 (running total)", 0, f"=SUM(N{R0}:N{R1})", f"=SUM(O{R0}:O{R1})", f"=SUM(P{R0}:P{R1})", "=E15", "Calendar days: FTDs arrive through the month, so this trails Task 1's first-month cohort"),
-        ("Swaps from Partner B (running total)", 0, "=N34", "=O34", "=P34", "=E16", "$2M a month from day 10"),
+        ("Swaps from the pilots (running total)", 0, "=SUM(N34:N36)", "=SUM(O34:O36)", "=SUM(P34:P36)", "=E16", "B at forecast ($2M a month) from day 10; C and A start after day 30"),
         ("Revenue at 0.04% (running total)", f"=(B15+B16)*{RATE}", f"=(C15+C16)*{RATE}", f"=(D15+D16)*{RATE}", f"=(E15+E16)*{RATE}", "=E17", "Swaps x 0.04%"),
         ("Revenue after partner shares (running total)", 0,
-         f"=(SUMPRODUCT(N{R0}:N{R1},1-$G${R0}:$G${R1})+N34*(1-{T2}$H$5))*{RATE}",
-         f"=(SUMPRODUCT(O{R0}:O{R1},1-$G${R0}:$G${R1})+O34*(1-{T2}$H$5))*{RATE}",
-         f"=(SUMPRODUCT(P{R0}:P{R1},1-$G${R0}:$G${R1})+P34*(1-{T2}$H$5))*{RATE}", "=E18",
-         "Revenue x (1 - each partner's share; B at our 25%)"),
-        ("Monthly run-rate on day 30 (our 8 + B)", "", "", "", f"=(SUM(Q{R0}:Q{R1})+Q34)*30", "=E19",
+         f"=(SUMPRODUCT(N{R0}:N{R1},1-$G${R0}:$G${R1})+SUMPRODUCT(N34:N36,1-$G$34:$G$36))*{RATE}",
+         f"=(SUMPRODUCT(O{R0}:O{R1},1-$G${R0}:$G${R1})+SUMPRODUCT(O34:O36,1-$G$34:$G$36))*{RATE}",
+         f"=(SUMPRODUCT(P{R0}:P{R1},1-$G${R0}:$G${R1})+SUMPRODUCT(P34:P36,1-$G$34:$G$36))*{RATE}", "=E18",
+         "Revenue x (1 - each partner's share; pilots at their own shares)"),
+        ("Monthly run-rate on day 30 (our 8 + pilot B)", "", "", "", f"=(SUM(Q{R0}:Q{R1})+SUM(Q34:Q36))*30", "=E19",
          f'="Swaps a day on day 30 x 30 -> $"&TEXT(E19*{RATE},"#,##0")&" a month at 0.04%"'),
     ]
     for i, rowvals in enumerate(weekly):
@@ -861,14 +936,17 @@ def build(research=False):
     cell(t4, 33, 1, "Total, our 8", bold=True)
     for c in range(8, 18):
         cell(t4, 33, c, f"=SUM({col(c)}{R0}:{col(c)}{R1})", fmt=t4.cell(R0, c).number_format, bold=True)
-    cell(t4, 34, 1, "Partner B pilot (brief)")
-    cell(t4, 34, 2, "No")
-    cell(t4, 34, 3, 10, inp=True)
-    for k, d in enumerate((14, 21, 30)):
-        cell(t4, 34, 4 + k, f"=MAX(0,{d}-C34)")
-        cell(t4, 34, 14 + k, f"={T2}$C$5/{DAYS}*{'DEF'[k]}34", fmt=MONEY)
-    cell(t4, 34, 17, f"={T2}$C$5/{DAYS}", fmt=MONEY)
-    put(t4, "A35", "Activated partner: at least 10 FTDs and at least 50 trades a day within 30 days live, at least 30% of FTDs still "
+    for i, (nm, src, live) in enumerate((("Pilot B (brief)", "C", 10), ("Pilot C (brief)", "D", 45), ("Pilot A (brief)", "B", 60))):
+        r = 34 + i
+        cell(t4, r, 1, nm)
+        cell(t4, r, 2, "No")
+        cell(t4, r, 3, live, inp=True)
+        for k, d in enumerate((14, 21, 30)):
+            cell(t4, r, 4 + k, f"=MAX(0,{d}-C{r})")
+            cell(t4, r, 14 + k, f"={T2}${src}$6/{DAYS}*{'DEF'[k]}{r}", fmt=MONEY)
+        cell(t4, r, 7, f"={T2}${src}$11", fmt=PCT)
+        cell(t4, r, 17, f"=IF(F{r}=0,0,{T2}${src}$6/{DAYS})", fmt=MONEY)
+    put(t4, "A23", "Activated partner: at least 10 FTDs and at least 50 trades a day within 30 days live, at least 30% of FTDs still "
                    "trading after 14 days and under 5% flagged wallets. The ramp checks the first two; retention and flags come from the dashboard.", wrap=False)
 
     put(t4, "A37", "C. What each partner delivers in its first month", F_SECTION, wrap=False)
@@ -889,9 +967,13 @@ def build(research=False):
         vals = [DP.cell(r, c).value for c in range(1, 8)]
         if vals[0] == "Power traders active":
             vals[0], vals[1] = "FnF power traders active", "Introduced FnF power traders trading this week"
-            vals[3] = "5 per partner by day 4 (3 for Kevin Susanto and DegenRex; 15 across the CVC Ventures network)"
+            vals[3] = "5 per partner by day 4 (3 for Kevin Susanto and DegenRex; 15 across Ponyin's network)"
         elif vals[0] == "Swaps per power trader":
             vals[0], vals[1], vals[3], vals[4] = "Swaps per FnF power trader", "Swap volume a day per FnF power trader", ">= $547 a day (the OKX Wallet Boost benchmark)", "Under $250"
+        elif vals[0] == "Outreach reply rate":
+            vals[5] = ("Connections of connections: ask live partners and their circles (Kevin Susanto, Bevan, the Degen Night hosts) "
+                       "for direct intros to the decision-maker, skip the public inbox, and lead with the offer itself: fee share plus "
+                       "a milestone cash bonus paid within 7 days, no retainer to negotiate")
         elif vals[0] == "Compliance gate":
             vals[5] = "Hold paid posts; private 1:1 FnF onboarding continues"
         for c, vv in enumerate(vals, 1):
@@ -903,12 +985,10 @@ def build(research=False):
     cadence[0] = (cadence[0][0], "FTDs, trades a day and FnF power traders for every live partner", cadence[0][2])
     cadence[3] = ("Week 2, Wednesday",
                   "In-person day in Jakarta, set on a Wednesday so a weekly event is always on. 10:00 Kevin Susanto, set up by OKX's "
-                  "regional marketing team, which already works with him; ask him for the intro to Brandon Salim. 13:00 Narrative Labs "
-                  "with Bevan: sign, then onboard his first Masterclass traders 1:1 on site (set up by DM a week ahead). 15:30 Brandon "
-                  "Salim, through Kevin's intro. 17:00 DegenRex, through Ave Indonesia's organisers. 19:00 the next LP Army night if one "
-                  "is listed on Luma (meet Evil Panda and Friday7th about the co-hosted night); otherwise W3AI Wednesday at JURA "
-                  "Kemanggisan (weekly). Fallback: same-day video call, the next Jakarta prospect on the list, and the evening event "
-                  "regardless", "Meetings held even if some cancel")
+                  "regional marketing team, which already works with him. 13:00 Narrative Labs with Bevan: sign, then onboard his first "
+                  "Masterclass traders 1:1 on site (set up by DM a week ahead). 19:00 the next LP Army night if one is listed on Luma, "
+                  "otherwise W3AI Wednesday at JURA Kemanggisan (weekly), to meet the next wave. Fallback: same-day video call, and the "
+                  "evening event regardless", "Meetings held even if one cancels")
     cadence[4] = ("Day 14", "Mid-point: partners under 10 FTDs or 50 trades a day get the FnF power-trader track again or pause", "Time reallocated")
     cadence[5] = ("Day 30", "Decision per partner: continue (activated, under 5% flagged), renegotiate (FnF trade but under 10 FTDs or 50 trades a day), stop (under 5 FTDs or over 10% flagged); month-2 plan to manager", "Decisions and month-2 plan")
     for i, (aa, b, c) in enumerate(cadence):
@@ -933,12 +1013,12 @@ def build(research=False):
         header(rm, 5, hd)
         decide = {
             "Kevin": ("In the 8 (#1)", "Most FTDs, a verified top fomo trader, and the fastest yes through OKX's regional team"),
-            "GuarEmperor": ("In the 8 (#3)", "FnF circle and tools Discord; we add 20% of his ~16.5K Telegram to P (from the written research)"),
+            "GuarEmperor": ("In the 8 (#4)", "FnF circle and tools Discord; we add 20% of his ~16.5K Telegram to P (from the written research)"),
             "Brandon": ("In the 8 (#5)", "Second-largest measured reach; posts a trading referral code on almost every trade; founder of a79"),
             "Bevan": ("In the 8 (#2)", "Verified wallet and a live 1-to-10 SOL run, a paid community he founded, meetable in Jakarta"),
             "Nicholas": ("Bench (month 2)", "FTD source with no trading proof; airdrop community"),
             "Orpheu": ("Bench (month 2), as Stress Capital", "Largest owned clan Discord we could measure, but no trading proof yet"),
-            "Ponyin": ("In the 8 (#4, CVC Ventures network)", "Verified Trojan PnL card; brings ApexFNF, his FnF"),
+            "Ponyin": ("In the 8 (#3, leads the CVC Ventures network)", "Verified Trojan PnL card; brings ApexFNF, his FnF, and opens the CVC team"),
             "Tequila": ("Bench (month 2)", "128K Discord but 1.2% online; NFT audience"),
             "VIBI": ("Bench (month 2)", "Beginner onboarding; no trading proof"),
             "DegenRex": ("In the 8 (#7)", "Verified live win; we leave out the 1.5x boost so every partner uses one formula (P 1,697)"),
@@ -970,7 +1050,7 @@ def build(research=False):
         row += 1
         put(rm, f"A{row}", "B. Reconciliation notes", F_SECTION, wrap=False)
         notes = [
-            ("Ranking", "Kevin Susanto #1, Bevan #2, GuarEmperor #3, as you set it: FTDs first, then trades a day. The weights follow: proof 15%, FTD potential 25%, FnF 20%, rival flow 10%, reachability 15%, segment 5%, risk 10%."),
+            ("Ranking", "Kevin Susanto #1, Bevan #2, Ponyin with the CVC network #3, GuarEmperor #4, as you set it. The weights follow: proof 15%, FTD potential 25%, FnF 20%, rival flow 10%, reachability 15%, segment 5%, risk 10%."),
             ("CVC Ventures network", "One partner row for 0xRusdi (+ Tomket Lovers), Ponyin (+ ApexFNF) and Setya, as you asked. Team roles come from your X check; CVC_Ventures and ApexFNF_io didn't show up in web search. Reach adds four overlapping audiences, so it is an upper bound."),
             ("Tomket Lovers", "On Bitget Wallet Indonesia's Superfans list (CEX KOL map tab): clear non-exclusivity before signing."),
             ("DegenRex's 1.5x boost", "The deep-dive multiplies his reach by 1.5 for the win (P 2,546, base $15K). We leave it out so all 8 use one formula (P 1,697, about $10K before FnF); the win counts in his proof score instead."),
@@ -1017,7 +1097,6 @@ def build(research=False):
             ("GuarEmperor: confirm his FnF circle and the ~16.5K Telegram count on t.me", "Task 1 row 14; section C"),
             ("OKX DEX referral tiers: confirm the live tier table (regional help pages differ)", "Task 3 offer; deck footers"),
             ("Legal: promotion of OKX DEX in Indonesia under Law 4/2026; partner POJK 6/2026 certification status (Brandon Salim included)", "Task 4, compliance gate"),
-            ("Fill slide 6: commitment and the AI-use line", "Deck slide 6"),
         ]
         for i, (aa, b) in enumerate(todo):
             cell(rv, 5 + i, 1, i + 1)
@@ -1035,6 +1114,10 @@ def build(research=False):
             ("0xRusdi (+ Tomket Lovers), Ponyin (+ ApexFNF) and Setya merged into one CVC Ventures network", "One network deal with the most FnF traders (15)"),
             ("Brandon Salim + a79 and DegenRex in; Stress Capital to the bench", "Measured reach and verified trading; Stress Capital has no trading proof yet"),
             ("All Good (@mudacumasekali) added as an access channel", "Connector and event caster, no group of his own"),
+            ("Top 3 set to Kevin Susanto, Bevan and Ponyin (with access to the CVC circle and Setya)", "Ponyin's circle includes the CVC team and the airdrop traders; GuarEmperor moves to #4"),
+            ("Only Kevin Susanto and Bevan counted as meetable in person", "The two you can realistically meet in Jakarta"),
+            ("Task 2 reworked: B first on a growth deal, then C, then A", "Brackets, milestone bonus and funded campaigns for B; a $500 + $500 retainer and higher share for C; A on share only later"),
+            ("Write-up moved to a Google Doc with a 6-slide companion deck", "The doc carries the detail (4 pages); slides carry the main points"),
             ("Volume model replaced by the research method plus an FnF line", "FTDs = P x s x a, swaps = FTDs x v (low/base/high); FnF at $16,400 a month each, down from $50,400"),
             ("Bryan.HL removed", "Hyperliquid Indonesia lead (rival venue)"),
             ("20 generic screened-out longlist rows swapped for the research's named accounts", "Media sites, campus clubs and size-unknown groups; the count stays at 100"),
@@ -1059,40 +1142,39 @@ def build(research=False):
 # ---------------------------------------------------------------- Task 3 texts (Kevin Susanto, our #1)
 TASK3 = [
     ("First message (X DM)",
-     "Hi Kevin, I'm Fedric, working on DEX partnerships for OKX in Indonesia. Your #3 spot on fomo's 24-hour PnL board last "
-     "week (+$53.6K) and 41K views on a typical post make you the biggest onchain trading voice I've found here. You already share "
-     "an OKX link; this is the onchain side: OKX Wallet's Meme Mode, for the memecoins you already trade. Through OKX's DEX referral "
-     "programme you'd earn a share of the swap fees your followers generate, and could pass part back as a discount. First I'd like "
-     "to hear what your Telegram traders need that fomo doesn't. Coffee in Jakarta next week, or a 20-minute call? If it isn't a "
-     "fit, I'll say so."),
+     "Kevin, +$53,566 in one day and #3 on fomo's 24-hour board: your readers watch every trade like that. I'm Fedric, building "
+     "OKX's DEX partnerships in Indonesia, and I'd like your followers trading on OKX Wallet through your own link. What I'm "
+     "proposing for you: a share of every swap fee they pay, a cash bonus within 7 days each time they pass a volume milestone, and "
+     "a co-hosted live trading session for your Telegram. For them: lower fees through your code. It runs alongside your existing "
+     "OKX link. If it's interesting, reply here and I'll send a one-page offer; coffee in Jakarta this week, and your link can be "
+     "live within 48 hours."),
     ("First message, Bahasa Indonesia version",
-     "Halo Kevin, saya Fedric, menangani kemitraan DEX OKX di Indonesia. Posisi #3 kamu di papan PnL 24 jam fomo minggu lalu "
-     "(+$53,6K) dan 41 ribu views per post menjadikan kamu suara trading onchain terbesar yang saya temukan di sini. Kamu sudah "
-     "membagikan link OKX; ini sisi onchain-nya: Meme Mode di OKX Wallet, untuk memecoin yang sudah kamu trading. Lewat program "
-     "referral DEX OKX, kamu mendapat bagian dari biaya swap yang dihasilkan follower kamu, dan bisa mengembalikan sebagian sebagai "
-     "diskon. Sebelumnya, saya ingin tahu apa yang dibutuhkan trader di Telegram kamu yang belum didapat dari fomo. Ngopi di Jakarta "
-     "minggu depan, atau call 20 menit? Kalau tidak cocok, saya akan bilang langsung."),
+     "Kevin, +$53.566 dalam sehari dan #3 di papan 24 jam fomo: pembaca kamu memperhatikan setiap trade seperti itu. Saya Fedric, "
+     "membangun kemitraan DEX OKX di Indonesia, dan saya ingin follower kamu trading di OKX Wallet lewat link kamu sendiri. Yang saya "
+     "usulkan untuk kamu: bagian dari setiap biaya swap yang mereka bayar, bonus tunai dalam 7 hari setiap kali mereka melewati target "
+     "volume, dan sesi live trading bersama untuk Telegram kamu. Untuk mereka: biaya lebih rendah lewat kode kamu. Ini berjalan "
+     "bersama link OKX yang sudah kamu punya. Kalau tertarik, balas di sini dan saya kirim penawaran satu halaman; ngopi di Jakarta "
+     "minggu ini, dan link kamu bisa aktif dalam 48 jam."),
     ("Follow-up (day 4, no reply)",
-     "Hi Kevin, a quick follow-up. Happy to send a one-page summary of how OKX's DEX referral works (fee share, follower discount, "
-     "dashboard) and how it sits next to your existing OKX link, so you can judge it before we meet. One question in the meantime: "
-     "when your followers copy a trade, where do they lose most: fees, speed or missed entries?"),
+     "Hi Kevin, bumping this in case it got buried. I'm closing the first wave of Indonesian DEX partners this week, and the launch "
+     "terms (the milestone cash bonus and a co-hosted session for your Telegram) are reserved for that wave. You were first on my "
+     "list, so I've held a slot for you. Worth 15 minutes before Friday?"),
     ("Reply to 'another platform pays more'",
-     "That's fair, and you should compare. Put three things next to the headline rate: what it's paid on (your followers' real "
-     "swaps, after discounts and caps), how long it lasts, and what comes with it. OKX's DEX referral programme shares up to 50% of "
-     "the swap fee, depending on tier, and your followers can get part of it back as a discount. It doesn't have to replace fomo. "
-     "I'd suggest a 30-day pilot with 3 traders from your circle and one live session for your Telegram; we track real activity and "
-     "set terms from that data together. If the numbers don't work for you, we stop."),
+     "Fair question. When a platform pays more, there is usually a reason: it's new and buying market share, the rate drops when "
+     "the promo ends, it's paid on less volume, or the payout itself is uncertain. Ours may start lower, but it's OKX: stable, paid "
+     "on the real volume your followers trade, and it steps up at each milestone with a cash bonus on top. If the numbers grow and "
+     "we work well together, the rate and support are open to discussion (bisa dibahas). Let's run 30 days and let the data set "
+     "the next terms."),
     ("Meeting question 1",
-     "Of your Telegram and X followers, how many trade onchain every week, on which chains, and can you share your fomo referral stats?"),
+     "How many of your followers trade onchain every week, and can you show it: fomo referral stats, a wallet list or your Telegram activity?"),
     ("Meeting question 2",
-     "Could you introduce 3 traders from your circle in week 1, and who else in the Degen Night crowd should we meet?"),
+     "Who are the 3 traders in your circle who'd move first, and what would get them to switch: fees, speed or rewards?"),
     ("Meeting question 3",
-     "What do your okx.ac link and the Lighter advisory cover, is any of it exclusive, and what would make an onchain deal worth your time beyond commission?"),
+     "What do your okx.ac link and the Lighter role cover, and what would it take for OKX DEX to be your main onchain recommendation?"),
     ("No unverified promises",
-     "The messages promise no rates, rewards or features OKX hasn't confirmed. The fee share (up to 50% by tier; OKX's regional help "
-     "pages list different tier tables, so confirm the live rate before quoting one) and the follower discount are published OKX DEX "
-     "referral features; any specific rate needs OKX approval, and OKX's regional team confirms how his existing OKX link is tracked "
-     "before any post."),
+     "Every term in these messages is framed as a proposal. The fee share (up to 50% by tier; confirm the live tier table) and the "
+     "follower discount are published OKX DEX referral features. The cash bonus, the co-hosted session and the launch-wave terms "
+     "need OKX approval before they become terms, and OKX's regional team confirms how his existing OKX link is tracked before any post."),
 ]
 _k = partners[0]
 _f4, _t4, _, _ft = ramp(_k, 4)
@@ -1100,12 +1182,12 @@ _f7, _t7, _, _ = ramp(_k, 7)
 _f10, _t10, _, _ = ramp(_k, 10)
 _f14, _t14, _s14, _ = ramp(_k, 14)
 PLAN14 = [  # targets follow the Task 4 ramp for Kevin Susanto (base case)
-    ("Days 1-2", "Separate OKX DEX referral link with the follower discount, tracked apart from his okx.ac link (agreed with OKX's regional team); English and Bahasa Meme Mode guide; compliance check (disclosure, no profit promises, POJK 6/2026); shared dashboard", "Link live; tracking agreed"),
-    ("Days 2-4", "1:1 onboarding of 3 traders from his circle: wallet set-up, presets, Track alerts, first trades", f"3 FnF power traders trading by day 4 (~{_ft:.0f} trades a day)"),
-    ("Day 5", "Co-hosted onchain session for KevinSusantoAlpha: Kevin trades live on Meme Mode; replay pinned", "Session held; first FTDs"),
-    ("Days 6-7", "2 X threads with the referral link", f"~{_f7:.0f} FTDs by day 7"),
-    ("Days 8-10", "Daily check of FTDs, trades a day and flagged wallets; fix the weakest metric; ask for intros to Brandon Salim and the Degen Night circle", f"~{_f10:.0f} FTDs, ~{_t10:.0f} trades a day by day 10"),
-    ("Days 11-14", "Second session; review with Kevin: FTDs, trades a day, FnF traders active, flags; agree days 15-30", f"~{_f14:.0f} FTDs and ~{_t14:.0f} trades a day by day 14"),
+    ("Days 1-2", "Set-up: separate DEX link and follower discount, tracked apart from his okx.ac link (agreed with OKX's regional team); fee-share brackets, milestones and payout wallet in writing; compliance check (POJK 6/2026); shared dashboard", "Link live; terms signed"),
+    ("Days 2-4", "Activate his circle: 3 traders onboarded 1:1 through the full flow (wallet, funding, first Meme Mode trade, Track alerts); log every drop-off", f"3 FnF traders trading by day 4 (~{_ft:.0f} trades a day)"),
+    ("Day 5", "Launch the campaign: co-hosted live trading session on KevinSusantoAlpha and a 7-day trading competition (screened wallets only)", "Session held; first FTDs"),
+    ("Days 6-7", "Push the flow: 2 X threads with the link, a pinned Bahasa and English guide, and an FAQ for first-time DEX users", f"~{_f7:.0f} FTDs by day 7"),
+    ("Days 8-10", "Fix the funnel: check each step (click, wallet, deposit, first trade, second trade), fix the weakest, and send UI/UX feedback to the product team", f"~{_f10:.0f} FTDs, ~{_t10:.0f} trades a day by day 10"),
+    ("Days 11-14", "Competition results and a second session; review with Kevin: FTDs, trades a day, repeat traders and flags; agree days 15-30 and the next bracket", f"~{_f14:.0f} FTDs and ~{_t14:.0f} trades a day by day 14"),
 ]
 
 for research, name in ((False, "OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx"), (True, "OKX_research_and_checks.xlsx")):
