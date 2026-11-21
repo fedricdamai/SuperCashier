@@ -8,7 +8,7 @@
 
 **Update (22 Nov 2026):** built from your edited write-up. #3 is now 0xRusdi + CVC network (meetable in Jakarta); your new scores put Brandon Salim #4 and GuarEmperor #5. The FnF circle multiplier is gone ($1,000 a day for every power trader) and Bevan's reach is a 25,000 guesstimate. Task 2: pilot C first once its volume is confirmed, on a growth deal (share as asked, fixed fee paid as a bonus once volume covers it, 50% above); B on its own terms. Task 3: Kevin starts on OKX DEX's standard share, and his own VIP-style tiers start at $10,000 of monthly fees ($2M of swaps). Kevin's messages are rewritten.
 
-**Update (23 Nov 2026):** Meteora LP Army replaced by Michael Wyann Santoso / Laba Lab (#6). Task 2: smaller step-up shares plus milestone payouts for all three, OKX keeps over 50% of revenue in every case; answers in a table with one column per partner. Task 3 in a table. Task 4: pilot C is its own track; new Task 4 Gantt tab with KPIs by day.
+**Update (23 Nov 2026):** Meteora LP Army replaced by Michael Wyann Santoso / Laba Lab (#6). Task 2: smaller step-up shares plus milestone payouts for all three, OKX keeps over 50% of revenue in every case; answers in a table with one column per partner. Task 3 in a table. Task 4: pilot C is its own track; new Task 4 Gantt tab with KPIs by day. The 100-prospect list is back in the submission workbook as its own tab, Prospect list (100).
 
 Files in this folder:
 

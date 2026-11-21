@@ -1427,6 +1427,7 @@ def build(research=False):
         gt.merge_cells(start_row=rw, start_column=6, end_row=rw, end_column=35)
     gt.freeze_panes = f"F{G0}"
 
+    prospect_tab(wb)
     if research:
         research_tabs(wb, partners)
         checklist_longlist(wb)
@@ -1625,10 +1626,25 @@ def checklist_longlist(wb):
         cell(ws, 5 + i, 2, req)
         cell(ws, 5 + i, 3, where)
         cell(ws, 5 + i, 4, "Done")
-    h0 = 5 + len(checklist) + 1
+    longlist(ws, 5 + len(checklist) + 1, "B. Longlist: 100 public Indonesian prospects screened")
+
+
+def prospect_tab(wb):
+    ws = wb.create_sheet("Prospect list (100)", index=5)
+    put(ws, "A1", "Prospect list: 100 public Indonesian prospects screened", F_TITLE, wrap=False)
+    summary(ws, [
+        "Every prospect went through the same filter: proof that they trade, the FnF power traders they can bring, rival flow we can move, and fees from memecoin traders.",
+        "8 made the list (Task 1); the bench is our month-2 pipeline; the rest were cut, each with the reason.",
+        "Public information only, checked 19-21 November 2026; every row links to its source.",
+    ])
+    longlist(ws, 8, "A. The 100 prospects and the screen result")
+    ws.freeze_panes = "C22"
+
+
+def longlist(ws, h0, title):
     # H. longlist
-    put(ws, f"A{h0}", "H. Longlist: 100 public Indonesian prospects screened", F_SECTION, wrap=False)
-    put(ws, f"A{h0 + 1}", "Each prospect checked against the same filter: proof of trading, FnF power traders it can bring, rival flow to move, trencher fees.", wrap=False)
+    put(ws, f"A{h0}", title, F_SECTION, wrap=False)
+    put(ws, f"A{h0 + 1}", "Each prospect checked against the same filter: proof of trading, FnF power traders it can bring, rival flow to move, fees from memecoin traders.", wrap=False)
     LL = L["Longlist (100 screened)"]
     drop = {"Bitcoinist Indonesia", "Blockchainmedia.id", "CoinDesk Indonesia", "CoinSpeaker Indonesia", "Cryptonews Indonesia",
             "Investortrust.id", "Blockplay", "Crypto Indonesia (Discord)", "CryptoHack (Indonesia)", "Edwin Nazir / NQvers",
@@ -1643,7 +1659,7 @@ def checklist_longlist(wb):
             continue
         if name == "vemi.pramudya":
             rec = [None, next(q["name"] for q in partners if q["short"].startswith("GuarEmperor")), "Trading creator", "https://x.com/GuarEmperor", TREN, "Y", "In the 8",
-                   "#4: FnF circle; members post results from his tools; 1.9% engagement", "Wave 2 (day 14)",
+                   "#5: active trader who calls token buys ($PRL 3.5x); FnF circle; members post results from his tools", "Wave 2 (day 14)",
                    "https://x.com/GuarEmperor/status/2115414023114256560"]
         elif name == "Airdrop Finder (Telegram)":
             rec[7] = "Airdrop-led: fails the brief's main filter. Its co-founder Setya joins through the CVC Ventures network (#3), not this channel"
@@ -1657,18 +1673,18 @@ def checklist_longlist(wb):
          "#1: most FTDs, a verified top fomo trader, and the fastest yes through OKX's regional team", "Wave 1 (day 8)", "https://x.com/KevinSusanto/status/2123472525070102987"),
         ("Bevan Pramudito / Narrative Labs", "Trading educator", "https://x.com/bevanpramudt", TREN, "Y", "In the 8",
          "#2: verified wallet and a live 1-to-10 SOL run, a paid community he founded, GMGN flow, meetable in Jakarta", "Wave 1 (day 8)", "https://narrativelabs.id"),
-        ("Ponyin + CVC Ventures network (ApexFNF, 0xRusdi + Tomket Lovers, Setya)", "Trading community", "https://x.com/CVC_Ventures", TREN, "Y", "In the 8",
-         "#3, through 0xRusdi: BasedBot referral book, Ponyin's Trojan card, ApexFNF and the Tomket clan (15 FnF traders)", "Wave 1 (day 8)", "https://x.com/Ponyin"),
+        ("0xRusdi + CVC Ventures network (Ponyin + ApexFNF, Tomket Lovers, Setya)", "Trading community", "https://x.com/0xRusdi", TREN, "Y", "In the 8",
+         "#3: ~$3.4M referred on BasedBot ($8,463 earned); opens Ponyin's Trojan circle, ApexFNF and the Tomket clan (15 FnF traders); meetable in Jakarta", "Wave 1 (day 8)", "https://x.com/CVC_Ventures"),
         ("Brandon Salim + a79", "Trading creator", "https://x.com/brandonsalim", TREN, "Y", "In the 8",
-         "#5: 14K median views, fomo code on almost every trade, founder of the a79 trader group", "Wave 2 (day 14), intro through Kevin", "https://x.com/brandonsalim/status/2096005957692301790"),
+         "#4: 14K median views, fomo code on almost every trade, founder of the a79 trader group", "Wave 2 (day 14)", "https://x.com/brandonsalim/status/2096005957692301790"),
         ("Crypto Ndo", "Trading creator", "https://x.com/cryptondo", TREN, "Y", "In the 8",
-         "#6: largest memecoin-trader reach on X; trades on OKX Wallet himself", "Wave 2 (day 14)", "https://x.com/cryptondo"),
+         "#7: largest memecoin-trader reach on X; trades on OKX Wallet himself", "Wave 3 (day 20)", "https://x.com/cryptondo"),
         ("DegenRex", "Trading creator", "https://x.com/degen2ex", TREN, "Y", "In the 8",
-         "#7: won Clash of Trenchers live (1 SOL to 10 SOL); multichain", "Wave 3 (day 20)", "https://x.com/AveaiGlobal/status/2120891736373518591"),
+         "#8: won Clash of Trenchers live (1 SOL to 10 SOL); multichain", "Wave 3 (day 20)", "https://x.com/AveaiGlobal/status/2120891736373518591"),
         ("Michael Wyann Santoso / Laba Lab", "Trading educator", "https://laba-lab.com", TREN, "Y", "In the 8",
          "#6: paid trading membership and bootcamps; YouTube 121K, Telegram 10.8K + 6.9K; Jakarta", "Wave 2 (day 14)", "https://laba-lab.com/membership"),
         ("Meteora LP Army", "Onchain trading community", "https://x.com/EvilPanda", LP, "Y", "Bench (month 2)",
-         "Largest in-person on-chain crowds (462 and 671), but liquidity providers swap less often", "Month 2: co-hosted night", "https://luma.com/76fvdt2j"),
+         "Largest in-person on-chain crowds (462 and 671), but liquidity providers swap less often", "Month 2: co-hosted night", "https://x.com/EvilPanda"),
         ("Stress Capital (Orpheuzkaze)", "Trading community", "https://x.com/StressCapitals", TREN, "Y", "Bench (month 2)",
          "30.7K-member clan Discord, 2,453 online, but no trading proof yet", "Month 2: clan competition if clan leads show they trade", "https://discord.gg/stresscapitals"),
         ("TwipsX", "Trading creator", "https://x.com/TwipsX", TREN, "Y", "Bench (month 2)",
@@ -1698,14 +1714,21 @@ def checklist_longlist(wb):
         rows.append([None, *rec])
     assert len(rows) == 100, len(rows)
     order = {"In the 8": 0, "Bench (month 2)": 1, "Access channel": 2, "Lead to verify": 3, "Excluded by rule": 4, "Legal hold": 5, "Screened out": 6}
-    rows.sort(key=lambda x: (order[x[6]], str(x[1]).lower()))
+    _rank = lambda x: int(re.match(r"#(\d+)", str(x[7])).group(1)) if x[6] == "In the 8" and re.match(r"#\d+", str(x[7])) else 99
+    rows.sort(key=lambda x: (order[x[6]], _rank(x), str(x[1]).lower()))
+    for rec in rows:  # plain words, and no event-page links
+        for j in (1, 2, 4, 7, 8):
+            if isinstance(rec[j], str):
+                rec[j] = plain(rec[j])
+        if str(rec[9]).startswith("https://luma.com") or str(rec[9]).startswith("https://lu.ma"):
+            rec[9] = rec[3] if str(rec[3]).startswith("http") else ""
     header(ws, h0 + 3, ["Screen result", "Count"])
     for i, res in enumerate(order):
         cell(ws, h0 + 4 + i, 1, res)
         cell(ws, h0 + 4 + i, 2, f'=COUNTIF($G${h0 + 14}:$G${h0 + 113},A{h0 + 4 + i})')
     cell(ws, h0 + 11, 1, "Total", bold=True)
     cell(ws, h0 + 11, 2, f"=SUM(B{h0 + 4}:B{h0 + 10})", bold=True)
-    header(ws, h0 + 13, ["#", "Prospect", "Type", "Public link", "Segment", "Onchain users? (Y/N)", "Screen result", "Why", "Use in month 1-2", "Source"])
+    header(ws, h0 + 13, ["#", "Prospect", "Type", "Public link", "Segment", "Users trade on-chain? (Y/N)", "Screen result", "Why", "Use in month 1-2", "Source"])
     for i, rec in enumerate(rows):
         row = h0 + 14 + i
         rec[0] = i + 1
