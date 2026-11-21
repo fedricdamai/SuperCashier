@@ -466,10 +466,52 @@ for _p, _d in zip(partners, (8, 8, 8, 14, 14, 14, 20, 20)):
 assert [p["short"] for p in partners][:5] == ["Kevin Susanto", "Bevan / Narrative Labs", "0xRusdi + CVC network", "Brandon Salim + a79", "GuarEmperor + FnF"]
 
 
+# ---------------------------------------------------------------- v6c: Laba Lab replaces Meteora LP Army (23 Nov 2026)
+_LABA = dict(
+    short="Michael Wyann / Laba Lab", name="Michael Wyann Santoso / Laba Lab",
+    link="https://laba-lab.com ; https://linkedin.com/in/michaelwyannsantoso",
+    type="Trading Educator + Trading Community", trading_type="Market-analysis trader (macro, price action, on-chain flows)",
+    audience="Indonesian retail and intermediate traders; YouTube 121K, Telegram channel 10.8K and group 6.9K, Discord 4.6K; Jakarta",
+    evidence=("3 years of weekly market updates without a gap (self-reported); paid membership tier and bootcamps (laba-lab.com/membership); "
+              "named in Indonesia Crypto Network's 12 Trusted Crypto Influencers (Feb 2024); YouTube 121K, Telegram channel 10.8K and group "
+              "6.9K, Discord 4.6K, TikTok 44K (self-reported on LinkedIn, read 19 Nov 2026)"),
+    assumptions="How many members trade on-chain rather than exchange futures; follower counts are self-reported; his existing exchange partnerships",
+    route="Direct message to Michael on LinkedIn (he says he is open to Web3 partnerships); Laba Lab site contact; Discord admins",
+    proposal=("An OKX DEX and Wallet module in his bootcamp; a co-branded on-chain week with live sessions; fee share on a tracked OKX DEX "
+              "referral code; 5 paid members onboarded one-to-one in days 1-3"),
+    risk="His audience may prefer exchange futures to on-chain swaps; existing exchange partnerships",
+    reason="The largest paid trading-education community we can reach, with members who pay to learn trading",
+    vampire="Exchange partners (not named publicly)",
+    fnf="5 paid members from his membership and bootcamps, onboarded first",
+    in_person="No", airdrop="No", segment=TREN, pool=14000, ptraders=5, share=0.3, members=None, per_member="trade",
+    basis="Guesstimate: YouTube views plus active Telegram and Discord members",
+    deliverables=("Days 1-3: 5 paid members onboarded one-to-one; then an OKX DEX module in his bootcamp and a co-branded on-chain week "
+                  "with two live sessions"),
+    need="A product his paid members can't get elsewhere, and income on the trading he already teaches",
+    support="Bootcamp module and guide in Bahasa; co-hosted live sessions; wallet-level referral dashboard",
+    check="Membership size and how many members trade on-chain; YouTube analytics; existing exchange deals",
+    line="", scores=(3, 4, 4, 3, 5, 4, 3), go_live=20, event="No", mult=1,
+    why_reach=("Guesstimate: ~10K views on a typical YouTube video, plus about 20% of his Telegram channel (10.8K) and group (6.9K), "
+               "plus ~460 Discord members online"),
+    why_fnf="Paid members from his membership and bootcamps, at the standard $1,000 a day",
+    s_aud="Retail and intermediate traders; 121K on YouTube; Jakarta",
+    s_evid="3 years of weekly market updates; paid membership and bootcamps",
+    s_route="Direct message to Michael on LinkedIn (open to partnerships)",
+    s_prop="OKX DEX module in his bootcamp, co-branded on-chain week, fee share",
+    s_risk="Audience may prefer exchange futures to on-chain swaps",
+    s_prio="Medium: big paid community, Jakarta",
+)
+partners[:] = [q for q in partners if q["short"] != "Meteora LP Army"]
+partners.insert(5, _LABA)  # score 3.80: above Crypto Ndo (3.50) and DegenRex (3.40)
+for _p, _d in zip(partners, (8, 8, 8, 14, 14, 14, 20, 20)):
+    _p["go_live"] = _d
+assert len(partners) == 8 and partners[5]["short"] == "Michael Wyann / Laba Lab"
+
+
 # ================================================================ v6 body: brief titles, answers on top, plain words
 import math
 
-from layout_v6 import MI, T1 as L1, T2 as L2, T3 as L3, T4 as L4
+from layout_v6 import MI, T1 as L1, T2 as L2, T3 as L3, T4 as L4, GT, CASES
 
 TREN_OLD, LP_OLD = TREN, LP
 TREN, LP = "Memecoin traders", "Liquidity providers (LPs)"
@@ -856,83 +898,110 @@ def build(research=False):
             "X: partner posts, profit-and-loss and referral screenshots, public wallet lists; follower counts and median views through the X API (20 November 2026)",
             "Solscan: Bevan's published wallet (swaps, volume and profit, May-July 2026)",
             "Discord invite counts and Telegram channel previews: community size and members online",
-            "Event organiser posts: Web3 Week Asia, Clash of Trenchers, Degen Night and Meteora community nights",
+            "Event organiser posts: Web3 Week Asia, Clash of Trenchers and Degen Night",
             "Rival programmes: Bitget Wallet ambassador lists and the BasedBot, Trojan, fomo and pump.fun referral pages",
             "Screened out: Hyperliquid Indonesia (a rival venue) and Bael calls (a Bitget Wallet ambassador)",
             "Every link: Miscellaneous, section E"]):
         put(t1, f"A{SRC1 + 1 + i}", "• " + b, wrap=False)
 
     # ============================================================ Task 2
-    VOL, FEE, ASK, SHR, BON, THR, UP, TRY = (L2[k] for k in ("VOL", "FEE", "ASK", "SHARE", "BONUS", "THR", "UP", "TRY"))
-    SC0, TOP0 = L2["SC0"], L2["TOP0"]
-    widths(t2, {"A": 36, **{col(c): 16 for c in range(2, 18)}})
+    IK = {k: L2[k] for k in ("VOL", "FEE", "ASK", "BR1", "BR2", "BR3", "S1", "S2", "S3", "S4", "MS1", "MS2", "MS3", "MS4",
+                             "PY1", "PY2", "PY3", "PY4", "ORDER")}
+    SC0, TOP0, MINSH = L2["SC0"], L2["TOP0"], L2["MINSH"]
+    VOL, BASE = IK["VOL"], IK["S1"]
+    widths(t2, {"A": 34, **{col(c): 15 for c in range(2, 18)}})
     put(t2, "A1", "Task 2: Make a commercial decision", F_TITLE, wrap=False)
     PC = {"A": "B", "B": "C", "C": "D"}
-    CASES = ("50% of forecast", "Forecast", "Bonus threshold", "A volume you choose")
     SC = {}
     rr_ = SC0
     for pn in "ABC":
         for cs in CASES:
             SC[(pn, cs)] = rr_
             rr_ += 1
-    r = lambda pn, cs: SC[(pn, cs)]
-    rA1, rB1, rC1, rC05, rAT, rCT = r("A", "Forecast"), r("B", "Forecast"), r("C", "Forecast"), r("C", "50% of forecast"), r("A", "A volume you choose"), r("C", "A volume you choose")
+    r = lambda pn, j: SC[(pn, CASES[j])]
+    inp = lambda key, pn: f"${PC[pn]}${IK[key]}"
     summary(t2, [
-        ["Pilot C first, once its volume is confirmed: the highest forecast, and on our deal OKX makes ", td(f"J{rC1}"),
-         " at forecast instead of losing ", td(f"-F{rC1}"), " on C's own ask."],
-        "Growth deal: each partner keeps the share it asked for, its fixed fee becomes a bonus paid the month its volume covers it, and above that it earns 50% of the revenue.",
-        "B gets its own terms (35%, no fee) and little of our time; A follows with a campaign that turns its airdrop users into traders.",
+        ["Pilot C first, once its volume is confirmed: on our deal OKX makes ", td(f"J{r('C', 1)}"), " at forecast instead of losing ",
+         td(f"-F{r('C', 1)}"), " on C's own ask."],
+        ["Every deal pays a smaller share that steps up with volume, plus milestone payouts, so OKX keeps more than half of the revenue in every case (lowest: ",
+         pc(f"B{MINSH}"), ")."],
+        ["B gets the steepest steps: ", pc(inp("S1", "B")), " at its forecast, rising to ", pc(inp("S4", "B")),
+         " above ", tm(inp("BR3", "B")), ", so pushing volume pays."],
     ])
-    put(t2, f"A{L2['ANS0'] - 2}", "Answers", F_SECTION, wrap=False)
-    ans2 = [
-        ("1. First-month contribution for each partner",
-         ["At their own asks only B makes money (A ", td(f"F{rA1}"), ", B ", td(f"F{rB1}"), ", C ", td(f"F{rC1}"), "); on our deals at forecast ",
-          X(f'IF(MIN(J{rA1},J{rB1},J{rC1})>0,"all three do","not all three do")'), " (A ", td(f"J{rA1}"), ", B ", td(f"J{rB1}"), ", C ", td(f"J{rC1}"), ")."],
-         [["A: ", td(f"D{rA1}"), " revenue − ", td(f"$B${FEE}"), " fee − ", td(f"D{rA1}*$B${ASK}"), " share = ", td(f"F{rA1}"), " at its ask; ",
-           td(f"J{rA1}"), " on our deal"],
-          ["B: ", td(f"D{rB1}"), " − ", td(f"D{rB1}*$C${ASK}"), " share = ", td(f"F{rB1}"), ", on its ask and ours alike"],
-          ["C: ", td(f"D{rC1}"), " − ", td(f"$D${FEE}"), " fee − ", td(f"D{rC1}*$D${ASK}"), " share = ", td(f"F{rC1}"), " at its ask; ",
-           td(f"J{rC1}"), " on our deal"]]),
-        ("2. Preferred pilot",
-         ["C, once its 90-day dashboards confirm the ", tm(f"$D${VOL}"), ": the highest volume of the three, and with no fixed fee OKX makes ",
-          td(f"J{rC1}"), " at forecast instead of losing ", td(f"-F{rC1}"), "."],
-         ["A: later, with a campaign that turns its airdrop users into traders",
-          ["B: the fallback if C's numbers don't hold; positive at any volume but small (", td(f"J{rB1}"), " a month)"],
-          "C: pilot first: its members trade, and it has the most volume once confirmed"]),
-        ("3. Counter-offer: the growth deal",
-         "Each partner keeps the share it asked for, its fixed fee becomes a bonus paid the month its volume covers it, and above that volume it earns 50% of the revenue.",
-         [["A: ", pc(f"$B${SHR}"), " share; its ", td(f"$B${BON}"), " paid the month swaps pass ", tm(f"$B${THR}"), "; ", pc(f"$B${UP}"), " of revenue above that"],
-          ["B: yes to its own terms: ", pc(f"$C${SHR}"), " share, no fee; simple and done"],
-          ["C: ", pc(f"$D${SHR}"), " share; its ", td(f"$D${BON}"), " paid the month swaps pass ", tm(f"$D${THR}"), "; ", pc(f"$D${UP}"), " of revenue above that"]]),
-        ("Why the growth deal pays them more than a retainer",
-         ["At the threshold a partner earns exactly what its own ask pays, and every dollar of volume above it pays more: C at ", tm(f"C{rCT}"),
-          " earns ", td(f"I{rCT}"), " on our deal against ", td(f"E{rCT}"), " on its ask."],
-         [["A at ", tm(f"C{rAT}"), ": ", td(f"I{rAT}"), " on our deal against ", td(f"E{rAT}"), " on its ask"],
-          ["C at ", tm(f"C{rCT}"), ": ", td(f"I{rCT}"), " against ", td(f"E{rCT}"), "; OKX still keeps ", td(f"J{rCT}")],
-          "Below the threshold OKX never pays for volume that didn't arrive"]),
-        ("4. Evidence before signing",
-         "90 days of real numbers: referral or bot dashboards, community analytics, and the wallet addresses of their most active members, which we check on-chain.",
-         ["A: the share of wallets that trade, not just claim airdrops, and retention after past campaigns",
-          "B: 90 days of referral dashboards and its top wallets' trading history",
-          ["C: the dashboards behind its ", td(f"$D${VOL}"), " monthly estimate, past partnership results and a reference"],
-          "All three: wallets checked on-chain for unique traders, repeat days and wash trades"]),
-        ("5. If C reaches only 50% of forecast",
-         ["C at ", tm(f"C{rC05}"), " still makes OKX ", td(f"J{rC05}"), " on our deal, against a ", td(f"-F{rC05}"),
-          " loss on its own ask: the bonus simply isn't triggered."],
-         ["Market: did memecoin DEX volume fall overall? A normal swing: keep going",
-          "Incentive: did activity drop after a campaign ended? Adjust the campaign",
-          "The group: are its active wallets falling? Renegotiate or stop"]),
-        ("Other costs, and what we do about them",
-         "Month 1 carries no other costs; after the pilot we add each one only where a partner's volume pays for it.",
-         ["Campaigns (prize pools, events): from month 2, only for a partner past its threshold, capped at 10% of the revenue above it",
-          "Follower fee discounts: paid from the partner's share, never OKX's",
-          "Fraud screening: weekly wallet checks; bonuses paid after a 30-day clawback window",
-          "Compliance: finfluencer certification (OJK rule 6/2026) and OKX legal sign-off before any paid post",
-          "Business-development time: B runs on its own; our time goes to C, then A"]),
-    ]
-    answers(t2, L2["ANS0"] - 1, ans2, (2, 7), (8, 17))
 
-    put(t2, f"A{VOL - 2}", "A. Their asks and our growth deal", F_SECTION, wrap=False)
+    def miles(pn):
+        out = []
+        for k in "1234":
+            out += [td(inp("PY" + k, pn)), " at ", tm(inp("MS" + k, pn)), ", " if k != "4" else ""]
+        return out
+
+    def steps(pn):
+        return [pc(inp("S1", pn)), " to ", tm(inp("BR1", pn)), ", ", pc(inp("S2", pn)), " to ", tm(inp("BR2", pn)), ", ",
+                pc(inp("S3", pn)), " to ", tm(inp("BR3", pn)), ", ", pc(inp("S4", pn)), " above"]
+
+    def deal(pn):
+        same = f"AND({inp('S1', pn)}={inp('S2', pn)},{inp('S2', pn)}={inp('S3', pn)},{inp('S3', pn)}={inp('S4', pn)})"
+        return [X(f'IF({same},TEXT({inp("S1", pn)},"0%")&" share",' + fx(*steps(pn))[1:] + ')'), "; milestone payouts: "] + miles(pn)
+
+    who = {"A": "A · airdrop community", "B": "B · repeat on-chain traders", "C": "C · trading educator"}
+    ans2 = [
+        ("1. First-month contribution (at forecast)",
+         ["At their own asks only B makes money; on our deals all three do, and OKX keeps ", pc(f"MIN(K{r('A', 1)},K{r('B', 1)},K{r('C', 1)})"),
+          " or more of the revenue."],
+         {pn: ["Their ask: ", td(f"D{r(pn, 1)}"), X(f'IF({inp("FEE", pn)}>0," − "&TEXT({inp("FEE", pn)},"$#,##0")&" fee","")'), " − ", td(f"D{r(pn, 1)}*{inp('ASK', pn)}"), " share = ",
+               td(f"F{r(pn, 1)}"), ". Our deal: ", td(f"D{r(pn, 1)}"), " − ", td(f"G{r(pn, 1)}"), " share − ", td(f"H{r(pn, 1)}"),
+               " milestone = ", td(f"J{r(pn, 1)}")] for pn in "ABC"}),
+        ("2. Preferred pilot",
+         ["C, once its 90-day dashboards confirm the ", tm(inp("VOL", "C")), ": the highest volume of the three."],
+         {"A": "Later, with a campaign that turns its airdrop users into traders",
+          "B": "The fallback if C's numbers don't hold: positive at any volume, but small",
+          "C": "Pilot first: its members trade, and it brings the most volume once confirmed"}),
+        ("3. Counter-offer: the growth deal",
+         "A smaller share that steps up with volume, plus a payout each time monthly volume passes a milestone; no fixed fee.",
+         {pn: deal(pn) for pn in "ABC"}),
+        ("Why bring more volume",
+         "Every milestone pays more per dollar of volume, so the partner earns far more by pushing past its forecast.",
+         {pn: ["Earns ", td(f"I{r(pn, 1)}"), " at forecast, ", td(f"I{r(pn, 2)}"), " at $10M and ", td(f"I{r(pn, 3)}"),
+               " at $20M; OKX keeps ", pc(f"K{r(pn, 3)}"), " at $20M"] for pn in "ABC"}),
+        ("4. Evidence before signing",
+         "90 days of real numbers: referral or bot dashboards, community analytics, and the wallets of their most active members, checked on-chain.",
+         {"A": "Share of wallets that trade, not just claim airdrops; retention after past campaigns",
+          "B": "90 days of referral dashboards and its top wallets' trading history",
+          "C": ["The dashboards behind its ", td(inp("VOL", "C")), " monthly estimate, past partnership results and a reference"]}),
+        ("5. If volume reaches only 50% of forecast",
+         ["C at ", tm(f"C{r('C', 0)}"), " still makes OKX ", td(f"J{r('C', 0)}"), " on our deal, against a ", td(f"-F{r('C', 0)}"),
+          " loss on its own ask: no milestone is reached, so nothing extra is paid."],
+         {pn: ["Our deal: ", td(f"J{r(pn, 0)}"), " for OKX (its ask: ", td(f"F{r(pn, 0)}"), ")"] for pn in "ABC"}),
+        ("Other costs, and what we do about them",
+         "Month 1 carries no other costs; after the pilot we add only two kinds, each paid for by the volume it brings.",
+         {"ALL": ["Campaigns: a trading competition or live session for each partner past its first milestone, capped at 10% of the revenue above it. "
+                  "Fee discounts: a lower swap fee for the named FnF power traders each partner onboards, and a lower fee for a partner's whole "
+                  "community once it passes a monthly volume level (for example $10M)"]}),
+    ]
+    a0 = L2["ANS0"]
+    spans = {"Q": (1, 1), "S": (2, 5), "A": (6, 9), "B": (10, 13), "C": (14, 17)}
+    for key, h in (("Q", "Question"), ("S", "One-sentence answer"), ("A", who["A"]), ("B", who["B"]), ("C", who["C"])):
+        mcell(t2, a0 - 1, *spans[key], h, bold=True, fill=FILL_HEAD)
+    put(t2, f"A{a0 - 2}", "Answers", F_SECTION, wrap=False)
+    for i, (q, s1, per) in enumerate(ans2):
+        rw = a0 + i
+        mcell(t2, rw, 1, 1, q, bold=True)
+        vs, es = value(s1)
+        mcell(t2, rw, *spans["S"], vs)
+        hts = [lines(q, 34), lines(es, 60)]
+        if "ALL" in per:
+            va, ea = value(per["ALL"])
+            mcell(t2, rw, spans["A"][0], spans["C"][1], va)
+            hts.append(lines(ea, 180))
+        else:
+            for pn in "ABC":
+                va, ea = value(per[pn])
+                mcell(t2, rw, *spans[pn], va)
+                hts.append(lines(ea, 60))
+        t2.row_dimensions[rw].height = 15 * max(hts) + 4
+    assert a0 + len(ans2) - 1 == a0 + L2["NANS"] - 1
+
+    put(t2, f"A{VOL - 2}", "A. Their asks and our growth deal (yellow cells are inputs)", F_SECTION, wrap=False)
     header(t2, VOL - 1, ["Input", "A", "B", "C", "How it works"])
     LT2 = L["Task 2 numbers"]
     vol = [LT2.cell(rr, 3).value for rr in (4, 5, 6)]
@@ -942,12 +1011,21 @@ def build(research=False):
         ("Monthly volume forecast (brief)", vol, MONEY, "Brief: A airdrop community, B repeat on-chain traders, C trading educator (volume unverified)"),
         ("Their ask: fixed fee", fee, MONEY, "Brief"),
         ("Their ask: revenue share", ask, PCT, "Brief"),
-        ("Our deal: revenue share up to the threshold", [0.2, 0.35, 0.1], PCT, "The share each partner asked for"),
-        ("Our deal: bonus paid the month swaps pass the threshold", [2000, 0, 3000], MONEY, "Their fixed fee, paid only once their volume covers it"),
-        ("Our deal: bonus threshold (monthly swaps)", [7000000, 2000000, 9000000], MONEY,
-         "About 10% above the volume where their own ask breaks even for OKX (A $6.25M, C $8.33M); B has no bonus"),
-        ("Our deal: revenue share above the threshold", [0.5, 0.35, 0.5], PCT, "OKX DEX's top published referral tier; B stays at 35%"),
-        ("Try a monthly volume", [10000000, 3000000, 12000000], MONEY, "Change it to see what each partner earns on both deals"),
+        ("Share bracket 1 ends at (monthly swaps)", [4e6, 2e6, 6e6], MONEY, "Brackets are marginal: each rate applies only to the volume inside it"),
+        ("Share bracket 2 ends at", [7e6, 5e6, 10e6], MONEY, ""),
+        ("Share bracket 3 ends at", [10e6, 10e6, 15e6], MONEY, ""),
+        ("Share in bracket 1", [0.15, 0.20, 0.10], PCT, "Below each partner's own ask"),
+        ("Share in bracket 2", [0.15, 0.25, 0.10], PCT, "B steps up as it grows"),
+        ("Share in bracket 3", [0.15, 0.30, 0.10], PCT, ""),
+        ("Share above bracket 3", [0.15, 0.35, 0.10], PCT, "B reaches its own 35% ask only above $10M"),
+        ("Milestone 1 (monthly swaps)", [4e6, 2e6, 6e6], MONEY, "A payout in each month the milestone is reached; the highest one reached counts"),
+        ("Milestone 2", [7e6, 5e6, 10e6], MONEY, ""),
+        ("Milestone 3", [10e6, 10e6, 15e6], MONEY, ""),
+        ("Milestone 4", [15e6, 15e6, 20e6], MONEY, ""),
+        ("Payout at milestone 1", [300, 100, 500], MONEY, "Sized so OKX keeps more than half of the revenue at every milestone"),
+        ("Payout at milestone 2", [700, 250, 1000], MONEY, ""),
+        ("Payout at milestone 3", [1200, 500, 2000], MONEY, ""),
+        ("Payout at milestone 4", [2000, 800, 3000], MONEY, "C's $3,000 ask, paid once it brings $20M in a month"),
         ("Pilot order", [3, 2, 1], None, "C first once its volume is confirmed; B as the fallback; A later with a campaign"),
     ]
     for i, (lab, vals, fmt, note) in enumerate(rows_in):
@@ -956,29 +1034,37 @@ def build(research=False):
         for j, vv in enumerate(vals):
             cell(t2, rw, 2 + j, vv, fmt=fmt, inp=True)
         cell(t2, rw, 5, note)
+    assert VOL + len(rows_in) - 1 == IK["ORDER"]
 
-    put(t2, f"A{SC0 - 2}", "B. Month-1 contribution: their ask against our growth deal", F_SECTION, wrap=False)
+    put(t2, f"A{SC0 - 2}", "B. Month 1 at four volumes: their ask against our growth deal", F_SECTION, wrap=False)
     header(t2, SC0 - 1, ["Partner", "Case", "Volume", "Revenue (0.04%)", "Partner earns on its ask", "Month 1 for OKX on its ask",
-                         "Our deal: share paid", "Our deal: bonus", "Partner earns on our deal", "Month 1 for OKX on our deal", "Partner earns more on"])
+                         "Our deal: share paid", "Our deal: milestone payout", "Partner earns on our deal", "Month 1 for OKX on our deal",
+                         "OKX's share of revenue (our deal)"])
     for pn in "ABC":
         X_ = PC[pn]
         F = f"${X_}${VOL}"
-        vols = {"50% of forecast": f"={F}*0.5", "Forecast": f"={F}", "Bonus threshold": f"=${X_}${THR}", "A volume you choose": f"=${X_}${TRY}"}
-        for cs in CASES:
+        g = lambda key: f"${X_}${IK[key]}"
+        vols = [f"={F}*0.5", f"={F}", "=10000000", "=20000000"]
+        for j, cs in enumerate(CASES):
             rw = SC[(pn, cs)]
             cell(t2, rw, 1, pn, bold=True)
-            cell(t2, rw, 2, cs if not (pn == "B" and cs == "Bonus threshold") else "Threshold (no bonus for B)")
-            cell(t2, rw, 3, vols[cs], fmt=MONEY)
+            cell(t2, rw, 2, cs)
+            cell(t2, rw, 3, vols[j], fmt=MONEY)
             cell(t2, rw, 4, f"=C{rw}*{RATE}", fmt=MONEY)
-            cell(t2, rw, 5, f"=${X_}${FEE}+D{rw}*${X_}${ASK}", fmt=MONEY)
+            cell(t2, rw, 5, f"={g('FEE')}+D{rw}*{g('ASK')}", fmt=MONEY)
             cell(t2, rw, 6, f"=D{rw}-E{rw}", fmt=MONEY)
-            cell(t2, rw, 7, f"={RATE}*(${X_}${SHR}*MIN(C{rw},${X_}${THR})+${X_}${UP}*MAX(C{rw}-${X_}${THR},0))", fmt=MONEY)
-            cell(t2, rw, 8, f"=IF(C{rw}>=${X_}${THR},${X_}${BON},0)", fmt=MONEY)
+            v_ = f"C{rw}"
+            cell(t2, rw, 7, f"={RATE}*({g('S1')}*MIN({v_},{g('BR1')})+{g('S2')}*MIN(MAX({v_}-{g('BR1')},0),{g('BR2')}-{g('BR1')})"
+                            f"+{g('S3')}*MIN(MAX({v_}-{g('BR2')},0),{g('BR3')}-{g('BR2')})+{g('S4')}*MAX({v_}-{g('BR3')},0))", fmt=MONEY)
+            cell(t2, rw, 8, f"=IF({v_}>={g('MS4')},{g('PY4')},IF({v_}>={g('MS3')},{g('PY3')},IF({v_}>={g('MS2')},{g('PY2')},IF({v_}>={g('MS1')},{g('PY1')},0))))", fmt=MONEY)
             cell(t2, rw, 9, f"=G{rw}+H{rw}", fmt=MONEY)
             cell(t2, rw, 10, f"=D{rw}-I{rw}", fmt=MONEY)
-            cell(t2, rw, 11, f'=IF(ROUND(I{rw}-E{rw},0)=0,"Equal",IF(I{rw}>E{rw},"Our deal","Their ask"))')
+            cell(t2, rw, 11, f"=J{rw}/D{rw}", fmt=PCT)
+    cell(t2, MINSH, 1, "Lowest OKX share of revenue, any partner, any case", bold=True)
+    cell(t2, MINSH, 2, f"=MIN(K{SC0}:K{SC0 + 11})", fmt=PCT)
+    mcell(t2, MINSH, 3, 11, "Must stay above 50%: the milestone payouts are sized to keep it there")
 
-    put(t2, f"A{TOP0 - 2}", "C. Our real top 3 on the same terms (each partner's first month, base case, 0.04%)", F_SECTION, wrap=False)
+    put(t2, f"A{TOP0 - 2}", "C. Our real top 3 on simple revenue share (each partner's first month, base case, 0.04%)", F_SECTION, wrap=False)
     header(t2, TOP0 - 1, ["Partner", "Swaps, first month (base)", "Revenue (0.04%)", "Revenue share", "Month-1 contribution",
                           "At 50% of forecast", "Partner earns", "OKX keeps at the published 0.5% fee", "Evidence before signing"])
     for kk in range(3):
@@ -1067,53 +1153,54 @@ def build(research=False):
     # ============================================================ Task 4
     R0, RT4, PP0 = L4["R0"], L4["RTOT"], L4["P0"]
     R1 = R0 + 7
-    W = {k: L4[k] for k in ("FOCUS", "W0", "LIVE", "PILOT", "ACT", "FTD", "TPD", "SW8", "SWP", "REV", "REVN", "RUN")}
+    W = {k: L4[k] for k in ("FOCUS", "W0", "LIVE", "ACT", "FTD", "TPD", "SW8", "REV", "REVN", "RUN", "PIL0")}
+    PIL = W["PIL0"]
     widths(t4, {"A": 34, "B": 24, "C": 24, "D": 24, "E": 24, "F": 14, "G": 46, **{col(c): 13 for c in range(8, 23)}})
     put(t4, "A1", "Task 4: Demonstrate practical execution and persistence", F_TITLE, wrap=False)
     summary(t4, [
-        ["By day 30: ", tx(f"E{W['LIVE']}"), " partners live plus pilot C, ", tx(f"E{W['ACT']}"), " activated, about ", tx(f"E{W['FTD']}"),
-         " FTDs and ", tx(f"E{W['TPD']}"), " trades a day."],
-        "Week 1 signs the first partners; weeks 2-3 are the major push (competitions, live sessions, every partner live by day 20); week 4 reviews and makes a last push.",
-        ["Swaps by day 30: ", tk(f"E{W['SW8']}"), " from our 8 and ", tm(f"E{W['SWP']}"), " from pilot C, so ", td(f"E{W['REV']}"),
-         " of revenue at 0.04% and a ", td(f"E{W['RUN']}*{RATE}"), " monthly run-rate on day 30."],
+        ["By day 30: ", tx(f"E{W['LIVE']}"), " partners live, ", tx(f"E{W['ACT']}"), " activated, about ", tx(f"E{W['FTD']}"),
+         " FTDs, ", tx(f"E{W['TPD']}"), " trades a day and ", tk(f"E{W['SW8']}"), " of swaps from our 8 partners."],
+        "Week 1 signs the first partners; weeks 2-3 are the major push (competitions, live sessions, every partner live by day 20); week 4 reviews and makes a last push. Day-by-day plan: the Task 4 Gantt tab.",
+        ["Pilot C runs as its own track: evidence checked in days 1-9, live from day 10, ", tm(f"E{PIL + 1}"), " of swaps by day 30."],
     ])
     put(t4, f"A{L4['ANS0'] - 2}", "Answers", F_SECTION, wrap=False)
     ans4 = [
         ("Weekly targets: outreach, meetings, pilots and activated partners",
          [tx(f"F{W['W0'] + 1}"), " messages, about ", tx(f"F{W['W0'] + 2}"), " replies and ", tx(f"F{W['W0'] + 3}"), " meetings in 30 days, for ",
-          tx(f"E{W['LIVE']}"), " partners live plus pilot C and ", tx(f"E{W['ACT']}"), " activated by day 30 (section A)."],
+          tx(f"E{W['LIVE']}"), " partners live and ", tx(f"E{W['ACT']}"), " activated by day 30; pilot C is its own track (section B)."],
          ["Week 1: prospect, pitch and sign the first partners; set up links, tracking and the first campaigns",
           "Weeks 2-3, the major push: partners go live as they sign, each with a trading competition and a live session; power traders onboarded one-to-one",
           "Week 4, review and last push: second live sessions, competition finals, a decision per partner on day 30"]),
         ("One in-person prospecting day",
-         "Jakarta, once the first partners sign: meet Kevin Susanto and Bevan, onboard their power traders in person, then a community trading event that evening.",
-         ["Where: Jakarta, home to both meetable partners",
-          "Whom: Kevin Susanto, Bevan and their power traders",
-          "Access: warm introductions a week ahead (OKX's regional team; a Narrative Labs session)",
+         "Jakarta, once the first partners sign: meet Kevin Susanto, Bevan and 0xRusdi, onboard their power traders in person, then a community trading event that evening.",
+         ["Where: Jakarta, home to all three meetable partners",
+          "Whom: Kevin Susanto, Bevan, 0xRusdi and their power traders",
+          "Access: warm introductions a week ahead (colleagues; a Narrative Labs session)",
           "Fallback: a same-day video call; onboarding continues one-to-one online"]),
         ("20 messages, 2 replies, 0 meetings: what next?",
          "Stop cold messages and go through connections of connections: ask live partners and their circles for direct introductions to the decision-maker, with a clear offer up front.",
          ["Ask Kevin, Bevan and 0xRusdi's circle for introductions",
-          "Lead with the offer: fee share plus a cash bonus within 7 days of each milestone, nothing to negotiate up front",
+          "Lead with the offer: a share of every swap and VIP-style tiers as volume grows, nothing to negotiate up front",
           "Follow up with a booking link; test two versions on the next 10"]),
         ("Continue, renegotiate or stop at day 30",
          "Continue if activated with clean wallets, renegotiate if the power traders trade but the audience doesn't, stop if under 5 FTDs or too many flagged wallets.",
-         ["Continue: activated (section B) and under 5% flagged wallets",
+         ["Continue: activated (section C) and under 5% flagged wallets",
           "Renegotiate: the FnF power traders trade, but under 10 FTDs or 50 trades a day",
           "Stop: under 5 FTDs, or over 10% flagged wallets"]),
         ("Activated partner",
          "At least 10 FTDs and 50 trades a day within 30 days live, with at least 30% of FTDs still trading after 14 days and under 5% flagged wallets.",
          ["Flagged wallets: wash trades, self-referral and clusters of fake accounts (sybils)",
-          "The ramp (section B) checks the first two each week; retention and flags come from the referral dashboard"]),
+          "The ramp (section C) checks the first two each week; retention and flags come from the referral dashboard"]),
         ("How do the numbers land inside 30 days?",
          "Sign the first partners in week 1 through warm routes, so their power traders trade within days of go-live and bring volume before the audience arrives.",
          ["FnF power traders start on their partner's day 4; posted FTDs build through the rest of the month",
           "Weeks 2-3 are the major push: a competition and a live session with every partner as it goes live",
-          ["Week 4 reviews and pushes once more; result by day 30: ", tm(f"E{W['SW8']}+E{W['SWP']}"), " of swaps and ", td(f"E{W['REV']}"), " of revenue at 0.04%"]]),
+          ["Week 4 reviews and pushes once more; result by day 30: ", tk(f"E{W['SW8']}"), " of swaps and ", td(f"E{W['REV']}"),
+           " of revenue at 0.04% from our 8"]]),
     ]
     answers(t4, L4["ANS0"] - 1, ans4, (2, 5), (6, 12))
 
-    put(t4, f"A{W['FOCUS'] - 2}", "A. Weekly targets (rolling: partners go live as they sign)", F_SECTION, wrap=False)
+    put(t4, f"A{W['FOCUS'] - 2}", "A. Weekly targets for our 8 partners (rolling: partners go live as they sign)", F_SECTION, wrap=False)
     header(t4, W["FOCUS"] - 1, ["Target", "Week 1 (days 1-7)", "Week 2 (days 8-14)", "Week 3 (days 15-21)", "Week 4 (days 22-30)", "Day 30", "How it's set"])
     focus = ["Prospect, pitch and sign the first partners; set up links and tracking",
              "Major push: first partners live, power traders onboarded, competitions start",
@@ -1128,30 +1215,26 @@ def build(research=False):
     w0 = W["W0"]
     gl = f"$C${R0}:$C${R1}"
     act = lambda f_, t_: f"=SUMPRODUCT(({f_}{R0}:{f_}{R1}>=10)*({t_}{R0}:{t_}{R1}>=50))"
-    rev_after = lambda c_: f"=(SUMPRODUCT({c_}{R0}:{c_}{R1},1-$H${R0}:$H${R1})+SUMPRODUCT({c_}{PP0}:{c_}{PP0 + 2},1-$H${PP0}:$H${PP0 + 2}))*{RATE}"
+    rev_after = lambda c_: f"=SUMPRODUCT({c_}{R0}:{c_}{R1},1-$H${R0}:$H${R1})*{RATE}"
     weekly = [
         ("Prospects scored", 25, 20, 15, 10, f"=SUM(B{w0}:E{w0})", "Score everyone before messaging"),
         ("Outreach messages (warm introduction first)", 25, 20, 15, 10, f"=SUM(B{w0 + 1}:E{w0 + 1})", "Every scored prospect"),
         ("Replies", 8, 6, 5, 3, f"=SUM(B{w0 + 2}:E{w0 + 2})", "About 30% of messages"),
         ("Meetings (call or in person)", 3, 6, 5, 4, f"=SUM(B{w0 + 3}:E{w0 + 3})", "About 80% of replies, including one in-person day in Jakarta once the first partners sign"),
-        ("Partners live (running total, our 8)", f'=COUNTIF({gl},"<=7")', f'=COUNTIF({gl},"<=14")', f'=COUNTIF({gl},"<=21")',
-         f'=COUNTIF({gl},"<=30")', f"=E{W['LIVE']}", "Each partner goes live once it signs (go-live days in section B)"),
-        ("Pilot C (the brief's hypothetical)", "Checking its evidence", "Live from day 10", "Live; threshold check", "Live; day-30 review", "Live",
-         "C first once its 90-day dashboards confirm the volume; B is the fallback; A later with a campaign. Counted apart: its volume is the brief's estimate"),
-        ("Activated partners (running total, our 8)", act("I", "M"), act("J", "N"), act("K", "O"), act("L", "P"), f"=E{W['ACT']}",
-         "At least 10 FTDs and 50 trades a day (section B)"),
+        ("Partners live (running total)", f'=COUNTIF({gl},"<=7")', f'=COUNTIF({gl},"<=14")', f'=COUNTIF({gl},"<=21")',
+         f'=COUNTIF({gl},"<=30")', f"=E{W['LIVE']}", "Each partner goes live once it signs (go-live days in section C)"),
+        ("Activated partners (running total)", act("I", "M"), act("J", "N"), act("K", "O"), act("L", "P"), f"=E{W['ACT']}",
+         "At least 10 FTDs and 50 trades a day (section C)"),
         ("FTDs (running total)", f"=SUM(I{R0}:I{R1})", f"=SUM(J{R0}:J{R1})", f"=SUM(K{R0}:K{R1})", f"=SUM(L{R0}:L{R1})", f"=E{W['FTD']}",
-         "Task 1 FTDs × share of each partner's month live; event FTDs on the night"),
+         "Task 1 FTDs × share of each partner's month live"),
         ("Trades a day (last day of the week)", f"=SUM(M{R0}:M{R1})", f"=SUM(N{R0}:N{R1})", f"=SUM(O{R0}:O{R1})", f"=SUM(P{R0}:P{R1})",
          f"=E{W['TPD']}", "FTDs so far × trades a day each, plus FnF power traders × trades a day each"),
-        ("Swaps from our 8 (running total)", f"=SUM(Q{R0}:Q{R1})", f"=SUM(R{R0}:R{R1})", f"=SUM(S{R0}:S{R1})", f"=SUM(T{R0}:T{R1})", f"=E{W['SW8']}",
+        ("Swaps (running total)", f"=SUM(Q{R0}:Q{R1})", f"=SUM(R{R0}:R{R1})", f"=SUM(S{R0}:S{R1})", f"=SUM(T{R0}:T{R1})", f"=E{W['SW8']}",
          "Calendar days: FTDs arrive through the month, so this trails Task 1's first-month view"),
-        ("Swaps from the pilots (running total)", f"=SUM(Q{PP0}:Q{PP0 + 2})", f"=SUM(R{PP0}:R{PP0 + 2})", f"=SUM(S{PP0}:S{PP0 + 2})",
-         f"=SUM(T{PP0}:T{PP0 + 2})", f"=E{W['SWP']}", "C at forecast ($6M a month) from day 10; B and A start after day 30"),
-        ("Revenue at 0.04% (running total)", *[f"=({c_}{W['SW8']}+{c_}{W['SWP']})*{RATE}" for c_ in "BCDE"], f"=E{W['REV']}", "Swaps × 0.04%"),
+        ("Revenue at 0.04% (running total)", *[f"={c_}{W['SW8']}*{RATE}" for c_ in "BCDE"], f"=E{W['REV']}", "Swaps × 0.04%"),
         ("Revenue after partner shares (running total)", rev_after("Q"), rev_after("R"), rev_after("S"), rev_after("T"), f"=E{W['REVN']}",
-         "Revenue × (1 − each partner's share; pilots at their own shares)"),
-        ("Monthly run-rate on day 30 (our 8 + pilot C)", "", "", "", f"=(SUM(U{R0}:U{R1})+SUM(U{PP0}:U{PP0 + 2}))*30", f"=E{W['RUN']}",
+         "Revenue × (1 − each partner's share)"),
+        ("Monthly run-rate on day 30", "", "", "", f"=SUM(U{R0}:U{R1})*30", f"=E{W['RUN']}",
          f'="Swaps a day on day 30 × 30, so $"&TEXT(E{W["RUN"]}*{RATE},"#,##0")&" a month at 0.04%"'),
     ]
     assert w0 + len(weekly) - 1 == W["RUN"]
@@ -1161,13 +1244,27 @@ def build(research=False):
             fmt = None
             if r in (W["FTD"], W["TPD"], W["LIVE"], W["ACT"]):
                 fmt = NUM0
-            elif r in (W["SW8"], W["SWP"], W["RUN"]):
+            elif r in (W["SW8"], W["RUN"]):
                 fmt = MONEY
             elif r in (W["REV"], W["REVN"]):
                 fmt = MONEY2
             cell(t4, r, c, vv, fmt=fmt if 2 <= c <= 6 else None, inp=(r <= w0 + 3 and 2 <= c <= 5), bold=(c == 1))
 
-    put(t4, f"A{R0 - 3}", "B. Calendar ramp behind the weekly targets (links to Task 1; posted FTDs arrive evenly through the partner's month, event FTDs on the night)", F_SECTION, wrap=False)
+    put(t4, f"A{PIL - 2}", "B. Pilot C: a separate track (the brief's hypothetical, on the Task 2 growth deal)", F_SECTION, wrap=False)
+    header(t4, PIL - 1, ["Pilot C", "Week 1 (days 1-7)", "Week 2 (days 8-14)", "Week 3 (days 15-21)", "Week 4 (days 22-30)", "Day 30", "How it's set"])
+    pil = [("Status", "Checking its 90-day dashboards and top wallets", "Live from day 10 once confirmed", "Live; competition with its members",
+            "Live; day-30 review against its first milestone", "Live", "B is the fallback if C's numbers don't hold; A comes later with a campaign"),
+           ("Swaps (running total)", *[f"={c_}{PP0}" for c_ in "QRST"], f"=E{PIL + 1}", "C's forecast ($6M a month) spread evenly from day 10"),
+           ("Revenue at 0.04% (running total)", *[f"={c_}{PIL + 1}*{RATE}" for c_ in "BCDE"], f"=E{PIL + 2}", "Swaps × 0.04%"),
+           ("Revenue after its share (running total)", *[f"={c_}{PIL + 2}*(1-$H${PP0})" for c_ in "BCDE"], f"=E{PIL + 3}",
+            "Its bracket-1 share; milestone payouts are monthly, see Task 2")]
+    for i, rowvals in enumerate(pil):
+        r = PIL + i
+        for c, vv in enumerate(rowvals, 1):
+            cell(t4, r, c, vv, fmt=(MONEY if i == 1 else MONEY2) if (i and 2 <= c <= 6) else None, bold=(c == 1))
+    t4.row_dimensions[PIL].height = 46
+
+    put(t4, f"A{R0 - 3}", "C. Calendar ramp behind the weekly targets (links to Task 1; posted FTDs arrive evenly through the partner's month, event FTDs on the night)", F_SECTION, wrap=False)
     put(t4, f"A{R0 - 2}", "Activated partner: at least 10 FTDs and at least 50 trades a day within 30 days live, at least 30% of FTDs still trading after 14 days "
                           "and under 5% flagged wallets. The ramp checks the first two; retention and flags come from the dashboard.", wrap=False)
     header(t4, R0 - 1, ["Partner", "Event night?", "Go-live day", "Live days by day 7", "Live days by day 14", "Live days by day 21", "Live days by day 30",
@@ -1205,11 +1302,11 @@ def build(research=False):
         for k, d in enumerate((7, 14, 21, 30)):
             cell(t4, r, 4 + k, f"=MAX(0,{d}-C{r})")
             cell(t4, r, 17 + k, f"={T2}${src}${VOL}/{DAYS}*{'DEFG'[k]}{r}", fmt=MONEY)
-        cell(t4, r, 8, f"={T2}${src}${L2['SHARE']}", fmt=PCT)
+        cell(t4, r, 8, f"={T2}${src}${L2['S1']}", fmt=PCT)
         cell(t4, r, 21, f"=IF(G{r}=0,0,{T2}${src}${VOL}/{DAYS})", fmt=MONEY)
 
     D0 = L4["DEL0"]
-    put(t4, f"A{D0 - 2}", "C. What each partner delivers in its first month", F_SECTION, wrap=False)
+    put(t4, f"A{D0 - 2}", "D. What each partner delivers in its first month", F_SECTION, wrap=False)
     header(t4, D0 - 1, ["Partner", "Deliverables", "FnF power traders", "FTD target (base)", "Trades a day (base, once all are trading)", "Swaps (first month, base)"])
     for i, p in enumerate(partners):
         r, t = D0 + i, N0 + i
@@ -1221,7 +1318,7 @@ def build(research=False):
         cell(t4, r, 6, f"={T1}P{t}", fmt=MONEY)
 
     MO = L4["MON0"]
-    put(t4, f"A{MO - 2}", "D. What we monitor, and what we change when it slips", F_SECTION, wrap=False)
+    put(t4, f"A{MO - 2}", "E. What we monitor, and what we change when it slips", F_SECTION, wrap=False)
     header(t4, MO - 1, ["Metric", "Definition", "Source", "Target", "Red flag", "What we change", "How often"])
     mon = [
         ("FTDs", "Referred users making their first trade through the partner's link", "OKX referral dashboard; on-chain", "25% of the 30-day target by day 7, 50% by day 14",
@@ -1245,7 +1342,7 @@ def build(research=False):
         for c, vv in enumerate(vals, 1):
             cell(t4, MO + i, c, vv, bold=(c == 1))
     CA = L4["CAD0"]
-    put(t4, f"A{CA - 2}", "E. Operating cadence", F_SECTION, wrap=False)
+    put(t4, f"A{CA - 2}", "F. Operating cadence", F_SECTION, wrap=False)
     header(t4, CA - 1, ["When", "What", "Output"])
     cad = [("Daily, 15 minutes", "FTDs, trades a day and FnF power traders for every live partner", "Red metrics flagged with one fix each"),
            ("Monday", "Partner review: scorecard to each partner, one fix agreed", "Weekly scorecards"),
@@ -1257,6 +1354,78 @@ def build(research=False):
         cell(t4, CA + i, 1, aa, bold=True)
         cell(t4, CA + i, 2, b)
         cell(t4, CA + i, 3, c)
+
+    # ============================================================ Task 4 Gantt (day-by-day plan and KPIs)
+    from openpyxl.formatting.rule import FormulaRule
+    gt = wb.create_sheet("Task 4 Gantt", index=4)
+    G0, K0 = GT["G0"], GT["KPI0"]
+    T4s = "'Task 4'!"
+    widths(gt, {"A": 52, "B": 10, "C": 40, "D": 7, "E": 7, **{col(c): 3.6 for c in range(6, 36)}})
+    put(gt, "A1", "Task 4: Gantt chart and KPIs by day", F_TITLE, wrap=False)
+    summary(gt, [
+        "Our 8 partners: sign the top 3 in week 1, go live as they sign (3 by day 8, 6 by day 14, all 8 by day 20), push in weeks 2-3, review in week 4.",
+        "Pilot C is its own track: evidence checked in days 1-9, live from day 10.",
+        ["By day 30: ", tx(f"{T4s}E{L4['LIVE']}"), " partners live, ", tx(f"{T4s}E{L4['ACT']}"), " activated, ", tx(f"{T4s}E{L4['FTD']}"),
+         " FTDs and ", tk(f"{T4s}E{L4['SW8']}"), " of swaps from our 8; ", tm(f"{T4s}E{L4['PIL0'] + 1}"), " from pilot C."],
+    ])
+    put(gt, f"A{G0 - 2}", "A. Activities by day (bars recolour when you change a start or end day)", F_SECTION, wrap=False)
+    header(gt, G0 - 1, ["Activity", "Track", "KPI", "Start day", "End day"] + [str(d) for d in range(1, 31)])
+    for c in range(6, 36):
+        gt.cell(G0 - 1, c).value = c - 5
+        gt.cell(G0 - 1, c).alignment = Alignment(horizontal="center")
+        gt.cell(G0 - 1, c).fill = PatternFill("solid", fgColor=("E2E6EC" if ((c - 6) // 7) % 2 == 0 else "F3F3F3"))
+    top3_fnf = f"SUM({T1}H{N0}:H{N0 + 2})"
+    kpis = {
+        "msgs": [tx(f"{T4s}F{L4['W0'] + 1}"), " messages, ", tx(f"{T4s}F{L4['W0'] + 2}"), " replies"],
+        "meet": [tx(f"{T4s}F{L4['W0'] + 3}"), " meetings"],
+        "fnf3": [tx(top3_fnf), " power traders trading by day 12"],
+        "live6": [tx(f"{T4s}C{L4['LIVE']}"), " partners live by day 14"],
+        "live8": [tx(f"{T4s}D{L4['LIVE']}"), " partners live by day 21"],
+        "act": [tx(f"{T4s}E{L4['ACT']}"), " partners activated by day 30"],
+        "pil": ["On pace for ", tm(f"{T2}$D${L2['VOL']}"), " a month; ", tm(f"{T4s}E{L4['PIL0'] + 1}"), " of swaps by day 30"],
+    }
+    for i, (name, track, kpi, s0, s1) in enumerate(GANTT):
+        rw = G0 + i
+        cell(gt, rw, 1, name, bold=False)
+        cell(gt, rw, 2, track)
+        v_, _ = value(kpis[kpi] if kpi in kpis else kpi)
+        cell(gt, rw, 3, v_)
+        cell(gt, rw, 4, s0, inp=True)
+        cell(gt, rw, 5, s1, inp=True)
+        for c in range(6, 36):
+            gt.cell(rw, c).border = BOX
+        gt.row_dimensions[rw].height = 30
+    g1 = G0 + len(GANTT) - 1
+    rng = f"F{G0}:AI{g1}"
+    gt.conditional_formatting.add(rng, FormulaRule(formula=[f'AND(F${G0 - 1}>=$D{G0},F${G0 - 1}<=$E{G0},$B{G0}="Pilot C")'],
+                                                   fill=PatternFill("solid", fgColor="8FB0FF"), stopIfTrue=True))
+    gt.conditional_formatting.add(rng, FormulaRule(formula=[f"AND(F${G0 - 1}>=$D{G0},F${G0 - 1}<=$E{G0})"],
+                                                   fill=PatternFill("solid", fgColor="2C5BE0")))
+    assert g1 < K0 - 2
+
+    put(gt, f"A{K0 - 2}", "B. KPIs by day: our 8 partners, then pilot C (all linked to Task 4)", F_SECTION, wrap=False)
+    header(gt, K0 - 1, ["KPI", "Day 7", "Day 14", "Day 21", "Day 30", "Activities that drive it"])
+    R0g, R1g = L4["R0"], L4["R0"] + 7
+    fnf_on = lambda c_: f"=SUMPRODUCT(({T4s}{c_}{R0g}:{c_}{R1g}>={st['b']})*{T1}H{N0}:H{N0 + 7})"
+    krows = [
+        ("Partners live", [f"={T4s}{c_}{L4['LIVE']}" for c_ in "BCDE"], NUM0, "Signing the top 3 in week 1; the next 3 and last 2 as they sign"),
+        ("FnF power traders trading", [fnf_on(c_) for c_ in "DEFG"], NUM0, "One-to-one onboarding in each partner's first 3 days"),
+        ("FTDs (running total)", [f"={T4s}{c_}{L4['FTD']}" for c_ in "BCDE"], NUM0, "Partner posts, live sessions and competitions"),
+        ("Trades a day", [f"={T4s}{c_}{L4['TPD']}" for c_ in "BCDE"], NUM0, "Power traders plus FTDs who keep trading"),
+        ("Activated partners", [f"={T4s}{c_}{L4['ACT']}" for c_ in "BCDE"], NUM0, "10+ FTDs and 50+ trades a day"),
+        ("Swaps (running total)", [f"={T4s}{c_}{L4['SW8']}" for c_ in "BCDE"], MONEY, "All of the above"),
+        ("Revenue at 0.04% (running total)", [f"={T4s}{c_}{L4['REV']}" for c_ in "BCDE"], MONEY, "Swaps × 0.04%"),
+        ("Pilot C: swaps (running total)", [f"={T4s}{c_}{L4['PIL0'] + 1}" for c_ in "BCDE"], MONEY, "Its own track: evidence check, then live from day 10"),
+        ("Pilot C: revenue at 0.04%", [f"={T4s}{c_}{L4['PIL0'] + 2}" for c_ in "BCDE"], MONEY, "Swaps × 0.04%"),
+    ]
+    for i, (lab, vals, fmt, why) in enumerate(krows):
+        rw = K0 + i
+        cell(gt, rw, 1, lab, bold=True)
+        for j, vv in enumerate(vals):
+            cell(gt, rw, 2 + j, vv, fmt=fmt)
+        cell(gt, rw, 6, why)
+        gt.merge_cells(start_row=rw, start_column=6, end_row=rw, end_column=35)
+    gt.freeze_panes = f"F{G0}"
 
     if research:
         research_tabs(wb, partners)
@@ -1287,7 +1456,7 @@ def research_tabs(wb, partners):
         "Luna": ("Screened out", "Grows the Cove bot: rival tool tie"),
         "mage": ("Bench (month 2)", "Moved his main wallet from OKX to Bitget Wallet on 11 Nov: win-back later"),
         "All Good": ("Access channel", "Caster and connector in Kevin, Bevan and Brandon's circle; Emperor Journal member; no group of his own"),
-        "Friday7th": ("Via Meteora LP Army (#8)", "Co-hosts LP Army; his reach sits inside the Meteora estimate"),
+        "Friday7th": ("Bench (month 2)", "Co-hosts Meteora LP Army, now benched for Laba Lab"),
         "celinejoo": ("Screened out", "~900 followers"),
         "zeraa": ("Screened out", "Team role only; reach not measured"),
         "Bryan": ("Removed", "Leads Hyperliquid Indonesia, a rival perp venue: OKX can't send traffic there"),
@@ -1389,6 +1558,9 @@ def research_tabs(wb, partners):
         ("Rolling go-live: 3 partners on day 8, 3 on day 14, 2 on day 20; pilot B on day 8", "Weeks 2-3 as the major push, week 4 as review and last push"),
         ("Brief checklist and the 100-prospect longlist moved to this research workbook", "Not needed in the submission"),
         ("Write-up delivered as a Word file", "Google Docs dropped"),
+        ("Meteora LP Army replaced by Michael Wyann Santoso / Laba Lab (#6)", "More FTDs and volume: a paid trading-education community; liquidity providers swap less often"),
+        ("Task 2: smaller step-up shares plus milestone payouts; OKX keeps over 50% of revenue in every case", "Your call: no $3,000 paid on volume that may not arrive"),
+        ("Task 4: pilot C split out as its own track; Gantt tab added", "Clearer plan and KPIs by day"),
         ("#3 changed to 0xRusdi + CVC network; Brandon Salim #4, GuarEmperor #5", "Your edited write-up; your new scores put Brandon (4.20) ahead of GuarEmperor (4.10)"),
         ("FnF circle multiplier removed: every power trader at $1,000 a day; Bevan's reach set to 25,000 (guesstimate)", "Your call"),
         ("Task 2: pilot C first on a growth deal (share as asked, fee as a bonus at a volume threshold, 50% above); B on its own terms", "Push the highest volume; keep B simple"),
@@ -1493,8 +1665,10 @@ def checklist_longlist(wb):
          "#6: largest memecoin-trader reach on X; trades on OKX Wallet himself", "Wave 2 (day 14)", "https://x.com/cryptondo"),
         ("DegenRex", "Trading creator", "https://x.com/degen2ex", TREN, "Y", "In the 8",
          "#7: won Clash of Trenchers live (1 SOL to 10 SOL); multichain", "Wave 3 (day 20)", "https://x.com/AveaiGlobal/status/2120891736373518591"),
-        ("Meteora LP Army", "Onchain trading community", "https://x.com/EvilPanda", LP, "Y", "In the 8",
-         "#8: largest in-person onchain crowds (462 and 671)", "Wave 3 (day 20): co-hosted night", "https://luma.com/76fvdt2j"),
+        ("Michael Wyann Santoso / Laba Lab", "Trading educator", "https://laba-lab.com", TREN, "Y", "In the 8",
+         "#6: paid trading membership and bootcamps; YouTube 121K, Telegram 10.8K + 6.9K; Jakarta", "Wave 2 (day 14)", "https://laba-lab.com/membership"),
+        ("Meteora LP Army", "Onchain trading community", "https://x.com/EvilPanda", LP, "Y", "Bench (month 2)",
+         "Largest in-person on-chain crowds (462 and 671), but liquidity providers swap less often", "Month 2: co-hosted night", "https://luma.com/76fvdt2j"),
         ("Stress Capital (Orpheuzkaze)", "Trading community", "https://x.com/StressCapitals", TREN, "Y", "Bench (month 2)",
          "30.7K-member clan Discord, 2,453 online, but no trading proof yet", "Month 2: clan competition if clan leads show they trade", "https://discord.gg/stresscapitals"),
         ("TwipsX", "Trading creator", "https://x.com/TwipsX", TREN, "Y", "Bench (month 2)",
@@ -1517,8 +1691,6 @@ def checklist_longlist(wb):
          "Clash of Trenchers podium (2nd or 3rd: organiser posts differ); ~440 followers", "Guest trader only", "https://x.com/aveai_id/status/2120950749580677430"),
         ("melon (@melonbuskk)", "Builder", "https://x.com/melonbuskk", TREN, "N", "Screened out",
          "Low activity; access to the EnclaviumFNF group not verified", "", "https://x.com/melonbuskk"),
-        ("celinejoo", "Trading creator", "https://x.com/celinejoo__", "Beginners", "N", "Screened out",
-         "~900 X followers; newer trader", "", "https://x.com/celinejoo__"),
         ("zeraa (@0xzeraa)", "Ecosystem community", "https://x.com/0xzeraa", "NFT holders", "N", "Screened out",
          "Team role at Lil Stars; reach not measured", "", "https://x.com/0xzeraa"),
     ]
@@ -1546,7 +1718,6 @@ def checklist_longlist(wb):
 
 # ================================================================ v6 data used by build()
 OF = L["Offers & support"]
-next(q for q in partners if q["short"] == "Meteora LP Army")["link"] = "https://x.com/EvilPanda ; https://x.com/Friday_SOL"
 
 SOURCES = [
     ("OKX product and fees", [
@@ -1580,8 +1751,9 @@ SOURCES = [
         ("Crypto Ndo on X", "https://x.com/cryptondo"),
         ("DegenRex on X", "https://x.com/degen2ex"),
         ("DegenRex's Telegram channel", "https://t.me/degenrex"),
-        ("Evil Panda (Meteora LP Army host) on X", "https://x.com/EvilPanda"),
-        ("Friday7th (Meteora LP Army co-host) on X", "https://x.com/Friday_SOL"),
+        ("Laba Lab (Michael Wyann Santoso)", "https://laba-lab.com"),
+        ("Laba Lab membership and bootcamps", "https://laba-lab.com/membership"),
+        ("Michael Wyann Santoso on LinkedIn", "https://linkedin.com/in/michaelwyannsantoso"),
     ]),
     ("Evidence", [
         ("Kevin Susanto: fomo 24-hour profit board, 19-20 November 2026", "https://x.com/KevinSusanto/status/2123472525070102987"),
@@ -1596,7 +1768,7 @@ SOURCES = [
         ("GuarEmperor: public wallet lists", "https://github.com/ariefzzz5421/wallet-tracker-transfer"),
         ("Brandon Salim: pinned fomo profit post", "https://x.com/brandonsalim/status/2096005957692301790"),
         ("DegenRex wins Clash of Trenchers (Ave.ai)", "https://x.com/AveaiGlobal/status/2120891736373518591"),
-        ("Friday7th: liquidity-pool bot journal", "https://x.com/Friday_SOL/status/2122600631651164614"),
+        ("Indonesia Crypto Network: 12 trusted crypto influencers (Laba Lab)", "https://indonesiacrypto.network/blog/12-trusted-crypto-influencers-in-indonesia-shaping-the-industry"),
         ("Degen Night speakers, 31 October 2026", "https://x.com/0xRememberUs/status/2116500473356411230"),
         ("Web3 Week Asia recap", "https://x.com/W3WOfficial/status/2121498996955132404"),
     ]),
@@ -1663,16 +1835,29 @@ _f7, _t7, _, _ = ramp(_k, 7)
 _f10, _t10, _, _ = ramp(_k, 10)
 _f14, _t14, _s14, _ = ramp(_k, 14)
 PLAN14 = [  # targets follow the Task 4 ramp for Kevin Susanto (base case)
-    ("Days 1-2", "Set-up: a separate OKX DEX referral link and follower discount, tracked apart from his okx.ac link (agreed with OKX's regional "
-                 "marketing team); referral share, the $10,000 tier trigger and payout wallet in writing; compliance check of posts; shared dashboard", "Link live; terms signed"),
+    ("Days 1-2", "Set-up: a separate OKX DEX referral link and follower discount, tracked apart from his okx.ac link; share, tier trigger and payout wallet in writing; shared dashboard", "Link live; terms signed"),
     ("Days 2-4", "Onboard his power traders one-to-one through the full user flow: wallet set-up, funding, first Meme Mode trade, Track alerts; log every drop-off",
      f"{_k['ptraders']} FnF power traders trading by day 4 (~{_ft:.0f} trades a day)"),
     ("Day 5", "Launch the campaign: a co-hosted live trading session on his Telegram and a 7-day trading competition (screened wallets only)", "Session held; first sign-ups"),
     ("Days 6-7", "Push the flow: 2 X threads with the link, a pinned Bahasa and English guide, and an FAQ for first-time on-chain traders", f"~{_f7:.0f} FTDs by day 7"),
-    ("Days 8-10", "Fix the funnel: check each step (click, wallet, deposit, first trade, second trade), fix the weakest one, and send user-interface and "
-                  "user-experience (UI/UX) feedback to the product team", f"~{_f10:.0f} FTDs and ~{_t10:.0f} trades a day by day 10"),
-    ("Days 11-14", "Competition results and a second live session; review with Kevin: FTDs, trades a day, repeat traders and flagged wallets; agree days 15-30 "
-                   "and the next bracket", f"~{_f14:.0f} FTDs and ~{_t14:.0f} trades a day by day 14"),
+    ("Days 8-10", "Fix the funnel: check each step (click, wallet, deposit, first and second trade), fix the weakest, send product feedback", f"~{_f10:.0f} FTDs and ~{_t10:.0f} trades a day by day 10"),
+    ("Days 11-14", "Competition results and a second live session; review FTDs, trades a day and flagged wallets with Kevin; agree days 15-30", f"~{_f14:.0f} FTDs and ~{_t14:.0f} trades a day by day 14"),
+]
+
+GANTT = [  # (activity, track, KPI key or text, start day, end day)
+    ("Score and message prospects, warm introductions first", "Our 8", "msgs", 1, 21),
+    ("Meetings and pitches", "Our 8", "meet", 2, 24),
+    ("Sign the top 3: Kevin Susanto, Bevan, 0xRusdi", "Our 8", "3 signed by day 7", 3, 7),
+    ("Top 3 live: onboard their FnF power traders one-to-one", "Our 8", "fnf3", 8, 11),
+    ("In-person day in Jakarta: power traders onboarded in person", "Our 8", "Meetings held, traders set up", 10, 10),
+    ("Next 3 sign and go live: Brandon Salim, GuarEmperor, Laba Lab", "Our 8", "live6", 8, 14),
+    ("Last 2 sign and go live: Crypto Ndo, DegenRex", "Our 8", "live8", 15, 20),
+    ("Major push: a trading competition and a live session with each live partner", "Our 8", "One of each per partner", 12, 28),
+    ("Fix the weakest funnel step; product feedback", "Our 8", "Drop-off logged at each step", 15, 21),
+    ("Review and last push: second sessions, competition finals", "Our 8", "act", 22, 29),
+    ("Day-30 decision per partner and month-2 plan", "Our 8", "Continue, renegotiate or stop", 30, 30),
+    ("Pilot C: check its 90-day dashboards and top wallets", "Pilot C", "Volume confirmed before go-live", 1, 9),
+    ("Pilot C: live on the growth deal", "Pilot C", "pil", 10, 30),
 ]
 
 

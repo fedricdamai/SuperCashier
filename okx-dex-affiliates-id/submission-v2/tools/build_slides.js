@@ -80,13 +80,13 @@ function tbl(s, head, rows, opt) {
   const s = pres.addSlide({ masterName: "CONTENT" });
   s.addText("Task 2: Make a commercial decision", { placeholder: "title" });
   answer(s, D.t2_answer);
-  tbl(s, ["Partner", "Their ask", "Month 1 at their ask", "Our deal: at 50%", "Our deal: at forecast", "Pays them more above"], D.t2_rows,
-    { x: 0.5, y: 1.38, w: 9, colW: [2.3, 1.35, 1.35, 1.3, 1.35, 1.35], align: ["left", "left", "right", "right", "right", "right"], hl: [0], boldFirst: true, size: 10.5, rowH: 0.3 });
-  card(s, 0.5, 2.78, 4.4, 2.0); card(s, 5.1, 2.78, 4.4, 2.0);
-  cardTitle(s, "Counter-offer: the growth deal", 0.7, 2.88, 4.0);
-  bullets(s, D.t2_deal, 0.7, 3.22, 4.0, 1.5, 11);
-  cardTitle(s, "Before signing, at 50%, and other costs", 5.3, 2.88, 4.0);
-  bullets(s, D.t2_right, 5.3, 3.22, 4.0, 1.5, 11);
+  tbl(s, ["Month 1 for OKX", "A · airdrop community", "B · repeat traders", "C · trading educator"], D.t2_rows,
+    { x: 0.5, y: 1.38, w: 9, colW: [2.7, 2.1, 2.1, 2.1], align: ["left", "right", "right", "right"], hl: [2], boldFirst: true, size: 10.5, rowH: 0.27 });
+  card(s, 0.5, 3.05, 4.4, 1.75); card(s, 5.1, 3.05, 4.4, 1.75);
+  cardTitle(s, "Counter-offer: the growth deal", 0.7, 3.13, 4.0);
+  bullets(s, D.t2_deal, 0.7, 3.45, 4.0, 1.3, 10.5);
+  cardTitle(s, "Before signing, at 50%, and other costs", 5.3, 3.13, 4.0);
+  bullets(s, D.t2_right, 5.3, 3.45, 4.0, 1.3, 10.5);
   foot(s, D.t2_foot);
 }
 
@@ -109,15 +109,17 @@ function tbl(s, head, rows, opt) {
   const s = pres.addSlide({ masterName: "CONTENT" });
   s.addText("Task 4: Demonstrate practical execution and persistence", { placeholder: "title" });
   answer(s, D.t4_answer);
-  tbl(s, ["Week", "Focus", "Messages", "Meetings", "Live", "Activated", "FTDs", "Trades a day"], D.t4_rows, {
-    x: 0.5, y: 1.38, w: 9, colW: [1.15, 3.5, 0.85, 0.8, 0.6, 0.85, 0.5, 0.75], align: ["left", "left", "right", "right", "right", "right", "right", "right"],
-    hl: [3], size: 10, rowH: 0.36 });
-  D.t4_cards.forEach(([t, b], i) => {
-    const x = 0.5 + i * 3.05;
-    card(s, x, 3.42, 2.85, 1.35);
-    s.addText(t, { x: x + 0.15, y: 3.5, w: 2.6, h: 0.28, fontSize: 12, bold: true, color: NAVY, fontFace: FONT, margin: 0, isTextBox: true });
-    s.addText(b, { x: x + 0.15, y: 3.8, w: 2.6, h: 0.92, fontSize: 10, color: TEXT, fontFace: FONT, margin: 0, valign: "top", isTextBox: true });
+  const head = ["Activity", "KPI", "Week 1", "Week 2", "Week 3", "Week 4"].map((h, i) => ({ text: h, options: { bold: true, color: NAVY, fill: { color: "E2E6EC" }, align: i > 1 ? "center" : "left" } }));
+  const data = [head];
+  D.gantt.forEach((g) => {
+    const pilot = g[2] === "Pilot C";
+    data.push([{ text: g[0], options: { bold: pilot } }, { text: g[1] }].concat(g.slice(3).map((on) => ({ text: "", options: { fill: { color: on ? (pilot ? "8FB0FF" : BLUE) : CARD } } }))));
   });
+  s.addTable(data, { x: 0.5, y: 1.12, w: 5.7, colW: [2.75, 1.55, 0.35, 0.35, 0.35, 0.35], fontSize: 6.5, fontFace: FONT, color: TEXT,
+    border: { type: "solid", pt: 0.5, color: "D5DAE1" }, margin: [1, 3, 1, 3], rowH: 0.21, valign: "middle" });
+  tbl(s, ["KPI", "Day 7", "Day 14", "Day 21", "Day 30"], D.kpi, { x: 6.4, y: 1.12, w: 3.1, colW: [0.95, 0.5, 0.55, 0.55, 0.55],
+    align: ["left", "right", "right", "right", "right"], size: 8, rowH: 0.36 });
+  s.addText("Dark: our 8 partners. Light: pilot C, its own track.", { x: 6.4, y: 3.75, w: 3.1, h: 0.4, fontSize: 9, color: MUTED, fontFace: FONT, margin: 0, isTextBox: true });
   foot(s, D.t4_foot);
 }
 

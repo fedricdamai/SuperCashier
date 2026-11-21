@@ -40,16 +40,20 @@ function table(b) {
   const total = b.widths.reduce((x, y) => x + y, 0);
   const cols = b.widths.map((w) => Math.floor((w / total) * CONTENT_W));
   cols[cols.length - 1] += CONTENT_W - cols.reduce((x, y) => x + y, 0);
-  const mk = (txt, i, head, bold) => new TableCell({
+  const mk = (txt0, i, head, bold) => {
+    let txt = String(txt0), fill = head ? "EEF1F5" : undefined;
+    if (txt.startsWith("§")) { fill = "2C5BE0"; txt = txt.slice(1); }
+    else if (txt.startsWith("¤")) { fill = "8FB0FF"; txt = txt.slice(1); }
+    return new TableCell({
     borders, width: { size: cols[i], type: WidthType.DXA },
-    shading: head ? { fill: "EEF1F5", type: ShadingType.CLEAR, color: "auto" } : undefined,
+    shading: fill ? { fill, type: ShadingType.CLEAR, color: "auto" } : undefined,
     margins: { top: 30, bottom: 30, left: 60, right: 60 },
     children: String(txt).split("\n").map((line) => new Paragraph({
       alignment: !head && b.num_from !== null && i >= b.num_from ? AlignmentType.RIGHT : AlignmentType.LEFT,
       spacing: { before: 0, after: 0 },
-      children: runs(line, TBL, { bold: head || bold }),
+      children: runs(line, b.size || TBL, { bold: head || bold }),
     })),
-  });
+  }); };
   const rows = [new TableRow({ tableHeader: true, cantSplit: true, children: b.head.map((h, i) => mk(h, i, true, false)) })];
   b.rows.forEach((r, ri) => rows.push(new TableRow({
     cantSplit: true, children: r.map((c, i) => mk(c, i, false, b.bold_last && ri === b.rows.length - 1)),
@@ -58,11 +62,12 @@ function table(b) {
 }
 
 const children = [];
+let pendingBreak = false;
 for (const b of blocks) {
   const size = b.small ? SMALL : BODY;
   if (b.type === "h1") children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: b.text })] }));
-  else if (b.type === "h2") children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: b.text })] }));
-  else if (b.type === "pagebreak") children.push(new Paragraph({ children: [new PageBreak()] }));
+  else if (b.type === "h2") { children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, pageBreakBefore: pendingBreak || undefined, children: [new TextRun({ text: b.text })] })); pendingBreak = false; }
+  else if (b.type === "pagebreak") pendingBreak = true;
   else if (b.type === "p") {
     const kids = [];
     if (b.label) kids.push(new TextRun({ text: decode(b.label) + " ", bold: true, size, font: FONT, color: b.small ? GREY : undefined }));
