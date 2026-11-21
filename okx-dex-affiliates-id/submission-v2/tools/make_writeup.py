@@ -1,19 +1,21 @@
-"""Build the Google Doc write-up (HTML for Drive import) from the recalculated submission workbook.
+"""Build the write-up blocks (JSON for build_writeup.js) from the recalculated submission workbook.
 
-Usage: python make_doc.py <submission.xlsx> <out.html>
-Google Docs turns "$...$" pairs into equations when the second "$" follows a non-space character,
-so the script refuses to write any block where that would happen.
+Usage: python make_writeup.py <submission.xlsx> <out.json>
+Every number and every one-sentence answer comes from the workbook, so the write-up and the sheet always match.
 """
 import html
-import re
+import json
 import sys
 from pathlib import Path
 
 from openpyxl import load_workbook
 
-xlsx, out = Path(sys.argv[1]), Path(sys.argv[2])
-wb = load_workbook(xlsx, data_only=True)
-t1, t2, t3, t4 = (wb[n] for n in ("Task 1", "Task 2", "Task 3", "Task 4"))
+sys.path.insert(0, str(Path(__file__).parent))
+from layout_v6 import MI, T1 as L1, T2 as L2, T3 as L3, T4 as L4  # noqa: E402
+
+wb = load_workbook(sys.argv[1], data_only=True)
+out = Path(sys.argv[2])
+t1, t2, t3, t4, mi = (wb[n] for n in ("Task 1", "Task 2", "Task 3", "Task 4", "Miscellaneous"))
 E = html.escape
 
 
@@ -29,205 +31,180 @@ def usd(x):
     return f"-${-x:,.0f}" if x < 0 else f"${x:,.0f}"
 
 
-P = []
-for i in range(8):
-    r = 37 + i
-    P.append(dict(pool=t1.cell(r, 3).value, ftd=t1.cell(r, 6).value, fnf=t1.cell(r, 8).value, ftd_sw=t1.cell(r, 10).value,
-                  fnf_sw=t1.cell(r, 11).value, swaps=t1.cell(r, 13).value, rev=t1.cell(r, 15).value, prio=t1.cell(12 + i, 5).value))
-T = dict(ftd=t1["F45"].value, fnf=t1["H45"].value, swaps=t1["M45"].value)
-kev = P[0]
-top3_ftd = sum(P[i]["ftd"] for i in range(3))
-wk = {c: [t4[f"{c}{r}"].value for r in (10, 12, 13, 14, 15)] for c in "BCDE"}
-pil30, rev30, rev30_after = t4["E16"].value, t4["E17"].value, t4["E18"].value
-# Task 2 scenario rows: A 24-27, B 28-31, C 32-35; N (14) ours, O (15) partner on ours, P (16) ask, Q (17) partner on ask
-S = {(pn, j): t2.cell(24 + 4 * "ABC".index(pn) + j, 14).value for pn in "ABC" for j in range(4)}
-SO = {(pn, j): t2.cell(24 + 4 * "ABC".index(pn) + j, 15).value for pn in "ABC" for j in range(4)}
-SA = {(pn, j): t2.cell(24 + 4 * "ABC".index(pn) + j, 16).value for pn in "ABC" for j in range(4)}
-SQ = {(pn, j): t2.cell(24 + 4 * "ABC".index(pn) + j, 17).value for pn in "ABC" for j in range(4)}
-payback, c_cap = t2["B37"].value, t2["B38"].value
-k_share, k_bonus = t3["B37"].value, t3["B38"].value
-TASK3 = {t3.cell(r, 1).value: t3.cell(r, 2).value for r in range(4, 12)}
-msg = t3["B4"].value
-PLAN = [(t3.cell(r, 1).value, t3.cell(r, 2).value, t3.cell(r, 3).value) for r in range(15, 21)]
-assert t1["A37"].value.startswith("Kevin") and t1["A39"].value.startswith("Ponyin") and t2["A28"].value == "B"
+def h1(t): return dict(type="h1", text=t)
+def h2(t): return dict(type="h2", text=t)
+def p(txt, label=None, small=False): return dict(type="p", label=label, html=txt, small=small)
+def ul(items, small=False): return dict(type="ul", items=items, small=small)
+def ol(items): return dict(type="ol", items=items)
+def quote(lines_): return dict(type="quote", lines=lines_)
+def table(head, rows, widths, num_from=None, bold_last=False):
+    return dict(type="table", head=head, rows=[[str(c) for c in r] for r in rows], widths=widths, num_from=num_from, bold_last=bold_last)
 
+
+def ans(ws, row, b_col, c_col):
+    """(question, one-sentence answer, detail bullets) from an Answers row."""
+    q, a = ws.cell(row, 1).value, ws.cell(row, b_col).value
+    d = ws.cell(row, c_col).value or ""
+    return q, a, [x.lstrip("• ").strip() for x in d.split("\n") if x.strip()]
+
+
+def bold_lead(s):
+    """'A: text' -> '<b>A:</b> text' (labels before the first colon)."""
+    if ": " in s and len(s.split(": ", 1)[0]) <= 40:
+        h, rest = s.split(": ", 1)
+        return f"<b>{E(h)}:</b> {E(rest)}"
+    return E(s)
+
+
+N0, TOT, A0 = L1["N0"], L1["TOT"], L1["A0"]
+T1A = {r: ans(t1, L1["ANS0"] + r, 2, 5) for r in range(5)}
+T2A = {r: ans(t2, L2["ANS0"] + r, 2, 8) for r in range(8)}
+T4A = {r: ans(t4, L4["ANS0"] + r, 2, 6) for r in range(6)}
+W = {k_: L4[k_] for k_ in ("LIVE", "ACT", "FTD", "TPD", "SW8", "SWP", "REV", "REVN", "RUN", "W0", "FOCUS")}
+ftd = [t1.cell(N0 + i, 6).value for i in range(8)]
+swaps = [t1.cell(N0 + i, 16).value for i in range(8)]
+top3_ftd, top3_sw = sum(ftd[:3]), sum(swaps[:3])
+T = dict(ftd=t1.cell(TOT, 6).value, fnf=t1.cell(TOT, 8).value, swaps=t1.cell(TOT, 16).value, rev=t1.cell(TOT, 18).value)
+chk = dict(noair=t1.cell(L1["CHK"], 5).value, meet=t1.cell(L1["CHK"], 7).value, types=t1.cell(L1["CHK"], 9).value)
+SC = lambda pn, j, c: t2.cell(L2["SC0"] + 4 * "ABC".index(pn) + j, c).value  # j: 0 50%, 1 100%, 2 200%, 3 300%
+wk = {c: [t4[f"{c}{W[x]}"].value for x in ("LIVE", "ACT", "FTD", "TPD")] for c in "BCDE"}
+day30_sw = t4[f"E{W['SW8']}"].value + t4[f"E{W['SWP']}"].value
+I0 = L3["ITEMS0"]
+T3 = [(t3.cell(I0 + i, 1).value, t3.cell(I0 + i, 2).value, t3.cell(I0 + i, 3).value) for i in range(8)]
+PLAN = [(t3.cell(L3["PLAN0"] + i, 1).value, t3.cell(L3["PLAN0"] + i, 3).value, t3.cell(L3["PLAN0"] + i, 2).value) for i in range(6)]
+k_share, k_bonus = t3.cell(L3["SHARE"], 2).value, t3.cell(L3["BONUS"], 2).value
+assert t1.cell(N0, 1).value.startswith("Kevin") and t1.cell(N0 + 2, 1).value.startswith("Ponyin")
 names = ["Kevin Susanto", "Bevan / Narrative Labs", "Ponyin + CVC network", "GuarEmperor + FnF circle", "Brandon Salim + a79",
          "Crypto Ndo", "DegenRex", "Meteora LP Army"]
-types = ["Large KOL, active trader", "Trader-educator, paid community", "Trader KOL, FnF clans, CVC team",
-         "Alpha caller, tools Discord", "Celebrity trader, own trader group", "Trench creator", "Champion trader, TG calls",
-         "LP community (events)"]
-proof = ["#3 on fomo 24h PnL, +$53,566 (19-20 Nov)", "Wallet: ~1,080 SOL swapped, +374 SOL; 1 to 10 SOL live",
-         "Trojan PnL about $170K a month; 0xRusdi's BasedBot referral book", "1.9% engagement; members post PnL from his tools",
-         "fomo +$32,185 in one day; code on every trade", "Trades on OKX Wallet; 59.3K X",
-         "Won Clash of Trenchers live, 1 to 10 SOL", "462 and 671 at two meetups"]
-route = ["OKX regional team; in person, Jakarta", "DM, then in person at Narrative Labs", "DM Ponyin; he opens the CVC team",
-         "DM; intro via All Good", "Intro via Kevin", "X DM", "DM; Ave Indonesia", "X DM to the hosts"]
 
-
-def table(head, rows, widths, num_from=None, bold_last=False):
-    cols = "<colgroup>" + "".join(f'<col width="{w}%">' for w in widths) + "</colgroup>"
-    h = "".join(f'<th width="{w}%" style="width:{w}%;border:1px solid #c8ccd2;padding:2px 4px;background:#eef1f5;text-align:left">{E(str(x))}</th>'
-                for x, w in zip(head, widths))
-    body = ""
-    for i, row in enumerate(rows):
-        b = bold_last and i == len(rows) - 1
-        tds = ""
-        for j, x in enumerate(row):
-            al = "right" if num_from is not None and j >= num_from else "left"
-            v = f"<b>{E(str(x))}</b>" if b else E(str(x))
-            tds += f'<td style="border:1px solid #c8ccd2;padding:2px 4px;text-align:{al}">{v}</td>'
-        body += f"<tr>{tds}</tr>"
-    return f'<table width="100%" style="border-collapse:collapse;width:100%;font-size:8.5pt">{cols}<tr>{h}</tr>{body}</table>'
-
-
-def p(txt, label=None):
-    lab = f"<b>{E(label)}</b> " if label else ""
-    return f'<p style="margin:0 0 5pt 0">{lab}{txt}</p>'
-
-
-def ul(items):
-    return '<ul style="margin:0 0 5pt 0">' + "".join(f'<li style="margin:0">{x}</li>' for x in items) + "</ul>"
-
-
-def h2(t):
-    return f'<h2 style="font-size:12.5pt;margin:8pt 0 3pt 0">{E(t)}</h2>'
-
-
-
-
-# ---- block output for the .docx builder (overrides the HTML helpers above)
-def table(head, rows, widths, num_from=None, bold_last=False):
-    return dict(type="table", head=[str(x) for x in head], rows=[[str(x) for x in r] for r in rows], widths=widths,
-                num_from=num_from, bold_last=bold_last)
-
-
-def p(txt, label=None):
-    return dict(type="p", label=label, html=txt)
-
-
-def ul(items):
-    return dict(type="ul", items=items)
-
-
-def h2(t):
-    return dict(type="h2", text=t)
-
-
-H = [dict(type="h1", text="Indonesia DEX Affiliate Plan"),
+H = [h1("Indonesia DEX Affiliate Plan"),
      p("OKX P4 DEX BD Affiliate take-home · Fedric Intan Damai · November 2026. Companion files: a 6-slide deck and the prospect "
-       "spreadsheet (every number below is a formula there).")]
+       "spreadsheet, where every number below is a live formula."),
+     p("FTD = first-time trader (a referred user's first trade). FnF = friends and family: the power traders a partner brings "
+       "personally. DEX = decentralised exchange. KOL = key opinion leader. LP = liquidity provider. SOL = Solana's token. "
+       "USDT = Tether's US-dollar stablecoin.", "Terms:", small=True)]
 
-H.append(h2("Summary"))
-H.append(p(f"Approach Kevin Susanto, Bevan (Narrative Labs) and Ponyin first. Each has public proof that he trades and brings his own "
-           f"circle of active traders (FnF), and Ponyin also opens the CVC Ventures circle. Together they bring {top3_ftd:.0f} first-time "
-           f"traders (FTDs) in their first month. Pilot B first: it has the clearest evidence and no fixed fee, so I would put campaign "
-           f"money behind it to push it to 2-3x its forecast, then start C, and let A follow. By day 30: 8 partners live, "
-           f"{wk['E'][1]} activated, about {wk['E'][2]:.0f} FTDs and {wk['E'][3]:.0f} trades a day."))
-
-H.append(h2("Task 1: eight partners whose audiences already trade"))
-H.append(p(f"Every partner is sized one way: reach (median views plus members online) × 2% sign-up × 15% trade = FTDs, each "
-           f"swapping about $2,000 in month one, plus the FnF power traders it onboards in days 1-3 at $547 a day each. Kevin: "
-           f"{kev['pool']:,.0f} reach, {kev['ftd']:.0f} FTDs, {k(kev['ftd_sw'])}; plus {kev['fnf']} FnF traders, {k(kev['fnf_sw'])}; "
-           f"{k(kev['swaps'])} in month one, {usd(kev['rev'])} at 0.04%."))
-rows = [[f"{i + 1}. {names[i]}", types[i], proof[i], route[i], P[i]["prio"], P[i]["fnf"], f"{P[i]['ftd']:.0f}", k(P[i]["swaps"])] for i in range(8)]
-rows.append(["Total", "", "", "", "", T["fnf"], f"{T['ftd']:.0f}", m(T["swaps"])])
-H.append(table(["Partner", "Type", "Verified proof", "Route", "Priority", "FnF", "FTDs", "Swaps a month"], rows,
-               [17, 16, 26, 14, 8, 5, 6, 8], num_from=5, bold_last=True))
-H.append(p("ranked on proof of trading, then the FnF traders they bring, then rival flow we can move, then FTDs and trades a day.",
-           "Why these three first:"))
+H.append(h2("Executive summary"))
 H.append(ul([
-    f"<b>Kevin Susanto:</b> the most FTDs ({kev['ftd']:.0f}) from the largest measured reach (41,248 median views); #3 on fomo's 24-hour "
-    f"PnL board; OKX's regional team already works with him, so he is the fastest yes. Risk: his existing OKX link, so DEX tracking stays separate.",
-    "<b>Bevan / Narrative Labs:</b> his published wallet shows ~1,080 SOL swapped May to July (+374 SOL), and he turned 1 SOL into 10 live "
-    "at Web3 Week Asia. He founded a paid Masterclass with a 9,238-member Discord (984 online); we can meet him at Narrative Labs.",
-    f"<b>Ponyin and his circle:</b> about $170K of Trojan volume in a month; ApexFNF is his FnF; and he opens the CVC Ventures team "
-    f"(0xRusdi's referral book and Tomket clan, Setya's airdrop traders): {P[2]['fnf']} FnF traders and {P[2]['ftd']:.0f} FTDs from one introduction.",
+    f"<b>Partners:</b> Kevin Susanto, Bevan and Ponyin first: public proof they trade, plus their own power traders. "
+    f"{top3_ftd:.0f} of {T['ftd']:.0f} FTDs and {m(top3_sw)} of {m(T['swaps'])} in first-month swaps.",
+    f"<b>Deal:</b> pilot B first, on a growth deal: rising share, a milestone cash bonus, OKX-funded campaigns. Only B makes money at "
+    f"its own ask ({usd(SC('B', 1, 16))}), even at half volume.",
+    "<b>Pitch:</b> one benefit up front for Kevin: a share of every swap his followers make, next to his existing OKX link.",
+    f"<b>30 days:</b> {wk['E'][0]} partners live plus pilot B, {wk['E'][1]} activated, about {wk['E'][2]:,.0f} FTDs and "
+    f"{wk['E'][3]:,.0f} trades a day, and {m(day30_sw)} of swaps by day 30.",
 ]))
-H.append(p("GuarEmperor (#4) has the best engagement of the large accounts (1.9%) but his circle's trading is not verified yet, so he "
-           "starts in wave 2. Verified: trading proof, reach and community counts (X API, Solscan, Discord, organiser posts, 20-21 Nov "
-           "2026); assumed: the 2% and 15% rates and volume per trader. Brief checks: 6 of 8 not airdrop-led, 6 partner types, 2 "
-           "meetable in person (Kevin and Bevan). All fields for each partner: spreadsheet, Task 1."))
 
-H.append(h2("Task 2: pilot B first, on a growth deal"))
-deal = {"A": "20% share only, later", "B": "30% rising to 45%, bonus, $250 campaign",
-        "C": "$500 + $500 retainer, 15% rising to 30%, bonus, $300 event"}
+# ---------------------------------------------------------------- Task 1
+H.append(h2("Task 1: Find partners beyond airdrop communities"))
+H.append(p(E(T1A[0][1].replace("in section A", "below")), "Answer:"))
+rows = []
+for i in range(8):
+    r = A0 + i
+    url = str(t1.cell(r, 3).value).split(" ; ")[0].replace("https://", "")
+    n = N0 + i
+    rows.append([f"<b>{i + 1}. {E(names[i])}</b>\n{E(url)}", *[E(str(t1.cell(r, c).value)) for c in (4, 5, 6, 7, 8)],
+                 f"<b>{t1.cell(r, 9).value}:</b> {E(str(t1.cell(r, 10).value))}\n<i>{t1.cell(n, 6).value:.0f} FTDs · {k(t1.cell(n, 16).value)}</i>"])
+H.append(table(["Partner and public link", "Audience and market", "Evidence of fit", "Acquisition route", "Proposed partnership",
+                "Main risk", "Priority and forecast"], rows, [15, 14, 16, 13, 15, 14, 13]))
+H.append(p(f"{chk['noair']} of 8 not airdrop-led, {chk['types']:.0f} partner types, {chk['meet']} meetable in person. GuarEmperor (#4) has "
+           f"the best engagement (1.9%), but his feed mixes alpha calls with whitelist and mint posts, so he starts in the second wave.", small=True))
+H.append(p(E(T1A[1][1]), "Why these 3 first:"))
+H.append(ul([bold_lead(x) for x in T1A[1][2]]))
+H.append(p(E(T1A[3][1]), "How we pick the FnF power traders:"))
+H.append(ul([bold_lead(x) for x in T1A[3][2][:2]]))
+H.append(p(f"people reached × 2% sign up × 15% trade = FTDs, each swapping ~$2,000 in month one, plus FnF power traders from "
+           f"day 4. All 8: {T['ftd']:.0f} FTDs, {T['fnf']} FnF power traders, {m(T['swaps'])} of swaps, {usd(T['rev'])} at 0.04%. "
+           f"Rates from three Indonesian referral books.", "Forecast (italics in the table):", small=True))
+
+# ---------------------------------------------------------------- Task 2
+H.append(h2("Task 2: Make a commercial decision"))
+deal = {"A": "20% share only; later", "B": "30% rising to 45%; 10% milestone bonus; $250 competition",
+        "C": "$500 + $500 retainer; 15% rising to 30%; bonus; $300 event"}
 askt = {"A": "$2,000 + 20%", "B": "35%, no fee", "C": "$3,000 + 10%"}
-rows = [[pn, askt[pn], usd(SA[(pn, 1)]), deal[pn], usd(S[(pn, 0)]), usd(S[(pn, 1)]), usd(S[(pn, 2)]), usd(S[(pn, 3)]),
-         f"{usd(SQ[(pn, 1)])} / {usd(SO[(pn, 1)])}"] for pn in "ABC"]
-H.append(table(["Partner", "Their ask", "Month 1, their ask", "Our deal", "At 50%", "At forecast", "At 2x", "At 3x",
-                "Partner earns at forecast (ask / ours)"], rows, [9, 11, 10, 23, 8, 9, 8, 8, 14], num_from=4))
-H.append(p(f"Month 1 = revenue at 0.04% − retainer − revenue share − bonus − campaign spend. B at forecast: $800 − $240 share − $80 "
-           f"bonus − $250 campaign = {usd(S[('B', 1)])}; at its own ask, $800 − $280 = {usd(SA[('B', 1)])}. A at its ask: $1,600 − $2,000 "
-           f"− $320, a $720 loss. C at its ask: $2,400 − $3,000 − $240, an $840 loss."))
-H.append(p("B: the clearest evidence (repeat onchain traders), no fixed fee, positive even at half volume. I would spend campaign "
-           "money on B to push it to 2-3x its forecast, then start C to expand (its volume has to be proven first), and let A follow "
-           "on share only: an airdrop audience is not our target and arrives with campaigns on its own.", "Preferred pilot:"))
-H.append(p("no retainer for B, and a small one for C ($500 at signing, $500 more only when it reaches forecast) instead of $3,000. "
-           "Revenue share in brackets that rise as volume grows (B: 30% up to forecast, then 35%, 40% and 45%; C: 15% rising to 30%, "
-           "above its 10% ask). A cash bonus at 100%, 200% and 300% of forecast, paid within 7 days and worth 10% of the revenue at that "
-           "milestone. OKX-funded campaigns: a trading competition for B, a co-hosted event for C, plus 10% of revenue above forecast "
-           "reinvested in more of them. Every scenario stays positive.", "Counter-offer, a growth deal:"))
-H.append(p(f"B's $250 campaign pays for itself once B passes {payback:.1f}x its forecast; if B is not on track by week 3, it stops. "
-           f"C's upfront retainer stays at $500 because above {usd(c_cap)} C turns negative at half volume.", "Is the campaign spend worth it?"))
-H.append(p("weekly payouts and the bonus within 7 days; a rate ratchet (a bracket reached is next month's starting rate, if retention "
-           "holds); a network override (5% of revenue from partners they introduce, for 3 months); member perks from the campaign pool "
-           "(competitions, fee discounts, early access to OKX Boost and X Launch).", "To make it more attractive at no fixed cost:"))
-H.append(p("90 days of past numbers (referral or bot dashboards: volume, active traders, retention by week); proof of users "
-           "(community size, activity and location); trading history and the wallet addresses of their most active members, which we "
-           "check onchain for repeat trading and wash trades; past partnership results and a reference.", "Evidence before signing:"))
-H.append(p(f"B stays positive at {usd(S[('B', 0)])} on our deal and {usd(SA[('B', 0)])} on its own ask, because there is no fixed fee, "
-           f"and its bracket share falls to 30% automatically. Then I would find out why: the market (overall memecoin DEX volume), the "
-           f"incentive (activity dropping after the competition) or the group itself (active wallets falling). The first two are normal "
-           f"swings: adjust the campaign. If the group has stopped carrying its weight, renegotiate or stop.", "If volume reaches only 50%:"))
-H.append(p("campaign budgets per community, bonus payouts, follower fee discounts (0-20%), gas subsidies, content fees, fraud screening "
-           "and tracking tools, compliance review (POJK 6/2026, Law 4/2026), translation and BD time.", "Other costs to investigate:"))
+rows = [[pn, askt[pn], usd(SC(pn, 1, 16)), deal[pn], usd(SC(pn, 0, 14)), usd(SC(pn, 1, 14)), usd(SC(pn, 2, 14)), usd(SC(pn, 3, 14))]
+        for pn in "ABC"]
+H.append(table(["Partner", "Their ask", "Month 1 at their ask", "Our growth deal", "Ours at 50%", "Ours at forecast", "At 2x", "At 3x"],
+               rows, [8, 12, 11, 33, 9, 10, 8, 9], num_from=4))
+for i, lab in enumerate(["1. First-month contribution:", "2. Preferred pilot:", "3. Counter-offer:", "To make it more attractive at no fixed cost:",
+                         "4. Evidence before signing:", "5. If B reaches only 50% of forecast:", "Is the campaign spend worth it?",
+                         "Other costs to investigate:"]):
+    q, a, d = T2A[i]
+    H.append(p(E(a), lab))
+    if i in (0, 2, 4):
+        H.append(ul([bold_lead(x) for x in (d[:3] if i == 4 else d)]))
+    elif i == 1:
+        H.append(p("; ".join(bold_lead(x) for x in d) + ".", small=True))
+    elif i == 5:
+        H.append(p("; ".join(bold_lead(x) for x in d) + ".", "Then find out why.", small=True))
+H.append(p("month 1 = revenue at 0.04% − retainer − share − bonus − campaign spend; brackets are marginal.", "Method:", small=True))
 
-H.append(h2("Task 3: winning and activating Kevin Susanto"))
-H.append(p(f"no retainer; fee share of 30% on the first $250K of monthly referred swaps, 35% to $500K and 40% above; a cash bonus of 10% "
-           f"of the swap fees at $250K, $500K and $1M, paid within 7 days; and a co-hosted live session with a 7-day trading competition "
-           f"for his Telegram: about {usd(k_share)} in share and {usd(k_bonus)} in bonus at his forecast. Brackets, bonus and campaign "
-           f"are proposals until OKX approves them.", "Offer:"))
-H.append(p(f"<i>{E(msg)}</i>", f"First message ({len(msg.split())} words; hook, who I am and the proposal, what's in it for him and his followers, next step):"))
-H.append(p(f"<i>{E(TASK3['Follow-up (day 4, no reply)'])}</i>", "Follow-up, day 4 (the deadline is real: our first wave):"))
-H.append(p(f"<i>{E(TASK3[chr(82) + 'eply to ' + chr(39) + 'another platform pays more' + chr(39)])}</i>", "If he says another platform pays more:"))
-H.append(p("First-meeting questions:"))
-H.append(dict(type="ol", items=[E(TASK3[f"Meeting question {i}"]) for i in (1, 2, 3)]))
-short = ["Separate DEX link and discount, tracked apart from his okx.ac link; terms and payout wallet in writing; compliance check",
-         "Activate his circle: 3 traders onboarded 1:1 through the full flow (wallet, funding, first trade, Track alerts)",
-         "Launch the campaign: co-hosted live session on his Telegram and a 7-day trading competition",
-         "Push the flow: 2 X threads, a pinned guide and an FAQ for first-time DEX users",
-         "Fix the funnel step by step (click, wallet, deposit, first and second trade); UI/UX feedback to product",
-         "Competition results, second session, review; agree days 15-30 and the next bracket"]
-H.append(table(["Days", "Activation plan", "Target"], [[a, short[i], c] for i, (a, b, c) in enumerate(PLAN)], [9, 63, 28]))
+# ---------------------------------------------------------------- Task 3
+H.append(h2("Task 3: Show how you would win and activate a partner"))
+H.append(p(f"Kevin Susanto, our #1. No retainer; fee share 30% to $250K of monthly swaps, 35% to $500K, 40% above; a 10% cash "
+           f"bonus at each milestone within 7 days; a co-hosted live session and competition. Month one: ~{usd(k_share)} share "
+           f"plus {usd(k_bonus)} bonus.", "Partner and offer:"))
+msg = T3[0][2]
+H.append(p(E(T3[0][1]), f"First message ({len(msg.split())} words; Bahasa version in the spreadsheet):"))
+H.append(quote([E(x) for x in msg.split("\n\n")]))
+H.append(p(E(T3[2][1]), "Follow-up, day 4:"))
+H.append(quote([E(T3[2][2])]))
+H.append(p(E(T3[3][1]), "If he says another platform pays more:"))
+H.append(quote([E(x) for x in T3[3][2].split("\n")]))
+H.append(p("", "First-meeting questions:"))
+H.append(ol([E(T3[4 + i][2]) for i in range(3)]))
+H.append(table(["Days", "Activation plan (day 1 = agreement signed)", "Target"], [[a, E(b), E(c)] for a, b, c in PLAN], [10, 64, 26]))
+H.append(p("the fee share and follower discount are published OKX DEX referral features; the cash bonus, the co-hosted session "
+           "and the launch-wave terms are offered subject to OKX approval.", "No unverified promises:", small=True))
 
-H.append(h2("Task 4: the first 30 days"))
-rows = [["1 · days 1-7", "Score 25 prospects; message all", 25, 3, 0, 0, 0, 0],
-        ["2 · days 8-14", "Sign top 3 and B; Jakarta day", 20, 6, f"{wk['C'][0]} + B", wk["C"][1], f"{wk['C'][2]:.0f}", f"{wk['C'][3]:.0f}"],
-        ["3 · days 15-21", "Wave 2 live; B campaign", 15, 5, f"{wk['D'][0]} + B", wk["D"][1], f"{wk['D'][2]:.0f}", f"{wk['D'][3]:.0f}"],
-        ["4 · days 22-30", "DegenRex, Meteora night; review; decide", 10, 4, f"{wk['E'][0]} + B", wk["E"][1], f"{wk['E'][2]:.0f}", f"{wk['E'][3]:.0f}"]]
-H.append(table(["Week", "Focus", "Outreach", "Meetings", "Live", "Activated", "FTDs", "Trades a day"], rows,
-               [13, 35, 9, 9, 9, 9, 7, 9], num_from=2))
-H.append(p(f"Swaps by day 30: {k(wk['E'][4])} from our 8 and {m(pil30)} from pilot B, so {usd(rev30)} of revenue at 0.04%, or "
-           f"{usd(rev30_after)} after partner shares. C starts once B passes 2x (month 2)."))
-H.append(p("at least 10 FTDs and 50 trades a day within 30 days live, at least 30% of FTDs still trading after 14 days, and under 5% "
-           "flagged wallets (wash trades, self-referral, sybil clusters).", "Activated partner:"))
-H.append(p("Wednesday of week 2 in Jakarta: Kevin Susanto at 10:00 (through OKX's regional team), Bevan at Narrative Labs at 13:00 "
-           "to sign and onboard his first traders, then an LP Army night or W3AI Wednesday at JURA. Fallback: a same-day call.", "In-person day:"))
-H.append(p("go through connections of connections. Ask the partners already talking to us and their circles (Kevin, Bevan, Ponyin) "
-           "for direct intros to the decision-maker, skip the public inbox, and lead with an easy offer: fee share plus a cash bonus "
-           "within 7 days of each milestone.", "If 20 messages bring 2 replies and no meetings:"))
-H.append(p("continue if activated with under 5% flagged wallets; renegotiate if the FnF traders trade but FTDs or trades a day fall "
-           "short; stop if under 5 FTDs or over 10% flagged.", "Day 30 decision per partner:"))
+# ---------------------------------------------------------------- Task 4
+H.append(h2("Task 4: Demonstrate practical execution and persistence"))
+H.append(p(E(T4A[0][1].replace(" (section A)", "")), "Answer:"))
+focus = [t4.cell(W["FOCUS"], 2 + j).value for j in range(4)]
+w0 = W["W0"]
+rows = []
+for j, (c, lab) in enumerate(zip("BCDE", ("1 · days 1-7", "2 · days 8-14", "3 · days 15-21", "4 · days 22-30"))):
+    rows.append([lab, E(focus[j]), t4[f"{c}{w0 + 1}"].value, t4[f"{c}{w0 + 3}"].value, f"{wk[c][0]} + B" if j else "0",
+                 wk[c][1], f"{wk[c][2]:,.0f}", f"{wk[c][3]:,.0f}"])
+H.append(table(["Week", "Focus", "Messages", "Meetings", "Live", "Activated", "FTDs", "Trades a day"], rows,
+               [12, 40, 9, 9, 7, 9, 6, 8], num_from=2))
+sw8, swp, rev30, revn30 = (t4.cell(W[x], 5).value for x in ("SW8", "SWP", "REV", "REVN"))
+H.append(p(f"Swaps by day 30: {m(sw8)} from our 8 and {m(swp)} from pilot B: {usd(rev30)} of revenue at 0.04% ({usd(revn30)} after "
+           f"partner shares).", small=True))
+for i, lab in ((1, "In-person prospecting day:"), (2, "If 20 messages bring 2 replies and no meetings:"), (3, "Day 30, per partner:"),
+               (4, "Activated partner:"), (5, "How the numbers land inside 30 days:")):
+    q, a, d = T4A[i]
+    H.append(p(E(a), lab))
+    if i in (1, 2):
+        H.append(p("; ".join(bold_lead(x) for x in d) + ".", small=True))
 
 H.append(h2("Commitment"))
-H.append(ul(["<b>Earliest start:</b> in 2 weeks.", "<b>Full-time:</b> yes, from 2 weeks.",
-             "<b>Other commitments:</b> marketer role at Surgence Labs.",
-             "<b>In person:</b> available across Indonesia and Southeast Asia, and willing to attend partner meetings and events in person."]))
+H.append(p("<b>Earliest start:</b> in 2 weeks. <b>Full-time:</b> yes, from 2 weeks. <b>Other commitments:</b> marketer role at "
+           "Surgence Labs. <b>In person:</b> available across Indonesia and Southeast Asia, and willing to attend partner meetings "
+           "and events in person."))
+
+
+# ---------------------------------------------------------------- appendix: sources and resources
+H.append(dict(type="pagebreak"))
 H.append(h2("How I worked and sources"))
-H.append(p("I set the strategy, the selection logic and every judgment call. AI gathered public data, automated repetitive work "
-           "(screening 100 prospects, building the model) and fact-checked. I re-checked every part myself and ran independent "
-           "fact-checks with several AI agents. Public information only."))
-H.append(p("Sources: OKX DEX docs, DefiLlama, Solscan, X, Discord, Luma, OJK; every link is in the spreadsheet (Miscellaneous, section G)."))
-import json
+H.append(p("I set the strategy, the selection logic and every judgment call. AI gathered public data, automated repetitive work and "
+           "fact-checked. I re-checked every part myself and ran independent fact-checks with several AI agents. Public information only."))
+H.append(ul([
+    "<b>Screening:</b> 100 public Indonesian prospects scored on one filter: proof that they trade, the power traders they can bring, "
+    "rival flow we can move, and fees from memecoin traders. 8 made the list; the rest are in the research workbook with the reason each was cut.",
+    "<b>Measuring:</b> follower counts and median views on recent posts through the X API; Bevan's wallet on Solscan; Discord invite "
+    "counts (members and members online); Telegram channel previews; event organiser posts (20-21 November 2026).",
+    "<b>Modelling:</b> one formula for every partner and every hypothetical. Rates come from three Indonesian referral books "
+    "(@0xSarimin, @0xRusdi, @AiSlimx) and Bevan's published wallet; every assumption is a yellow input, so the numbers move when one changes.",
+    "<b>Checking:</b> each figure traced to its public source below; AI fact-checks run independently by several agents, then re-checked by hand.",
+]))
+groups = {}
+r = MI["SRC0"]
+while mi.cell(r, 1).value:
+    groups.setdefault(mi.cell(r, 1).value, []).append((mi.cell(r, 2).value, mi.cell(r, 3).value))
+    r += 1
+for g, items in groups.items():
+    H.append(dict(type="links", group=g, items=[dict(label=a, url=u) for a, u in items]))
+
 out.write_text(json.dumps(H, indent=1, ensure_ascii=False))
-print("blocks", len(H))
+print("blocks", len(H), "sources", sum(len(v) for v in groups.values()))

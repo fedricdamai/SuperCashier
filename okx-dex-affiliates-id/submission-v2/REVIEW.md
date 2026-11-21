@@ -4,14 +4,16 @@
 
 **Update after this review (21 Nov 2026):** Hyperliquid Indonesia and Bael calls were replaced first, then your research sheet was merged in and the plan reworked to your direction. Task 1: Kevin Susanto, Bevan / Narrative Labs and Ponyin (with ApexFNF and the CVC Ventures circle: 0xRusdi with the Tomket clan, and Setya) are the top 3; only Kevin and Bevan count as meetable in person. Task 2: pilot B first on a growth deal (no retainer, revenue share rising by bracket, a cash bonus at each milestone, an OKX-funded trading competition), then C once B passes 2x, then A on share only. Task 3 is written for Kevin. Figures in sections 1 and 2 refer to the original partner set.
 
+**Update (21 Nov 2026, later):** FnF power traders now swap $1,000 a day (Bevan's published wallet average), 2x in Kevin's whale circle and 1.5x in Ponyin's network. Every tab opens with an executive summary and an Answers block (one-sentence answer, then bullets per partner); task titles match the brief; Task 1 section A follows the brief's fields; partners go live as they sign (weeks 2-3 are the major push, week 4 is review and last push). Kevin's messages are rewritten. The brief checklist and the 100-prospect longlist moved to the research workbook.
+
 Files in this folder:
 
 | File | What it is |
 |---|---|
-| `OKX_DEX_BD_Affiliate_Indonesia_Writeup.docx` | The write-up (4 pages): Tasks 1-4, commitment, method |
+| `OKX_DEX_BD_Affiliate_Indonesia_Writeup.docx` | The write-up: a 4-page body (summary, Tasks 1-4, commitment), then How I worked and sources (2 pages) |
 | `OKX_DEX_BD_Affiliate_Indonesia_Slides.pptx` | 6-slide companion deck, main points only |
 | `OKX_DEX_BD_Affiliate_Indonesia_Prospect_Spreadsheet.xlsx` | Submission workbook: Task 1, Task 2, Task 3, Task 4, Miscellaneous (live formulas) |
-| `OKX_research_and_checks.xlsx` | Same five tabs plus Research merge and Checks and history |
+| `OKX_research_and_checks.xlsx` | Same five tabs plus Research merge, Checks and history, and Checklist and longlist |
 | `tools/` | Rebuild scripts and their inputs (see `tools/README.md`) |
 | `REVIEW.md` | This file |
 

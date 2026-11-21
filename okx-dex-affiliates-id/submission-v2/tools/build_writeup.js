@@ -1,17 +1,18 @@
-// Build the take-home write-up (.docx) from the JSON blocks that make_doc_blocks.py exports.
-// Usage: node build_docx.js <doc_blocks.json> <out.docx> [bodyPt]
+// Build the take-home write-up (.docx) from the JSON blocks that make_writeup.py exports.
+// Usage: node build_writeup.js <doc_blocks.json> <out.docx> [bodyPt]
 const fs = require("fs");
 const {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle,
-  AlignmentType, LevelFormat, HeadingLevel, Footer, PageNumber,
+  AlignmentType, LevelFormat, HeadingLevel, Footer, PageNumber, ExternalHyperlink, PageBreak,
 } = require("docx");
 
 const [src, out, bodyArg] = process.argv.slice(2);
 const blocks = JSON.parse(fs.readFileSync(src, "utf8"));
-const BODY = Math.round((parseFloat(bodyArg || "11")) * 2); // half-points
-const TBL = 17; // 8.5 pt
+const BODY = Math.round(parseFloat(bodyArg || "11") * 2); // half-points
+const SMALL = 18; // 9 pt
+const TBL = 16; // 8 pt
 const FONT = "Arial";
-const NAVY = "13203A";
+const NAVY = "13203A", GREY = "5B667A", LINK = "0563C1";
 const PAGE_W = 12240, MARGIN = 1080, CONTENT_W = PAGE_W - 2 * MARGIN;
 
 const decode = (s) => s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
@@ -19,16 +20,17 @@ const decode = (s) => s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&g
 
 // "<b>x</b> y <i>z</i>" -> TextRuns
 function runs(html, size, extra = {}) {
-  const out = [];
+  const res = [];
   let bold = false, italics = false;
   for (const part of html.split(/(<\/?[bi]>)/)) {
     if (part === "<b>") bold = true;
     else if (part === "</b>") bold = false;
     else if (part === "<i>") italics = true;
     else if (part === "</i>") italics = false;
-    else if (part) out.push(new TextRun({ text: decode(part), bold: bold || undefined, italics: italics || undefined, size, font: FONT, ...extra }));
+    else if (part) res.push(new TextRun({ text: decode(part), bold: bold || extra.bold || undefined, italics: italics || extra.italics || undefined,
+      size, font: FONT, color: extra.color }));
   }
-  return out;
+  return res;
 }
 
 const border = { style: BorderStyle.SINGLE, size: 4, color: "C8CCD2" };
@@ -41,12 +43,12 @@ function table(b) {
   const mk = (txt, i, head, bold) => new TableCell({
     borders, width: { size: cols[i], type: WidthType.DXA },
     shading: head ? { fill: "EEF1F5", type: ShadingType.CLEAR, color: "auto" } : undefined,
-    margins: { top: 30, bottom: 30, left: 70, right: 70 },
-    children: [new Paragraph({
+    margins: { top: 30, bottom: 30, left: 60, right: 60 },
+    children: String(txt).split("\n").map((line) => new Paragraph({
       alignment: !head && b.num_from !== null && i >= b.num_from ? AlignmentType.RIGHT : AlignmentType.LEFT,
       spacing: { before: 0, after: 0 },
-      children: [new TextRun({ text: txt, bold: head || bold || undefined, size: TBL, font: FONT })],
-    })],
+      children: runs(line, TBL, { bold: head || bold }),
+    })),
   });
   const rows = [new TableRow({ tableHeader: true, cantSplit: true, children: b.head.map((h, i) => mk(h, i, true, false)) })];
   b.rows.forEach((r, ri) => rows.push(new TableRow({
@@ -57,22 +59,38 @@ function table(b) {
 
 const children = [];
 for (const b of blocks) {
+  const size = b.small ? SMALL : BODY;
   if (b.type === "h1") children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: b.text })] }));
   else if (b.type === "h2") children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: b.text })] }));
+  else if (b.type === "pagebreak") children.push(new Paragraph({ children: [new PageBreak()] }));
   else if (b.type === "p") {
     const kids = [];
-    if (b.label) kids.push(new TextRun({ text: decode(b.label) + " ", bold: true, size: BODY, font: FONT }));
-    kids.push(...runs(b.html, BODY));
-    children.push(new Paragraph({ spacing: { before: 0, after: 80 }, children: kids }));
+    if (b.label) kids.push(new TextRun({ text: decode(b.label) + " ", bold: true, size, font: FONT, color: b.small ? GREY : undefined }));
+    kids.push(...runs(b.html, size, { color: b.small ? GREY : undefined }));
+    children.push(new Paragraph({ spacing: { before: 0, after: 60 }, children: kids }));
   } else if (b.type === "ul" || b.type === "ol") {
     b.items.forEach((it, i) => children.push(new Paragraph({
       numbering: { reference: b.type === "ul" ? "bullets" : "numbers", level: 0 },
-      spacing: { before: 0, after: i === b.items.length - 1 ? 80 : 0 },
-      children: runs(it, BODY),
+      spacing: { before: 0, after: i === b.items.length - 1 ? 70 : 0 },
+      children: runs(it, size, { color: b.small ? GREY : undefined }),
+    })));
+  } else if (b.type === "quote") {
+    b.lines.forEach((line, i) => children.push(new Paragraph({
+      indent: { left: 360 }, spacing: { before: 0, after: i === b.lines.length - 1 ? 90 : 30 },
+      border: { left: { style: BorderStyle.SINGLE, size: 12, color: "C8CCD2", space: 8 } },
+      children: runs(line, BODY - 1, { italics: true }),
     })));
   } else if (b.type === "table") {
     children.push(table(b));
-    children.push(new Paragraph({ spacing: { before: 0, after: 60 }, children: [] }));
+    children.push(new Paragraph({ spacing: { before: 0, after: 50 }, children: [] }));
+  } else if (b.type === "links") {
+    children.push(new Paragraph({ spacing: { before: 80, after: 20 }, keepNext: true,
+      children: [new TextRun({ text: b.group, bold: true, size: SMALL + 2, font: FONT, color: NAVY })] }));
+    b.items.forEach((it) => children.push(new Paragraph({
+      numbering: { reference: "bullets", level: 0 }, spacing: { before: 0, after: 0 },
+      children: [new TextRun({ text: it.label + ": ", size: SMALL, font: FONT }),
+        new ExternalHyperlink({ link: it.url, children: [new TextRun({ text: it.url.replace(/^https?:\/\//, ""), size: SMALL, font: FONT, color: LINK, underline: {} })] })],
+    })));
   }
 }
 
@@ -85,7 +103,7 @@ const doc = new Document({
       { id: "Heading1", name: "Heading 1", basedOn: "Normal", next: "Normal", quickFormat: true,
         run: { font: FONT, size: 32, bold: true, color: NAVY }, paragraph: { spacing: { before: 0, after: 60 }, keepNext: true, outlineLevel: 0 } },
       { id: "Heading2", name: "Heading 2", basedOn: "Normal", next: "Normal", quickFormat: true,
-        run: { font: FONT, size: 25, bold: true, color: NAVY }, paragraph: { spacing: { before: 160, after: 60 }, keepNext: true, outlineLevel: 1 } },
+        run: { font: FONT, size: 25, bold: true, color: NAVY }, paragraph: { spacing: { before: 120, after: 50 }, keepNext: true, outlineLevel: 1 } },
     ],
   },
   numbering: {
@@ -99,8 +117,8 @@ const doc = new Document({
   sections: [{
     properties: { page: { size: { width: PAGE_W, height: 15840 }, margin: { top: MARGIN, bottom: MARGIN, left: MARGIN, right: MARGIN } } },
     footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [
-      new TextRun({ text: "Fedric Intan Damai · OKX DEX BD Affiliate (Indonesia) · page ", size: 16, color: "5B667A", font: FONT }),
-      new TextRun({ children: [PageNumber.CURRENT], size: 16, color: "5B667A", font: FONT }),
+      new TextRun({ text: "Fedric Intan Damai · OKX DEX BD Affiliate (Indonesia) · page ", size: 16, color: GREY, font: FONT }),
+      new TextRun({ children: [PageNumber.CURRENT], size: 16, color: GREY, font: FONT }),
     ] })] }) },
     children,
   }],
