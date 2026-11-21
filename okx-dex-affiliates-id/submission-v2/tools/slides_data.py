@@ -31,7 +31,7 @@ N0, TOT, A0 = L1["N0"], L1["TOT"], L1["A0"]
 names = ["Kevin Susanto", "Bevan / Narrative Labs", "Ponyin + CVC network", "GuarEmperor + FnF", "Brandon Salim + a79",
          "Crypto Ndo", "DegenRex", "Meteora LP Army"]
 proof = ["#3 on fomo's 24-hour profit board (+$53,566)", "Wallet +374 SOL; 1 SOL to 10 live", "~$170K a month on Trojan; BasedBot referral book",
-         "1.9% engagement; members post gains", "fomo +$32,185 in one day", "Trades only on OKX Wallet; 59.3K on X",
+         "Active trader; calls token buys ($PRL 3.5x)", "fomo +$32,185 in one day", "Trades only on OKX Wallet; 59.3K on X",
          "Won Clash of Trenchers live", "462 and 671 at two community nights"]
 rows = [[i + 1, names[i], proof[i], t1.cell(A0 + i, 9).value, round(t1.cell(N0 + i, 6).value),
          f"{t1.cell(N0 + i, 8).value} × {usd(t1.cell(N0 + i, 10).value)}", k(t1.cell(N0 + i, 16).value)] for i in range(8)]

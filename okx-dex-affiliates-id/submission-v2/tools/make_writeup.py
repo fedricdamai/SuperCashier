@@ -107,8 +107,8 @@ for i in range(8):
                  f"<b>{t1.cell(r, 9).value}:</b> {E(str(t1.cell(r, 10).value))}\n<i>{t1.cell(n, 6).value:.0f} FTDs · {k(t1.cell(n, 16).value)}</i>"])
 H.append(table(["Partner and public link", "Audience and market", "Evidence of fit", "Acquisition route", "Proposed partnership",
                 "Main risk", "Priority and forecast"], rows, [15, 14, 16, 13, 15, 14, 13]))
-H.append(p(f"{chk['noair']} of 8 not airdrop-led, {chk['types']:.0f} partner types, {chk['meet']} meetable in person. GuarEmperor (#4) has "
-           f"the best engagement (1.9%), but his feed mixes alpha calls with whitelist and mint posts, so he starts in the second wave.", small=True))
+H.append(p(f"{chk['noair']} of 8 not airdrop-led, {chk['types']:.0f} partner types, {chk['meet']} meetable in person. GuarEmperor (#4) trades "
+           f"actively and calls token buys, but his feed mixes those calls with whitelist and mint posts, so he starts in the second wave.", small=True))
 H.append(p(E(T1A[1][1]), "Why these 3 first:"))
 H.append(ul([bold_lead(x) for x in T1A[1][2]]))
 H.append(p(E(T1A[3][1]), "How we pick the FnF power traders:"))
