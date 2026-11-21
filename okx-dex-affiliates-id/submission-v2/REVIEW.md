@@ -6,6 +6,8 @@
 
 **Update (21 Nov 2026, later):** FnF power traders now swap $1,000 a day (Bevan's published wallet average), 2x in Kevin's whale circle and 1.5x in Ponyin's network. Every tab opens with an executive summary and an Answers block (one-sentence answer, then bullets per partner); task titles match the brief; Task 1 section A follows the brief's fields; partners go live as they sign (weeks 2-3 are the major push, week 4 is review and last push). Kevin's messages are rewritten. The brief checklist and the 100-prospect longlist moved to the research workbook.
 
+**Update (22 Nov 2026):** built from your edited write-up. #3 is now 0xRusdi + CVC network (meetable in Jakarta); your new scores put Brandon Salim #4 and GuarEmperor #5. The FnF circle multiplier is gone ($1,000 a day for every power trader) and Bevan's reach is a 25,000 guesstimate. Task 2: pilot C first once its volume is confirmed, on a growth deal (share as asked, fixed fee paid as a bonus once volume covers it, 50% above); B on its own terms. Task 3: Kevin starts on OKX DEX's standard share, and his own VIP-style tiers start at $10,000 of monthly fees ($2M of swaps). Kevin's messages are rewritten.
+
 Files in this folder:
 
 | File | What it is |

@@ -51,7 +51,7 @@ function tbl(s, head, rows, opt) {
   const s = pres.addSlide({ masterName: "DARK" });
   kicker(s, "OKX P4 DEX BD AFFILIATE · INDONESIA · EXECUTIVE SUMMARY", 0.5);
   s.addText("Indonesia DEX Affiliate Plan", { x: 0.5, y: 0.85, w: 8.6, h: 0.7, fontSize: 34, bold: true, color: "FFFFFF", fontFace: FONT, margin: 0, valign: "top", isTextBox: true });
-  s.addText("Approach three trading circles first, pilot B on a growth deal, and turn the first 30 days into live, activated partners.",
+  s.addText("Approach three trading circles first, pilot C on a growth deal once its volume is confirmed, and turn the first 30 days into live, activated partners.",
     { x: 0.5, y: 1.6, w: 8.6, h: 0.65, fontSize: 15, color: "DCE3F0", fontFace: FONT, margin: 0, valign: "top", isTextBox: true });
   s.addText("Fedric Intan Damai · November 2026", { x: 0.5, y: 2.35, w: 8, h: 0.3, fontSize: 12, color: "C9D3E6", fontFace: FONT, margin: 0, isTextBox: true });
   D.stats.forEach(([big, small], i) => {
@@ -80,12 +80,12 @@ function tbl(s, head, rows, opt) {
   const s = pres.addSlide({ masterName: "CONTENT" });
   s.addText("Task 2: Make a commercial decision", { placeholder: "title" });
   answer(s, D.t2_answer);
-  tbl(s, ["Partner", "Their ask", "Month 1 at their ask", "Our deal: at 50%", "At forecast", "At 2x", "At 3x"], D.t2_rows,
-    { x: 0.5, y: 1.38, w: 9, colW: [2.1, 1.3, 1.3, 1.2, 1.05, 1.0, 1.05], align: ["left", "left", "right", "right", "right", "right", "right"], hl: [0], boldFirst: true, size: 10.5, rowH: 0.3 });
+  tbl(s, ["Partner", "Their ask", "Month 1 at their ask", "Our deal: at 50%", "Our deal: at forecast", "Pays them more above"], D.t2_rows,
+    { x: 0.5, y: 1.38, w: 9, colW: [2.3, 1.35, 1.35, 1.3, 1.35, 1.35], align: ["left", "left", "right", "right", "right", "right"], hl: [0], boldFirst: true, size: 10.5, rowH: 0.3 });
   card(s, 0.5, 2.78, 4.4, 2.0); card(s, 5.1, 2.78, 4.4, 2.0);
-  cardTitle(s, "Counter-offer: a growth deal", 0.7, 2.88, 4.0);
+  cardTitle(s, "Counter-offer: the growth deal", 0.7, 2.88, 4.0);
   bullets(s, D.t2_deal, 0.7, 3.22, 4.0, 1.5, 11);
-  cardTitle(s, "Before signing, and if volume halves", 5.3, 2.88, 4.0);
+  cardTitle(s, "Before signing, at 50%, and other costs", 5.3, 2.88, 4.0);
   bullets(s, D.t2_right, 5.3, 3.22, 4.0, 1.5, 11);
   foot(s, D.t2_foot);
 }
